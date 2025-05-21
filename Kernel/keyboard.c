@@ -32,8 +32,8 @@ static const char minusc[] = {
 
 };
 
-static const keyboard_matriz[BUFFER_MAX] = { }
-static const char * mapLetras[] = {minusc, mayusc};
+static const keyboard_matriz[BUFFER_MAX] = { };
+static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboardHandler(){
     key = getKey();
