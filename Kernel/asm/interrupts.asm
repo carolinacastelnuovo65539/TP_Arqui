@@ -17,6 +17,7 @@ GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN keyboardHandler
 
 SECTION .text
 
