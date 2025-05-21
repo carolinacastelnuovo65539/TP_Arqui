@@ -156,7 +156,7 @@ _irq01Handler:
 .no_ALT:
 	cmp al, 0xB8
 	je .exit
-	call keyboardHandler
+	irqHandlerMaster 1
 	jmp .exit
 	
 .exit:
@@ -164,7 +164,7 @@ _irq01Handler:
 	out 20h, al
 	popState
 	iretq
-	
+
 ;B8 liberar el alt 
 
 ;Cascade pic never called

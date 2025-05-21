@@ -32,18 +32,15 @@ static const char minusc[] = {
 
 };
 
-static const keyboard_matriz[BUFFER_MAX] = { };
 static const char * mapaLetras[] = {minusc, mayusc};
 
-void keyboardHandler(){
+void keyboard_handler(){
     key = getKey();
 
     if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
       // if(key == 0x38){ //La tecla del ALT
       //       guardar_registros();
       // }
-
-
       // shift presionad
       if (key == 0x2A || key == 0x36) {
         shift = 1;

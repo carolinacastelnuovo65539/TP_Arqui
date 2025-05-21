@@ -31,8 +31,7 @@ void load_idt() {
 
   setup_IDT_entry (0x21, (uint64_t)&_irq01Handler); //Excepción del teclado
 
-	//Solo interrupcion timer tick habilitadas
-	picMasterMask(0xFE); 
+	picMasterMask(0xFC); 
 	picSlaveMask(0xFF);
         
 	_sti();
