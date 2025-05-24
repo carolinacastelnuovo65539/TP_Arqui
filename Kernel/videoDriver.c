@@ -1,4 +1,8 @@
 #include <videoDriver.h>
+#include <font.h>
+
+Color BLACK = {0, 0, 0};
+Color WHITE = {255, 255, 255};
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -48,4 +52,85 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     framebuffer[offset]     =  (hexColor) & 0xFF;
     framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF; 
     framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
+}
+
+uint16_t cursorX = 0;
+uint16_t cursorY = 0;
+uint8_t escalaPixel = 1;
+#define CHAR_WIDTH 8 * escalaPixel
+#define CHAR_HEIGHT 16 * escalaPixel
+
+static void drawChar(char c, Color fuente, Color fondo){
+	//mascara para chequear los bits y saber si pintar ese píxel como parte del texto o del fondo
+	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+
+	const uint8_t * charMap = font_bitmap + 16 * (c -32);
+
+	//me fijo que el cursor no se vaya de la linea o pantalla
+	if (cursorX >= VBE_mode_info->width) {
+		cursorX = 0;
+		if ((cursorY + CHAR_HEIGHT) >= VBE_mode_info->height) {
+			scroll();
+		} else {
+			cursorY += CHAR_HEIGHT;
+		}
+	}
+
+	int cx, cy;
+	for(cy = 0; cy < 16; cy++){
+		for (cx = 0; cx < 8; cx++){
+			for(int i = 0; i < escalaPixel; i++){
+				for(int j = 0; j < escalaPixel; j++){
+					setPixel(cursorX + (8 - cx) * escalaPixel + i, cursorY + cy * escalaPixel + j, charMap[cy] & mask[cx] ? fuente : fondo);
+				}
+			}
+		}
+	}
+	cursorX += CHAR_WIDTH;
+	
+}
+
+static void scroll(){
+	Color * current;
+	Color * nextPixel;
+
+	for (int i = 0; i < VBE_mode_info->height - CHAR_HEIGHT; i++){
+		for(int j = 0; j < VBE_mode_info->width - CHAR_WIDTH; j++){
+			current = ( Color *) getPixel(i, j);
+			nextPixel = ( Color *) getPixel(i + CHAR_HEIGHT, j);
+			*current = *nextPixel;
+		}
+	}
+
+	//que la linea de abajo despues de hacer el scroll hacia arriba sea negra
+	for(int i = 0; i < CHAR_HEIGHT; i++){
+		for(int j = 0; j < VBE_mode_info->width; j++){
+			current = (Color *)getPixel(VBE_mode_info->height - CHAR_HEIGHT + i, j);
+			*current = BLACK;
+		}
+	}
+}
+
+static uint32_t* getPixel(uint16_t x, uint16_t y) {
+    uint8_t pixelwidth = VBE_mode_info->bpp/8;     //la cantidad de bytes hasta el siguiente pixel a la derecha (bpp: BITS per px)
+    uint16_t pixelHeight = VBE_mode_info->pitch;  
+
+    uintptr_t pixel = (uintptr_t)(VBE_mode_info->framebuffer) + (x * pixelwidth) + (y * pixelHeight);
+    return (uint32_t*)pixel;
+	
+}
+
+void setPixel(uint16_t x, uint16_t y, Color color) {
+	if (x >= VBE_mode_info->width || y >= VBE_mode_info->height) {
+		return;
+	}
+	Color * pixel = (Color*) getPixel(x,y);
+	*pixel = color;
+}
+
+void driverRead(char *buff){
+	*buff = getBuff();
+	if(*buff == 0){
+		return ;
+	}
 }

@@ -85,7 +85,6 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-	putPixel(0xFF0000, 31, 10);
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("  Sample code module at 0x");

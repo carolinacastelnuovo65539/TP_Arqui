@@ -8,6 +8,7 @@ extern void guardar_registros();
 int shift = 0;
 int elems = 0;
 unsigned char key;
+int read_index = 0;
 
 char BUFFER[BUFFER_MAX] = {0};
 
@@ -70,3 +71,12 @@ void next() {
 //     return mapaLetras[shift][(int)key];
 // }
 
+char getBuff() {
+    if (read_index == elems) {
+        return 0; // no hay teclas nuevas
+    }
+    if (read_index >= BUFFER_MAX) {
+        read_index = 0;
+    }
+    return BUFFER[read_index++];
+}
