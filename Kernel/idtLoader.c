@@ -31,6 +31,8 @@ void load_idt() {
 
   setup_IDT_entry (0x21, (uint64_t)&_irq01Handler); //Excepción del teclado
 
+  setup_IDT_entry(0x80, (uint64_t)&_systemCallHandler);
+
 	picMasterMask(0xFC); 
 	picSlaveMask(0xFF);
         

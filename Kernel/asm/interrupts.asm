@@ -12,12 +12,14 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
+GLOBAL _systemCallHandler
 
 GLOBAL _exception0Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN keyboardHandler
+EXTERN syscall_dispatcher
 
 SECTION .text
 
@@ -188,11 +190,26 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+_systemCallHandler:
+	pushState
+	mov rbp, rsp
+	push r9
+	mov rcx, r10
+	mov r9, rax
+	call syscall_dispatcher
+	pop r9
+
+	mov al, 20h
+	out 20h, al
+	
+	mov rsp, rbp
+	popState
+	iretq
+
 haltcpu:
 	cli
 	hlt
 	ret
-
 
 
 SECTION .bss
