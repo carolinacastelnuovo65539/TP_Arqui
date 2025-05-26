@@ -16,7 +16,7 @@ static uint64_t sys_write(uint64_t fd, char buffer){
     if (fd != 1) {
         return -1;
     }
-    drawChar(buffer, WHITE, BLACK);
+    print(buffer, WHITE, BLACK);
     return 1;
 }
 

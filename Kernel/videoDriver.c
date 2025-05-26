@@ -1,6 +1,7 @@
 #include <videoDriver.h>
 #include <font.h>
 
+
 Color BLACK = {0, 0, 0};
 Color WHITE = {255, 255, 255};
 
@@ -59,8 +60,106 @@ uint16_t cursorY = 0;
 uint8_t escalaPixel = 1;
 #define CHAR_WIDTH 8 * escalaPixel
 #define CHAR_HEIGHT 16 * escalaPixel
+uint16_t cursorOn = 0;
 
-static void drawChar(char c, Color fuente, Color fondo){
+static void putChar(char c, Color fuente, Color fondo);
+static uint32_t* getPixel(uint16_t x, uint16_t y);
+static void scroll();
+
+
+void prints(const char * str, Color fuente, Color fondo) {
+	for (int i=0; str[i]!=0; i++) {
+		print(str[i], fuente, fondo);
+	}
+}
+
+void print(const char buffer, Color fuente, Color fondo){
+	switch (buffer)
+	{
+	case '\n':	
+		newLine();
+		break;
+	case '\b':
+		backspace();
+		break;
+	case '\0':
+		break;
+	default:
+		putChar(buffer, fuente, fondo);
+		break;
+	}
+}
+
+void newLine(){
+	cursorX = 0;
+	cursorY += CHAR_HEIGHT;
+	
+	if(cursorY + CHAR_HEIGHT > VBE_mode_info->height){
+		cursorY -= CHAR_HEIGHT;
+		scroll();
+	}
+}
+
+void backspace(){
+	if(cursorX == 0 && cursorY == 0){
+		return;
+	}else{
+		cursorX -= CHAR_WIDTH;
+		putChar(' ', WHITE, BLACK);
+		cursorX -= CHAR_WIDTH;
+	}
+}
+
+void clear(){
+	uint8_t * current = (uint8_t*)((uint64_t)VBE_mode_info->framebuffer);
+	for(uint32_t len = 3 * (uint32_t)VBE_mode_info->width * VBE_mode_info->height; len; len--, current++){
+		*current = 0;
+	}
+	//los seteo en 0
+	cursorX = 0;
+	cursorY = 0;
+}
+
+void putCursor() {
+
+	int cx, cy;
+	Color fuente = cursorOn ? BLACK : WHITE;
+	Color fondo = cursorOn ? BLACK : WHITE;
+	
+	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
+	
+	const unsigned char * charMap;
+
+	if (cursorOn) {
+		charMap = font_bitmap + 16 * (' ' - 32);
+		cursorOn = 0;
+	} else {
+		charMap = font_bitmap + 16 * (' ' - 32);
+		cursorOn = 1;
+	}
+
+	if (cursorX >= VBE_mode_info->width) {
+		cursorX = 0;
+		if ((cursorY + CHAR_HEIGHT) > VBE_mode_info->height) {
+			cursorY -= CHAR_HEIGHT;
+			scroll();
+		} else {
+			cursorY += CHAR_HEIGHT;
+		}
+	}
+
+	for (cy = 0; cy<16; cy++) {
+		for (cx=0; cx<8; cx++){
+			for (int i=0; i<escalaPixel; i++) {
+				for (int j=0; j<escalaPixel; j++) {
+					setPixel(cursorX + (8-cx) * escalaPixel + i, cursorY + cy * escalaPixel + j, charMap[cy] & mask[cx] ? fuente : fondo);
+				}
+			}
+		}
+	}
+}
+
+static void putChar(char c, Color fuente, Color fondo){
 	//mascara para chequear los bits y saber si pintar ese píxel como parte del texto o del fondo
 	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 

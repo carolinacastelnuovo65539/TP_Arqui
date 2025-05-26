@@ -13,3 +13,10 @@ int ticks_elapsed() {
 int seconds_elapsed() {
 	return ticks / 18;
 }
+
+void wait(int delta){
+	int actualTicks = ticks;
+	while(ticks - actualTicks < delta){
+		_hlt();
+	}
+}

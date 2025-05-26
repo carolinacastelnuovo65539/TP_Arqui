@@ -15,5 +15,5 @@ docker exec -it $CONTAINER_NAME make -C /root/Toolchain
 echo "Compilando proyecto completo..."
 docker exec -it $CONTAINER_NAME make -C /root
 
-echo "Deteniendo contenedor..."
-docker stop $CONTAINER_NAME
+# echo "Deteniendo contenedor..."
+# docker stop $CONTAINER_NAME
