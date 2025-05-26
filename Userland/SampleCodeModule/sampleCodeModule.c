@@ -10,6 +10,16 @@ static int var2 = 0;
 int main() {
 
 	print("Hola", 4);
+
+	char c;
+	
+	while((c = getChar()) != '\n'){
+		if(c != 0){
+			putChar(c);
+		}		
+	}
+	
+	
 	//All the following code may be removed 
 	*v = 'X';
 	*(v+1) = 0x74;

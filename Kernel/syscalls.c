@@ -4,19 +4,19 @@
 #include <time.h>
 #include <keyboard.h>
 
-static uint64_t sys_read(uint64_t fd, char* buffer){
+static uint64_t sys_read(uint64_t fd, char * buffer){
     if (fd != 0){
         return -1;
     }
-    driverRead(buffer);
+    vd_read(buffer);
     return 0;
 }
 
-static uint64_t sys_write(uint64_t fd, char * buffer){
+static uint64_t sys_write(uint64_t fd, char * buffer, int len){
     if (fd != 1) {
         return -1;
     }
-    prints(buffer, WHITE, BLACK);
+    vd_prints(buffer, len, WHITE, BLACK);
     return 1;
 }
 
@@ -54,7 +54,7 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         return sys_read(rdi, (char *)rsi);
         break;
     case 1: //write
-        return sys_write(rdi, (char)rsi);
+        return sys_write(rdi, (char *)rsi, rdx);
         break;
     case 2: //clear
         sys_clear();

@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include "userlib.h"
 
-// extern uint64_t sys_read(uint64_t fd, char* buffer);
+extern uint64_t sys_read(uint64_t fd, char * buffer);
 
-extern uint64_t sys_write(uint64_t fd, char * buffer);
+extern uint64_t sys_write(uint64_t fd, char * buffer, int len);
 
 // extern void sys_clear();
 

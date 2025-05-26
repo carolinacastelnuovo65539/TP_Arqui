@@ -62,18 +62,18 @@ uint8_t escalaPixel = 1;
 #define CHAR_HEIGHT 16 * escalaPixel
 uint16_t cursorOn = 0;
 
-static void putChar(char c, Color fuente, Color fondo);
+static void vd_putChar(char c, Color fuente, Color fondo);
 static uint32_t* getPixel(uint16_t x, uint16_t y);
 static void scroll();
 
 
-void prints(const char * str, Color fuente, Color fondo) {
-	for (int i=0; str[i] != 0; i++) {
-		print(str[i], fuente, fondo);
+void vd_prints(const char * str, int len, Color fuente, Color fondo) {
+	for (int i=0; i < len; i++) {
+		vd_print(str[i], fuente, fondo);
 	}
 }
 
-void print(const char buffer, Color fuente, Color fondo){
+void vd_print(const char buffer, Color fuente, Color fondo){
 	switch (buffer)
 	{
 	case '\n':	
@@ -85,7 +85,7 @@ void print(const char buffer, Color fuente, Color fondo){
 	case '\0':
 		break;
 	default:
-		putChar(buffer, fuente, fondo);
+		vd_putChar(buffer, fuente, fondo);
 		break;
 	}
 }
@@ -105,7 +105,7 @@ void backspace(){
 		return;
 	}else{
 		cursorX -= CHAR_WIDTH;
-		putChar(' ', WHITE, BLACK);
+		vd_putChar(' ', WHITE, BLACK);
 		cursorX -= CHAR_WIDTH;
 	}
 }
@@ -159,7 +159,7 @@ void putCursor() {
 	}
 }
 
-static void putChar(char c, Color fuente, Color fondo){
+static void vd_putChar(char c, Color fuente, Color fondo){
 	//mascara para chequear los bits y saber si pintar ese píxel como parte del texto o del fondo
 	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 
@@ -227,9 +227,9 @@ void setPixel(uint16_t x, uint16_t y, Color color) {
 	*pixel = color;
 }
 
-void driverRead(char *buff){
+void vd_read(char * buff){
 	*buff = getBuff();
 	if(*buff == 0){
-		return ;
+		return;
 	}
 }

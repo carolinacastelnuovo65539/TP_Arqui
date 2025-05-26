@@ -6,9 +6,9 @@
 #include "time.h"
 
 
-// static uint64_t sys_read(uint64_t fd, char* buffer);
+static uint64_t sys_read(uint64_t fd, char * buffer);
 
-static uint64_t sys_write(uint64_t fd, char * buffer);
+static uint64_t sys_write(uint64_t fd, char * buffer, int len);
 
 // static void sys_clear();
 

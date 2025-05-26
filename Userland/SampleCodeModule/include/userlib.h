@@ -5,6 +5,10 @@
 
 void print(char * c, int len);
 
+char getChar();
+
+void putChar(char c);
+ 
 void drawCursor();
 
 void printString(char * string);

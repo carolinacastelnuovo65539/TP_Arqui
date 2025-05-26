@@ -15,14 +15,14 @@ typedef struct
 extern Color BLACK;
 extern Color WHITE;
 
-void prints(const char * str, Color fuente, Color fondo);
-void print(const char buffer, Color fuente, Color fondo);
+void vd_prints(const char * str, int len, Color fuente, Color fondo);
+void vd_print(const char buffer, Color fuente, Color fondo);
+void vd_read(char * buff);
 void newLine();
 void backspace();
 void clear();
 void putCursor();
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y);
-void driverRead(char *buff);
 void setPixel(uint16_t x, uint16_t y, Color color);
 
 
