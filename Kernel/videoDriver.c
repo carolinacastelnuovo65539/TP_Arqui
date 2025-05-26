@@ -68,7 +68,7 @@ static void scroll();
 
 
 void prints(const char * str, Color fuente, Color fondo) {
-	for (int i=0; str[i]!=0; i++) {
+	for (int i=0; str[i] != 0; i++) {
 		print(str[i], fuente, fondo);
 	}
 }
