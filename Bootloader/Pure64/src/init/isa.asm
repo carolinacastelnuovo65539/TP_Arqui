@@ -15,7 +15,7 @@ init_isa:
 ; Get the BIOS E820 Memory Map
 ; use the INT 0x15, eax= 0xE820 BIOS function to get a memory map
 ; inputs: es:di -> destination buffer for 24 byte entries
-; outputs: bp = entry count, trashes all registers except esi
+; outputs: bp = entry count, trashes all regs except esi
 do_e820:
 	mov edi, 0x00004000		; location that memory map will be stored to
 	xor ebx, ebx			; ebx must be 0 to start

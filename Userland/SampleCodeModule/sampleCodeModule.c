@@ -11,6 +11,8 @@ int main() {
 
 	print("Hola", 4);
 
+	putChar('C');
+	
 	char c;
 	
 	while((c = getChar()) != '\n'){

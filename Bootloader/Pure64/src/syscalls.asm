@@ -9,7 +9,7 @@
 ; -----------------------------------------------------------------------------
 ; os_move_cursor -- Moves the virtual cursor in text mode
 ;  IN:	AH, AL = row, column
-; OUT:	Nothing. All registers preserved
+; OUT:	Nothing. All regs preserved
 os_move_cursor:
 	push rcx
 	push rbx
@@ -40,7 +40,7 @@ os_move_cursor:
 ; -----------------------------------------------------------------------------
 ; os_print_newline -- Reset cursor to start of next line and scroll if needed
 ;  IN:	Nothing
-; OUT:	Nothing, all registers perserved
+; OUT:	Nothing, all regs perserved
 os_print_newline:
 	push rax
 
@@ -66,7 +66,7 @@ os_print_newline_done:
 ; -----------------------------------------------------------------------------
 ; os_print_string -- Displays text
 ;  IN:	RSI = message location (zero-terminated string)
-; OUT:	Nothing, all registers perserved
+; OUT:	Nothing, all regs perserved
 os_print_string:
 	push rsi
 	push rax
@@ -99,7 +99,7 @@ os_print_string_done:
 ; -----------------------------------------------------------------------------
 ; os_print_char -- Displays a char
 ;  IN:	AL = char to display
-; OUT:	Nothing. All registers preserved
+; OUT:	Nothing. All regs preserved
 os_print_char:
 	push rdi
 
@@ -115,7 +115,7 @@ os_print_char:
 ; -----------------------------------------------------------------------------
 ; os_print_char_hex -- Displays a char in hex mode
 ;  IN:	AL = char to display
-; OUT:	Nothing. All registers preserved
+; OUT:	Nothing. All regs preserved
 os_print_char_hex:
 	push rbx
 	push rax
@@ -141,7 +141,7 @@ os_print_char_hex:
 ; -----------------------------------------------------------------------------
 ; os_debug_dump_(rax|eax|ax|al) -- Dump content of RAX, EAX, AX, or AL to the screen in hex format
 ;  IN:	RAX = content to dump
-; OUT:	Nothing, all registers preserved
+; OUT:	Nothing, all regs preserved
 os_debug_dump_rax:
 	ror rax, 56
 	call os_print_char_hex
@@ -169,7 +169,7 @@ os_debug_dump_al:
 
 
 ; -----------------------------------------------------------------------------
-; os_dump_regs -- Dump the values on the registers to the screen (For debug purposes)
+; os_dump_regs -- Dump the values on the regs to the screen (For debug purposes)
 ; IN/OUT: Nothing
 os_dump_regs:
 	push r15
@@ -288,7 +288,7 @@ ret
 ;  IN:	RAX = binary integer
 ;	RDI = location to store string
 ; OUT:	RDI = pointer to end of string
-;	All other registers preserved
+;	All other regs preserved
 ; Min return value is 0 and max return value is 18446744073709551615 so your
 ; string needs to be able to store at least 21 characters (20 for the number
 ; and 1 for the string terminator).

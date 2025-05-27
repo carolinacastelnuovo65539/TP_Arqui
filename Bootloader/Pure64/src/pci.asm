@@ -12,7 +12,7 @@
 ;	CL  = Device/Function number
 ;	DL  = Register number
 ; OUT:	EAX = Register information
-;	All other registers preserved
+;	All other regs preserved
 ; Data form is binary 10000000 bbbbbbbb dddddfff rrrrrr00
 os_pci_read_reg:
 	push rdx
@@ -54,7 +54,7 @@ PCI_CONFIG_DATA		EQU	0x0CFC
 ; 23 - 16	Bus number = 256 options
 ; 15 - 11	Device/Slot number = 32 options
 ; 10 - 8	Function number = will leave at 0 (8 options)
-; 7 - 2		Register number = will leave at 0 (64 options) 64 x 4 bytes = 256 bytes worth of accessible registers
+; 7 - 2		Register number = will leave at 0 (64 options) 64 x 4 bytes = 256 bytes worth of accessible regs
 ; 1 - 0		Set to 0
 
 

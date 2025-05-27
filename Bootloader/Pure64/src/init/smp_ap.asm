@@ -45,7 +45,7 @@ USE32
 
 startap32:
 	mov eax, 16			; load 4 GB data descriptor
-	mov ds, ax			; to all data segment registers
+	mov ds, ax			; to all data segment regs
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
@@ -110,7 +110,7 @@ startap64:
 	xor r14, r14
 	xor r15, r15
 
-	mov ds, ax			; Clear the legacy segment registers
+	mov ds, ax			; Clear the legacy segment regs
 	mov es, ax
 	mov ss, ax
 	mov fs, ax

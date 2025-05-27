@@ -140,7 +140,7 @@ USE32
 
 start32:
 	mov eax, 16			; load 4 GB data descriptor
-	mov ds, ax			; to all data segment registers
+	mov ds, ax			; to all data segment regs
 	mov es, ax
 	mov fs, ax
 	mov gs, ax
@@ -294,7 +294,7 @@ start64:
 	xor r14, r14
 	xor r15, r15
 
-	mov ds, ax			; Clear the legacy segment registers
+	mov ds, ax			; Clear the legacy segment regs
 	mov es, ax
 	mov ss, ax
 	mov fs, ax
@@ -605,7 +605,7 @@ clearnext:
 	cmp cx, 0
 	jne clearnext
 
-; Clear all registers (skip the stack pointer)
+; Clear all regs (skip the stack pointer)
 	xor rax, rax
 	xor rbx, rbx
 	xor rcx, rcx

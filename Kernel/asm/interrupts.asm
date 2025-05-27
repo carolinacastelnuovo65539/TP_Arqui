@@ -124,36 +124,43 @@ _irq00Handler:
 ;Keyboard
 _irq01Handler:
 	pushState
-	xor rax, rax
-	in al, 60h
-	cmp al, 0x38
+	mov rax, 0
+	in al, 0x60
+	cmp al, 0x38 ; alt
 	jne .no_ALT
+	
+	; saving an array of regs: RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
+	; R14, R15, RSP, RIP, RFLAGS
+   	mov [regs+8*1], rbx
+	mov [regs+8*2], rcx
+	mov [regs+8*3], rdx
+	mov [regs+8*4], rsi
+	mov [regs+8*5], rdi
+	mov [regs+8*6], rbp
+	mov [regs+8*7], r8
+	mov [regs+8*8], r9
+	mov [regs+8*9], r10
+	mov [regs+8*10], r11
+	mov [regs+8*11], r12
+	mov [regs+8*12], r13
+	mov [regs+8*13], r14
+	mov [regs+8*14], r15
 
-	mov [regs + 0], rax
-	mov [regs + 8], rbx
-	mov [regs + 16], rcx
-	mov [regs + 24], rdx
-	mov [regs + 32], rsi
-	mov [regs + 40], rdi
-	mov [regs + 48], rbp
-	mov [regs + 56], r8
-	mov [regs + 64], r9
-	mov [regs + 72], r10
-	mov [regs + 80], r11
-	mov [regs + 88], r12
-	mov [regs + 96], r13
-	mov [regs + 104], r14
-	mov [regs + 112], r15
-	push rax
-	mov rax, [rsp+8] ;cargo el rip
-	mov [regs + 120], rax
-	mov rax, [rsp+16] ;cargo el cs
-	mov [regs + 128], rax
-	mov rax, [rsp+24] ;cargo el rflags
-	mov [regs + 136], rax
-	mov rax, [rsp+32] ;cargo el rsp
-	mov [regs + 144], rax
-	pop rax
+	mov rax, rsp
+	add rax, 160			  ;volvemos a antes de pushear los registros
+	mov [regs + 8*15], rax  ;RSP
+
+	mov rax, [rsp+15*8]
+	mov [regs + 8*16], rax ;RIP
+
+	mov rax, [rsp + 14*8]	;RAX
+	mov [regs], rax
+
+	mov rax, [rsp+15*9]
+	mov [regs + 8*17], rax ;RFLAGS
+
+	;mov byte [capturedReg], 1
+	jmp .exit
 	
 .no_ALT:
 	cmp al, 0xB8
