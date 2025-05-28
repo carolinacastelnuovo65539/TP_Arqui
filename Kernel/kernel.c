@@ -20,11 +20,16 @@ static void * const sampleDataModuleAddress = (void*)0x500000;
 
 typedef int (*EntryPoint)();
 
+extern char getKey2();
+char teclahexant;
 
 void clearBSS(void * bssAddress, uint64_t bssSize)
 {
 	memset(bssAddress, 0, bssSize);
 }
+
+extern char key;
+extern char flag;
 
 void * getStackBase()
 {
@@ -85,22 +90,41 @@ void * initializeKernelBinary()
 int main()
 {	
 	load_idt();
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("  Sample code module at 0x");
-	ncPrintHex((uint64_t)sampleCodeModuleAddress);
-	ncNewline();
-	ncPrint("  Calling the sample code module returned: ");
-	ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
-	ncNewline();
-	ncNewline();
+	// ncPrint("[Kernel Main]");
+	// ncNewline();
+	// ncPrint("  Sample code module at 0x");
+	// ncPrintHex((uint64_t)sampleCodeModuleAddress);
+	// ncNewline();
+	// ncPrint("  Calling the sample code module returned: ");
+	// ncPrintHex(((EntryPoint)sampleCodeModuleAddress)());
+	// ncNewline();
+	// ncNewline();
 
-	ncPrint("  Sample data module at 0x");
-	ncPrintHex((uint64_t)sampleDataModuleAddress);
+	// ncPrint("  Sample data module at 0x");
+	// ncPrintHex((uint64_t)sampleDataModuleAddress);
+	// ncNewline();
+	// ncPrint("  Sample data module contents: ");
+	// ncPrint((char*)sampleDataModuleAddress);
+	// ncNewline();
+
+	ncClear();
 	ncNewline();
-	ncPrint("  Sample data module contents: ");
-	ncPrint((char*)sampleDataModuleAddress);
-	ncNewline();
+	vd_prints("esperando tecla", 16, WHITE, BLACK);
+	char i;
+	char teclahex; 
+	while (1)
+	{
+		 if(flag){
+			flag = 0;
+			vd_print (key, WHITE, BLACK);
+		 }
+		// teclahex=i;
+		//ncNewline();
+		//ncPrint("tecla Recibida");
+		//ncNewline();
+	}
+
+
 
 	while(1);
 

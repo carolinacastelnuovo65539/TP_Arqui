@@ -10,15 +10,13 @@ static int var2 = 0;
 int main() {
 
 	print("Hola", 4);
-
-	putChar('C');
 	
 	char c;
 	
-	while(1){
-		c = getChar();
-			putChar(c);
-	}
+	// while(1){
+	// 	c = getChar();
+	// 		putChar(c);
+	// }
 	
 	
 	//All the following code may be removed 

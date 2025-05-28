@@ -4,6 +4,10 @@ GLOBAL getMinutes
 GLOBAL getHours
 
 GLOBAL getKey
+GLOBAL inb
+
+GLOBAL key
+GLOBAL flag
 
 section .text
 	
@@ -63,14 +67,24 @@ getHours:
 	ret
 
 getKey:
+	mov rax, 0
+	in al, 0x64
+	mov cl, al
+	and al, 0x01
+	cmp al, 0
+	in al, 0x60
+	mov [key], al
+	mov byte [flag], 1
+
+inb:
 	push rbp
 	mov rbp, rsp
-	xor rax, rax
-	in al, 60h
+	mov rax, 0
+	in al, dx
 	mov rsp, rbp
 	pop rbp
 	ret
-.end:
-	mov rsp, rbp
-	pop rbp
-	ret
+
+section .data
+	key db 0
+	flag db 1

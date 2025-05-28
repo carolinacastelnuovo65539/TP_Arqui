@@ -68,7 +68,7 @@ static void scroll();
 
 
 void vd_prints(const char * str, int len, Color fuente, Color fondo) {
-	for (int i=0; i < len; i++) {
+	for (int i=0; str[i] != '\0'; i++) {
 		vd_print(str[i], fuente, fondo);
 	}
 }

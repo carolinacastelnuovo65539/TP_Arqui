@@ -1,13 +1,19 @@
 #include <keyboard.h>
+#include <naiveConsole.h>
+#include <lib.h>
+#include <videoDriver.h>
 
 #define BUFFER_MAX 256
 
+extern uint8_t inb(uint16_t port);
 extern char getKey();
 extern void guardar_registros();
 
+extern char key;
+extern char flag;
+
 int shift = 0;
 int elems = 0;
-unsigned char key;
 int read_index = 0;
 
 char BUFFER[BUFFER_MAX] = {0};
@@ -36,8 +42,9 @@ static const char minusc[] = {
 static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboard_handler(){
-    key = getKey();
-
+    vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
+    vd_print(key, WHITE, BLACK);
+    //Hasta acá está llegando
     if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
       // if(key == 0x38){ //La tecla del ALT
       //       guardar_registros();

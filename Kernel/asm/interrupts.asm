@@ -16,6 +16,7 @@ GLOBAL _systemCallHandler
 
 GLOBAL _exception0Handler
 
+
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN keyboardHandler
@@ -123,56 +124,47 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
-	pushState
-	mov rax, 0
-	in al, 0x60
-	cmp al, 0x38 ; alt
-	jne .no_ALT
-	
-	; saving an array of regs: RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
-	; R14, R15, RSP, RIP, RFLAGS
-   	mov [regs+8*1], rbx
-	mov [regs+8*2], rcx
-	mov [regs+8*3], rdx
-	mov [regs+8*4], rsi
-	mov [regs+8*5], rdi
-	mov [regs+8*6], rbp
-	mov [regs+8*7], r8
-	mov [regs+8*8], r9
-	mov [regs+8*9], r10
-	mov [regs+8*10], r11
-	mov [regs+8*11], r12
-	mov [regs+8*12], r13
-	mov [regs+8*13], r14
-	mov [regs+8*14], r15
-
-	mov rax, rsp
-	add rax, 160			  ;volvemos a antes de pushear los registros
-	mov [regs + 8*15], rax  ;RSP
-
-	mov rax, [rsp+15*8]
-	mov [regs + 8*16], rax ;RIP
-
-	mov rax, [rsp + 14*8]	;RAX
-	mov [regs], rax
-
-	mov rax, [rsp+15*9]
-	mov [regs + 8*17], rax ;RFLAGS
-
-	;mov byte [capturedReg], 1
-	jmp .exit
-	
-.no_ALT:
-	cmp al, 0xB8
-	je .exit
 	irqHandlerMaster 1
-	jmp .exit
+	;pushState
+; 	cmp al, 0x38 ; alt
+; 	jne .no_ALT
 	
-.exit:
-	mov al, 20h
-	out 20h, al
-	popState
-	iretq
+; 	; saving an array of regs: RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
+; 	; R14, R15, RSP, RIP, RFLAGS
+;    	mov [regs+8*1], rbx
+; 	mov [regs+8*2], rcx
+; 	mov [regs+8*3], rdx
+; 	mov [regs+8*4], rsi
+; 	mov [regs+8*5], rdi
+; 	mov [regs+8*6], rbp
+; 	mov [regs+8*7], r8
+; 	mov [regs+8*8], r9
+; 	mov [regs+8*9], r10
+; 	mov [regs+8*10], r11
+; 	mov [regs+8*11], r12
+; 	mov [regs+8*12], r13
+; 	mov [regs+8*13], r14
+; 	mov [regs+8*14], r15
+
+; 	mov rax, rsp
+; 	add rax, 160			  ;volvemos a antes de pushear los registros
+; 	mov [regs + 8*15], rax  ;RSP
+
+; 	mov rax, [rsp+15*8]
+; 	mov [regs + 8*16], rax ;RIP
+
+; 	mov rax, [rsp + 14*8]	;RAX
+; 	mov [regs], rax
+
+; 	mov rax, [rsp+15*9]
+; 	mov [regs + 8*17], rax ;RFLAGS
+
+; 	;mov byte [capturedReg], 1
+; 	jmp .exit
+	
+; .no_ALT:
+; 	cmp al, 0xB8
+; 	je .exit
 
 ;B8 liberar el alt 
 
@@ -219,7 +211,9 @@ haltcpu:
 	ret
 
 
+
 SECTION .bss
 	aux resq 1
 	regs resq 19
+
 	
