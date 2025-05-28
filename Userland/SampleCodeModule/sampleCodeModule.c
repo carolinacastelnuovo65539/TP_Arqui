@@ -15,10 +15,9 @@ int main() {
 	
 	char c;
 	
-	while((c = getChar()) != '\n'){
-		if(c != 0){
+	while(1){
+		c = getChar();
 			putChar(c);
-		}		
 	}
 	
 	
