@@ -42,8 +42,9 @@ static const char minusc[] = {
 static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboard_handler(){
-    vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
-    vd_print(key, WHITE, BLACK);
+    // vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
+    char c = mapaLetras[shift][key];
+    vd_print(c, WHITE, BLACK);
     //Hasta acá está llegando
     if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
       // if(key == 0x38){ //La tecla del ALT

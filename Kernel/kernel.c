@@ -116,7 +116,7 @@ int main()
 	{
 		 if(flag){
 			flag = 0;
-			vd_print (key, WHITE, BLACK);
+			// vd_print (key, WHITE, BLACK);
 		 }
 		// teclahex=i;
 		//ncNewline();
