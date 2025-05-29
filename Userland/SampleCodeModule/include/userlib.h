@@ -25,6 +25,9 @@ void getTime();
 
 void printBase(uint64_t value, uint32_t base);
 
+void printDec(uint64_t value);
+
+void printBase(uint64_t value, uint32_t base);
 
 
 #endif

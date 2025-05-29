@@ -81,7 +81,8 @@ static void leftLine(){
 }
 
 void terminal(){
-	print("Ingrese un comando: \n", 24);
+	getTime();
+	print("\nIngrese un comando: \n", 30);
 	while(using){
 		leftLine();
 		read();

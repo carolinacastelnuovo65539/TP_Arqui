@@ -11,6 +11,8 @@ static char buffer[64] = {'\0'};
 static char *nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15","RIP","CS","RFLAGS", "RSP"};
 
 static void toHex(uint64_t n, char buf[16]);
+static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
+
 
 char getChar(){
     char c;
@@ -83,10 +85,6 @@ uint64_t getSeconds(){
     return seconds;
 }
 
-static uint8_t bcd_to_bin(uint8_t value) {
-    return (value & 0x0F) + ((value >> 4) * 10);
-}
-
 // static void va_printf(const char* fmt, va_list args){
 //     char buffer[MAX_CHARS] = {0};
 //     const char * aux = fmt;           //puntero
@@ -155,10 +153,12 @@ void getTime(){
     minutes = getMinutes();
     seconds = getSeconds();
 
-    printc('\n');
+    putChar('\n');
     printDec(hours);
-    printc(':');
-    printDec
+    putChar(':');
+    printDec(minutes);
+    putChar(':');
+    printDec(seconds);
 
 }
 
@@ -173,7 +173,7 @@ void printBase(uint64_t value, uint32_t base)
 	uintToBase(value, buffer, base);
 	for (int i = 0; buffer[i] != '\0'; i++)
 	{
-		printbuffer[i];
+		putChar(buffer[i]);
 	}
 }
 
