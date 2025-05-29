@@ -67,15 +67,21 @@ getHours:
 	ret
 
 getKey:
-	mov rax, 0
+	push rbp
+	mov rbp, rsp
+	xor rax, rax
 	in al, 0x64
 	mov cl, al
 	and al, 0x01
-	cmp al, 0
+	jz .end
 	in al, 0x60
 	mov [key], al
-	mov byte [flag], 1
+.end:
+	mov rsp, rbp
+	pop rbp
+	ret
 
+	
 inb:
 	push rbp
 	mov rbp, rsp

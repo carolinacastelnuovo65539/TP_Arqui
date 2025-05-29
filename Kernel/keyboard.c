@@ -6,12 +6,13 @@
 #define BUFFER_MAX 256
 
 extern uint8_t inb(uint16_t port);
-extern char getKey();
+extern void getKey();
 extern void guardar_registros();
 
 extern char key;
 extern char flag;
 
+int alt = 0;
 int shift = 0;
 int elems = 0;
 int read_index = 0;
@@ -41,28 +42,51 @@ static const char minusc[] = {
 
 static const char * mapaLetras[] = {minusc, mayusc};
 
-void keyboard_handler(){
-    // vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
-    char c = mapaLetras[shift][key];
-    vd_print(c, WHITE, BLACK);
-    //Hasta acá está llegando
-    if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
-      // if(key == 0x38){ //La tecla del ALT
-      //       guardar_registros();
-      // }
-      // shift presionad
-      if (key == 0x2A || key == 0x36) {
-        shift = 1;
-      }
-      // shift no presionado
-      if(key == 0xAA || key == 0xB6){
-        shift = 0;
-      }
+// void keyboard_handler(){
+//     // vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
 
-      next();
-    }
+//     //Hasta acá está llegando
+//     if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
+//       // if(key == 0x38){ //La tecla del ALT
+//       //       guardar_registros();
+//       // }
+//       // shift presionad
+//       if (key == 0x2A || key == 0x36) {
+//         shift = 1;
+//       }
+//       // shift no presionado
+//       if(key == 0xAA || key == 0xB6){
+//         shift = 0;
+//       }
+//       char c = mapaLetras[shift][key];
+//       vd_print(c, WHITE, BLACK);
+//       next();
+//     }
    
+// }
+
+void keyboard_handler() {
+    getKey();
+    // Solo procesamos make codes (bit 7 == 0)
+    if ((key & 0x80) == 0) {
+        if (key == 0x2A || key == 0x36) {
+            shift = 1;  // Shift presionado
+        } else if (key == 0x38) {
+            alt = 1;
+            guardar_registros();
+        } else {
+            // Cualquier otra tecla presionada
+            next();
+        }
+    } else {
+        key = key & 0x7F;
+        // Código de tecla liberada (break code)
+        if (key == 0x2A || key == 0x36) {
+            shift = 0;  // Shift liberado
+        }
+    }
 }
+
 
 void next() {
     if( elems == BUFFER_MAX ) {
@@ -70,6 +94,8 @@ void next() {
     } 
     BUFFER[ elems++ ] = mapaLetras[shift][(int)key];
 }
+
+
 
 
 // char getKeyboard(){
@@ -87,4 +113,10 @@ char getBuff() {
         read_index = 0;
     }
     return BUFFER[read_index++];
+}
+
+int getAltFlag(){
+  int ans = alt;
+  alt = 0;
+  return ans;
 }

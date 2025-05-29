@@ -4,6 +4,9 @@
 #include <time.h>
 #include <keyboard.h>
 
+extern int alt;
+extern uint64_t regs[19];
+
 static uint64_t sys_read(uint64_t fd, char * buffer){
     if (fd != 0){
         return -1;
@@ -30,20 +33,30 @@ static uint64_t sys_wait(uint64_t time){
     return 1;
 }
 
-static uint64_t sys_getSeconds(){
+static uint64_t sys_getSeconds(uint64_t * seconds){
     return getSeconds();
 }
 
-static uint64_t sys_getMinutes(){
+static uint64_t sys_getMinutes(uint64_t * minutes){
     return getMinutes();
 }
 
-static uint64_t sys_getHours(){
+static uint64_t sys_getHours(uint64_t * hours){
     return getMinutes();
 }
 
 static uint64_t sys_cursor(){
     putCursor();
+    return 1;
+}
+
+static uint64_t sys_registersInfo(uint64_t registros[19], uint64_t * flag){
+    *flag = getAltFlag();
+    if(*flag){
+        for(int i = 0; i < 19; i++){
+            registros[i] = regs[i];
+        }
+    }
     return 1;
 }
 
@@ -60,13 +73,13 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_clear();
         break;
     case 3: //seconds
-        sys_getSeconds();
+        sys_getSeconds((uint64_t *) rdi);
         break;
     case 4: //minutes
-        sys_getMinutes();
+        sys_getMinutes((uint64_t *) rdi);
         break;
     case 5: //hours
-        sys_getHours();
+        sys_getHours((uint64_t *) rdi);
         break;
     case 6: //cursor
         sys_cursor();
@@ -74,7 +87,9 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
     case 7:
         sys_wait(rdi);
         break;
-    }
+    case 10: //registers
+        sys_registersInfo((uint64_t *) rdi, (uint64_t *) rsi);
+        break;
     return 1;
-
+    }
 }

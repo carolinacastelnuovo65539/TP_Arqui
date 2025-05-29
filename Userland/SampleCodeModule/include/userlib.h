@@ -13,4 +13,17 @@ void drawCursor();
 
 void printString(char * string);
 
+void printRegisters();
+
+uint64_t getHours();
+
+uint64_t getMinutes();
+
+uint64_t getSeconds();
+
+void getTime();
+
+
+
+
 #endif

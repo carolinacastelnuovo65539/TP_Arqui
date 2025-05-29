@@ -24,7 +24,6 @@ void int_20() {
 }
 
 void int_21(){
-	getKey();
 	keyboard_handler();
 }
 

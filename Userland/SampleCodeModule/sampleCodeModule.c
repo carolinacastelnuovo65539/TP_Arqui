@@ -1,5 +1,5 @@
 /* sampleCodeModule.c */
-#include <userlib.h>
+#include <shell.h>
 
 char * v = (char*)0xB8000 + 79 * 2;
 
@@ -8,16 +8,8 @@ static int var2 = 0;
 
 
 int main() {
-
-	print("Hola", 4);
 	
-	char c;
-	
-	// while(1){
-	// 	c = getChar();
-	// 		putChar(c);
-	// }
-	
+	start();
 	
 	//All the following code may be removed 
 	*v = 'X';
@@ -29,3 +21,4 @@ int main() {
 
 	return 0xDEADBEEF;
 }
+
