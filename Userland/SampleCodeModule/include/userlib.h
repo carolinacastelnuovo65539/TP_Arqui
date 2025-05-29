@@ -23,6 +23,7 @@ uint64_t getSeconds();
 
 void getTime();
 
+void printBase(uint64_t value, uint32_t base);
 
 
 

@@ -190,24 +190,44 @@ static void vd_putChar(char c, Color fuente, Color fondo){
 }
 
 static void scroll(){
-	Color * current;
-	Color * nextPixel;
+    Color *current;
+    Color *nextPixel;
 
-	for (int i = 0; i < VBE_mode_info->height - CHAR_HEIGHT; i++){
-		for(int j = 0; j < VBE_mode_info->width - CHAR_WIDTH; j++){
-			current = ( Color *) getPixel(i, j);
-			nextPixel = ( Color *) getPixel(i + CHAR_HEIGHT, j);
-			*current = *nextPixel;
-		}
-	}
+    // Desplazar las filas hacia arriba
+    for (int y = 0; y < VBE_mode_info->height - CHAR_HEIGHT; y++) {
+        for (int x = 0; x < VBE_mode_info->width; x++) {
+            current = (Color *)getPixel(x, y);
+            nextPixel = (Color *)getPixel(x, y + CHAR_HEIGHT);
+            *current = *nextPixel;
+        }
+    }
 
-	//que la linea de abajo despues de hacer el scroll hacia arriba sea negra
-	for(int i = 0; i < CHAR_HEIGHT; i++){
-		for(int j = 0; j < VBE_mode_info->width; j++){
-			current = (Color *)getPixel(VBE_mode_info->height - CHAR_HEIGHT + i, j);
-			*current = BLACK;
-		}
-	}
+    // Rellenar la última fila con negro
+    for (int y = VBE_mode_info->height - CHAR_HEIGHT; y < VBE_mode_info->height; y++) {
+        for (int x = 0; x < VBE_mode_info->width; x++) {
+            current = (Color *)getPixel(x, y);
+            *current = BLACK;
+        }
+    }
+
+	// Color * current;
+	// Color * nextPixel;
+
+	// for (int i = 0; i < VBE_mode_info->height - CHAR_HEIGHT; i++){
+	// 	for(int j = 0; j < VBE_mode_info->width - CHAR_WIDTH; j++){
+	// 		current = ( Color *) getPixel(i, j);
+	// 		nextPixel = ( Color *) getPixel(i + CHAR_HEIGHT, j);
+	// 		*current = *nextPixel;
+	// 	}
+	// }
+
+	// //que la linea de abajo despues de hacer el scroll hacia arriba sea negra
+	// for(int i = 0; i < CHAR_HEIGHT; i++){
+	// 	for(int j = 0; j < VBE_mode_info->width; j++){
+	// 		current = (Color *)getPixel(VBE_mode_info->height - CHAR_HEIGHT + i, j);
+	// 		*current = BLACK;
+	// 	}
+	// }
 }
 
 static uint32_t* getPixel(uint16_t x, uint16_t y) {

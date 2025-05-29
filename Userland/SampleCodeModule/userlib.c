@@ -6,6 +6,8 @@
 #define STDOUT 1
 #define DIF_UTC 3
 
+static char buffer[64] = {'\0'};
+
 static char *nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15","RIP","CS","RFLAGS", "RSP"};
 
 static void toHex(uint64_t n, char buf[16]);
@@ -153,9 +155,56 @@ void getTime(){
     minutes = getMinutes();
     seconds = getSeconds();
 
-    printInt(hours);
-    printInt(minutes);
-    printInt(seconds);
+    printc('\n');
+    printDec(hours);
+    printc(':');
+    printDec
 
 }
 
+
+void printDec(uint64_t value)
+{
+	printBase(value, (uint32_t)10);
+}
+
+void printBase(uint64_t value, uint32_t base)
+{
+	uintToBase(value, buffer, base);
+	for (int i = 0; buffer[i] != '\0'; i++)
+	{
+		printbuffer[i];
+	}
+}
+
+
+static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
+{
+	char *p = buffer;
+	char *p1, *p2;
+	uint32_t digits = 0;
+
+	// Calculate characters for each digit
+	do
+	{
+		uint32_t remainder = value % base;
+		*p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
+		digits++;
+	} while (value /= base);
+
+	// Terminate string in buffer.
+	*p = 0;
+
+	// Reverse string in buffer.
+	p1 = buffer;
+	p2 = p - 1;
+	while (p1 < p2)
+	{
+		char tmp = *p1;
+		*p1 = *p2;
+		*p2 = tmp;
+		p1++;
+		p2--;
+	}
+	return digits;
+}
