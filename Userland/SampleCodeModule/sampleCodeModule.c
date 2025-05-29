@@ -10,6 +10,8 @@ static int var2 = 0;
 int main() {
 	
 	start();
+
+	terminal();
 	
 	//All the following code may be removed 
 	*v = 'X';

@@ -3,4 +3,10 @@
 
 void start();
 
+void terminal();
+
+void changeUsername();
+
+void read();
+
 #endif
