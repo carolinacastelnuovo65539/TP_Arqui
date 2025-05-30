@@ -57,7 +57,7 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 
 uint16_t cursorX = 0;
 uint16_t cursorY = 0;
-uint8_t escalaPixel = 1;
+uint8_t escalaPixel = 2;
 #define CHAR_WIDTH 8 * escalaPixel
 #define CHAR_HEIGHT 16 * escalaPixel
 uint16_t cursorOn = 0;
@@ -187,6 +187,18 @@ static void vd_putChar(char c, Color fuente, Color fondo){
 	}
 	cursorX += CHAR_WIDTH;
 	
+}
+
+void vd_reduce(){
+	if(escalaPixel > 1){
+		escalaPixel--;
+	}else{
+		vd_prints("No se puede reducir mas el tamaño\n", 10, WHITE, BLACK);
+	}
+}
+
+void vd_increase(){
+	escalaPixel++;
 }
 
 static void scroll(){

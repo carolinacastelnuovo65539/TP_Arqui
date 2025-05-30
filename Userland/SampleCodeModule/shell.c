@@ -3,6 +3,8 @@
 
 #define USER_MAX 32
 #define COMMAND_MAX 100
+#define COMMANDS 13
+#define MAX_BUFF 15
 
 static void leftLine();
 
@@ -11,7 +13,7 @@ int USER_SIZE = 5;
 static char username[USER_MAX] = "user";
 char command[COMMAND_MAX] = {0};
 
-char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit"};
+char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear"};
 
 int newTerminal = 1;
 
@@ -20,7 +22,9 @@ int using = 1;
 void changeUsername(){
 	char c = 0;
 	int len = 0;
-	print("Ingrese su nobre de usuario:", 40);
+	putChar('\n');
+	leftLine();
+	print("Ingrese su nombre de usuario:", 40);
 	while((c = getChar()) != '\n' && len < USER_MAX){
 		if(c != 0){
 			if(c == '\b' && len > 0){
@@ -61,18 +65,73 @@ void read(){
         }
     }
     command[i] = '\0';
+	checkCommand(command);
+	putChar('\n');
+}
+
+void checkCommand(char * cmd){
+	for(int i = 0; i < COMMANDS; i++){
+		if(strcmp(cmd, commands[i]) == 0){
+			switch (i)
+			{
+			case 0:
+				command_help();
+				break;
+			case 1:
+				command_time();
+				break;
+			case 2:
+				changeUsername();
+				break;
+			case 3:
+				command_registers();
+				break;
+
+			case 4:
+				getUserName();
+			// case 5:
+				//command_exit();
+			case 6:
+				command_increase();
+				break;
+			case 7:
+				command_reduce();
+				break;
+			case 8:
+				command_clear();
+				break;
+			default:
+				invalid_command();
+			}
+			
+			return;
+		}
+	}
+	invalid_command();
 }
 
 void start(){
     if(newTerminal){
 		newTerminal = 0;
-		print("Bienvenido a nuestra terminal!\n", 40);
-		print("Escriba '-help' para ver la lista de comandos disponibles.\n", 70);
-		
+		print("Bienvenido a nuestra terminal!\n", 40);	
 		changeUsername();
 		// print("Nombre de usuario: ", 11);
 		leftLine();
 	}
+}
+
+void command_reduce(){
+	clear();
+	reduce();
+}
+
+void command_increase(){
+	clear();
+	increase();
+}
+
+void command_clear(){
+	clear();
 }
 
 static void leftLine(){
@@ -81,11 +140,60 @@ static void leftLine(){
 }
 
 void terminal(){
-	getTime();
-	print("\nIngrese un comando: \n", 30);
+	print("Escriba '-help' para ver la lista de comandos disponibles.\n", 70);
+	putChar('\n');
+	leftLine();
+	print("Ingrese un comando: \n", 30);
 	while(using){
 		leftLine();
 		read();
-		putChar('\n');
 	}
+}
+
+void command_help() {
+	print("\n\n=== Preview a preview of available commands ===\n", 25);
+	printHelp();
+}
+
+void printHelp() {
+	print("\n    >'help' or 'ls'        - displays this shell information", MAX_BUFF);
+	print("\n    >changeUsername        - change username", MAX_BUFF);
+	print("\n    >username              - display current username", MAX_BUFF);
+	print("\n    >time                  - display current time", MAX_BUFF);
+	print("\n    >clear                 - clear the display", MAX_BUFF);
+	print("\n    >increaseSize          - increase font size (scaled)", MAX_BUFF);
+	print("\n    >decreaseSize          - decrease font size (scaled)", MAX_BUFF);
+	print("\n    >registers             - print current register values", MAX_BUFF);
+	print("\n    >zerodiv               - testeo divide by zero exception", MAX_BUFF);
+	print("\n    >invopcode             - testeo invalid op code exception", MAX_BUFF);
+	print("\n    >exit                  - exit el SO  \n", MAX_BUFF);
+
+}
+
+void command_time(){
+	print("The local time is: ", 10);
+	getTime();
+	putChar('\n');
+}
+
+void getUserName(){
+	leftLine();
+	print(username, 12);
+	putChar('\n');
+}
+
+void command_registers(){
+	print("\nRegisters:\n", 20);
+	printRegisters();
+	putChar('\n');
+}
+
+void invalid_command(){
+	putChar('\n');
+	leftLine();
+	print("El comando es invalido. Escriba -help para ver los comandos disponibles\n", 20);
+}
+	
+void exit() {
+	putChar('\n');
 }

@@ -15,6 +15,12 @@ extern uint8_t sys_getMinutes();
 
 extern uint8_t sys_getHours();
 
+extern uint64_t sys_reduce();
+
+extern uint64_t sys_clear();
+
+extern uint64_t sys_increase();
+
 // extern uint64_t sys_cursor();
 
 extern uint64_t sys_registersInfo(uint64_t regs[19], uint64_t * flag);

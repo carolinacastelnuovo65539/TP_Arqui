@@ -78,6 +78,7 @@ getSeconds:
     mov al, 0x00
     out 70h, al
     in al, 71h
+	
 	mov rsp, rbp
 	pop rbp
     ret
@@ -107,7 +108,7 @@ getHours:
     in al, 71h
 
 	;pruebo con esto pero tampco anda
-	movzx rax, al
+	;movzx rax, al
 
 	mov rsp, rbp
 	pop rbp

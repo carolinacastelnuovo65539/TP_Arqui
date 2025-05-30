@@ -3,6 +3,10 @@
 
 #include <stdint.h>
 
+int strcmp(char * str1, char * str2);
+
+int strlen(char * str);
+
 void print(char * c, int len);
 
 char getChar();
@@ -21,6 +25,8 @@ uint8_t getMinutes();
 
 uint8_t getSeconds();
 
+void clear();
+
 void getTime();
 
 void printBase(uint64_t value, uint32_t base);
@@ -28,6 +34,10 @@ void printBase(uint64_t value, uint32_t base);
 void printDec(uint64_t value);
 
 void printBase(uint64_t value, uint32_t base);
+
+void reduce();
+
+void increase();
 
 
 #endif

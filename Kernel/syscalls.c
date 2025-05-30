@@ -62,6 +62,16 @@ static uint64_t sys_registersInfo(uint64_t registros[19], uint64_t * flag){
     return 1;
 }
 
+static uint64_t sys_reduce(){
+    vd_reduce();
+    return 1;
+}
+
+static uint64_t sys_increase(){
+    vd_increase();
+    return 1;
+}
+
 uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax){
     switch (rax)
     {
@@ -88,6 +98,12 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         break;
     case 10: //registers
         sys_registersInfo((uint64_t *) rdi, (uint64_t *) rsi);
+        break;
+    case 11: //reduce size
+        sys_reduce();
+        break;
+    case 12:
+        sys_increase();
         break;
     return 1;
     }

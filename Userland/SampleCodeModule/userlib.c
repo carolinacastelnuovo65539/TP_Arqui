@@ -29,6 +29,26 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
     sys_write(STDOUT, string, len);
 }
 
+//Devuelve 0 si son iguales, distinto de cero sino 
+int strcmp(char * str1, char * str2){
+    int i = 0;
+    while(str1[i] != '\0' && str2[i] != '\0'){
+        if(str1[i] != str2[i]){
+            return str1[i] - str2[i];
+        }
+        i++;
+    }
+    return str1[i] - str2[i];
+}
+
+int strlen(char * str){
+    int i = 0;
+    while(str[i] != '\0'){
+        i++;
+    }
+    return i;
+}
+
 void drawCursor() {
     
 }
@@ -63,7 +83,7 @@ void printRegisters(){
 				print("   ", 3);
         }
     }else{
-        print("ERROR: presionar primero la tecla ALT", 46);
+        print("ERROR: presionar primero la tecla ALT\n", 46);
     }
 }
 
@@ -77,6 +97,18 @@ uint8_t getMinutes(){
 
 uint8_t getSeconds(){
     return sys_getSeconds();
+}
+
+void reduce(){
+    sys_reduce();
+}
+
+void clear(){
+    sys_clear();
+}
+
+void increase(){
+    sys_increase();
 }
 
 // void printInt(int num) {
