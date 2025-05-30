@@ -104,15 +104,15 @@ void printRegisters(){
     }
 }
 
-uint8_t get_hours(){
+uint64_t get_hours(){
     return sys_get_hours() - DIF_UTC;
 }
 
-uint8_t get_minutes(){
+uint64_t get_minutes(){
     return sys_get_minutes();
 }
 
-uint8_t get_seconds(){
+uint64_t get_seconds(){
     return sys_get_seconds();
 }
 
@@ -150,7 +150,7 @@ void increase(){
 // }
 
 void getTime(){
-	uint8_t hours, minutes, seconds;
+	uint64_t hours, minutes, seconds;
 
     hours = get_hours();
     minutes = get_minutes();
