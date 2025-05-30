@@ -11,15 +11,16 @@ static uint64_t sys_read(uint64_t fd, char * buffer);
 static uint64_t sys_write(uint64_t fd, char * buffer, int len);
 
 static uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuente, Color fondo);
+
 static void sys_clear();
 
 static uint64_t sys_wait(uint64_t time);
 
-static uint8_t sys_getSeconds();
+static uint8_t sys_get_seconds();
 
-static uint8_t sys_getMinutes();
+static uint8_t sys_get_minutes();
 
-static uint8_t sys_getHours();
+static uint8_t sys_get_hours();
 
 static uint64_t sys_cursor();
 

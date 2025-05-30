@@ -35,16 +35,16 @@ static uint64_t sys_wait(uint64_t time){
     return 1;
 }
 
-static uint8_t sys_getSeconds(){ 
-    return getSeconds();
+static uint8_t sys_get_seconds(){ 
+    return get_seconds();
 }
 
-static uint8_t sys_getMinutes(){
-    return getMinutes();
+static uint8_t sys_get_minutes(){
+    return get_minutes();
 }
 
-static uint8_t sys_getHours(){
-    return getHours();
+static uint8_t sys_get_hours(){
+    return get_hours();
 }
 
 static uint64_t sys_cursor(){
@@ -105,11 +105,11 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_clear();
         break;
     case 3: //seconds
-        return sys_getSeconds();
+        return sys_get_seconds();
     case 4: //minutes
-        return sys_getMinutes();
+        return sys_get_minutes();
     case 5: //hours
-        return sys_getHours();
+        return sys_get_hours();
     case 6: //cursor
         sys_cursor();
         break;

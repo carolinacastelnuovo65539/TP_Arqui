@@ -1,9 +1,9 @@
 GLOBAL cpuVendor
-GLOBAL getSeconds
-GLOBAL getMinutes
-GLOBAL getHours
+GLOBAL get_seconds
+GLOBAL get_minutes
+GLOBAL get_hours
 
-GLOBAL getKey
+GLOBAL get_key
 GLOBAL inb
 GLOBAL outb
 
@@ -69,7 +69,7 @@ rtc_bin:
 
 
 	
-getSeconds:
+get_seconds:
 	push rbp
 	mov rbp, rsp
 
@@ -83,7 +83,7 @@ getSeconds:
 	pop rbp
     ret
 
-getMinutes:
+get_minutes:
 	push rbp
 	mov rbp, rsp
 
@@ -97,7 +97,7 @@ getMinutes:
 	pop rbp
     ret
 
-getHours:
+get_hours:
 	push rbp
 	mov rbp, rsp
 
@@ -114,7 +114,7 @@ getHours:
 	pop rbp
     ret		
 
-getKey:
+get_key:
 	push rbp
 	mov rbp, rsp
 	xor rax, rax

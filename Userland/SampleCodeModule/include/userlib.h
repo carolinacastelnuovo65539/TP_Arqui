@@ -61,11 +61,11 @@ void printString(char * string);
 
 void printRegisters();
 
-uint8_t getHours();
+uint8_t get_hours();
 
-uint8_t getMinutes();
+uint8_t get_minutes();
 
-uint8_t getSeconds();
+uint8_t get_seconds();
 
 void clear();
 

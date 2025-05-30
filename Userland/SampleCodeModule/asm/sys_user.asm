@@ -1,9 +1,9 @@
 GLOBAL sys_write
 GLOBAL sys_read
 GLOBAL sys_registersInfo
-GLOBAL sys_getSeconds
-GLOBAL sys_getMinutes
-GLOBAL sys_getHours
+GLOBAL sys_get_seconds
+GLOBAL sys_get_minutes
+GLOBAL sys_get_hours
 GLOBAL sys_reduce
 GLOBAL sys_clear
 GLOBAL sys_increase
@@ -29,17 +29,17 @@ sys_write_color:
     int 80h
     ret
 
-sys_getSeconds:
+sys_get_seconds:
     mov rax, 0x03
     int 80h
     ret
 
-sys_getMinutes:
+sys_get_minutes:
     mov rax, 0x04
     int 80h
     ret
 
-sys_getHours:
+sys_get_hours:
     mov rax, 0x05
     int 80h
     ret

@@ -6,8 +6,8 @@
 #define BUFFER_MAX 256
 
 extern uint8_t inb(uint16_t port);
-extern void getKey();
-extern void guardar_registros();
+extern void get_key();
+extern void save_registers();
 
 extern char key;
 extern char flag;
@@ -66,14 +66,14 @@ static const char * mapaLetras[] = {minusc, mayusc};
 // }
 
 void keyboard_handler() {
-    getKey();
+    get_key();
     // Solo procesamos make codes (bit 7 == 0)
     if ((key & 0x80) == 0) {
         if (key == 0x2A || key == 0x36) {
             shift = 1;  // Shift presionado
         } else if (key == 0x38) {
             alt = 1;
-            guardar_registros();
+            save_registers();
         } else {
             // Cualquier otra tecla presionada
             next();

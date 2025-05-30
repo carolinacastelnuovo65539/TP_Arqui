@@ -5,7 +5,7 @@
 static void int_20();
 static void int_21();
 
-extern void getKey();
+extern void get_key();
 
 void irqDispatcher(uint64_t irq) {
 	switch (irq) {

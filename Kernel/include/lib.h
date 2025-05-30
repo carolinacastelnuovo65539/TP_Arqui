@@ -8,10 +8,10 @@ void * memcpy(void * destination, const void * source, uint64_t length);
 
 char *cpuVendor(char *result);
 
-uint8_t bcd_to_bin(uint8_t value);
+uint8_t rtc_bin(uint8_t value);
 
 
-uint64_t getSeconds();
-uint64_t getMinutes();
-uint64_t getHours();
+uint64_t get_seconds();
+uint64_t get_minutes();
+uint64_t get_hours();
 #endif

@@ -15,7 +15,7 @@ GLOBAL _irq05Handler
 GLOBAL _systemCallHandler
 
 GLOBAL _exception0Handler
-GLOBAL guardar_registros
+GLOBAL save_registers
 
 GLOBAL regs
 
@@ -65,7 +65,7 @@ SECTION .text
 %macro irqHandlerMaster 1
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, %1
 	call irqDispatcher
 
 	; signal pic EOI (End of Interrupt)
@@ -81,7 +81,7 @@ SECTION .text
 %macro exceptionHandler 1
 	pushState
 
-	mov rdi, %1 ; pasaje de parametro
+	mov rdi, %1 
 	call exceptionDispatcher
 
 	popState
@@ -114,7 +114,7 @@ picMasterMask:
 picSlaveMask:
 	push    rbp
     mov     rbp, rsp
-    mov     ax, di  ; ax = mascara de 16 bits
+    mov     ax, di  ; ax = 16 bit mask
     out	0A1h,al
     pop     rbp
     retn
@@ -142,7 +142,7 @@ _irq01Handler:
 	mov [backUpRegs+8*14], r15
 
 	mov rax, rsp
-	add rax, 160			  ;volvemos a antes de pushear los regs
+	add rax, 160			  
 	mov [backUpRegs + 8*15], rax  ;RSP
 
 	mov rax, [rsp+15*8]
@@ -155,7 +155,7 @@ _irq01Handler:
 	mov [backUpRegs + 8*17], rax ;RFLAGS
 	irqHandlerMaster 1
 
-guardar_registros:
+save_registers:
 	pushState
 	mov rax, [backUpRegs + 0] ;cargo el rax
 	mov [regs + 0], rax 

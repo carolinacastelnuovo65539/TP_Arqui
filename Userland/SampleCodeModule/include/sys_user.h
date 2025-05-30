@@ -9,11 +9,11 @@ extern uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuent
 
 extern uint64_t sys_wait(uint64_t time);
 
-extern uint8_t sys_getSeconds();
+extern uint8_t sys_get_seconds();
 
-extern uint8_t sys_getMinutes();
+extern uint8_t sys_get_minutes();
 
-extern uint8_t sys_getHours();
+extern uint8_t sys_get_hours();
 
 extern uint64_t sys_reduce();
 
