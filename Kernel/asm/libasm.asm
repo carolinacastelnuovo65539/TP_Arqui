@@ -1,7 +1,5 @@
 GLOBAL cpuVendor
-GLOBAL get_seconds
-GLOBAL get_minutes
-GLOBAL get_hours
+
 
 GLOBAL get_key
 GLOBAL inb
@@ -13,7 +11,9 @@ GLOBAL key
 GLOBAL flag
 
 GLOBAL rtc_bin
-
+GLOBAL get_seconds
+GLOBAL get_minutes
+GLOBAL get_hours
 
 
 section .text
@@ -107,8 +107,6 @@ get_hours:
     out 70h, al
     in al, 71h
 
-	;pruebo con esto pero tampco anda
-	;movzx rax, al
 
 	mov rsp, rbp
 	pop rbp
