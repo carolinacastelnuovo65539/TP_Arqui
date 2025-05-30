@@ -15,11 +15,11 @@ void printString(char * string);
 
 void printRegisters();
 
-uint64_t getHours();
+uint8_t getHours();
 
-uint64_t getMinutes();
+uint8_t getMinutes();
 
-uint64_t getSeconds();
+uint8_t getSeconds();
 
 void getTime();
 

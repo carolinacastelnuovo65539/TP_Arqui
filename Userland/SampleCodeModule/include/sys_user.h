@@ -9,11 +9,11 @@ extern uint64_t sys_write(uint64_t fd, char * buffer, int len);
 
 extern uint64_t wait(uint64_t time);
 
-extern uint64_t sys_getSeconds();
+extern uint8_t sys_getSeconds();
 
-extern uint64_t sys_getMinutes();
+extern uint8_t sys_getMinutes();
 
-extern uint64_t sys_getHours();
+extern uint8_t sys_getHours();
 
 // extern uint64_t sys_cursor();
 

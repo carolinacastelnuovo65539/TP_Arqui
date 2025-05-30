@@ -5,9 +5,16 @@ GLOBAL getHours
 
 GLOBAL getKey
 GLOBAL inb
+GLOBAL outb
+
+
 
 GLOBAL key
 GLOBAL flag
+
+GLOBAL rtc_bin
+
+
 
 section .text
 	
@@ -35,36 +42,76 @@ cpuVendor:
 	pop rbp
 	ret
 
-getSeconds:
+rtc_bin:
 	push rbp
-	mov  rbp,rsp
-	mov al, 0
-	out 70h, al
+	mov rbp, rsp
+	mov al, 0Bh 
+	
+	out 70h, al  
 	in al, 71h
-	mov rsp,rbp
+	
+	mov bl, 4h
+	or al, bl
+
+	mov bl, al
+	
+	mov al, 0Bh
+	
+	out 70h, al
+	
+	mov al, bl
+	
+	out 71h, al
+
+	mov rsp, rbp
 	pop rbp
 	ret
+
+
+	
+getSeconds:
+	push rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x00
+    out 70h, al
+    in al, 71h
+	mov rsp, rbp
+	pop rbp
+    ret
 
 getMinutes:
 	push rbp
-	mov  rbp,rsp
-	mov al, 2
-	out 70h, al
-	in al, 71h
-	mov rsp,rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x02
+    out 70h, al
+    in al, 71h
+
+	mov rsp, rbp
 	pop rbp
-	ret
+    ret
 
 getHours:
 	push rbp
-	mov  rbp,rsp
-	mov rax,0
-	mov al, 4
-	out 70h, al
-	in al, 71h
-	mov rsp,rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x04
+    out 70h, al
+    in al, 71h
+
+	;pruebo con esto pero tampco anda
+	movzx rax, al
+
+	mov rsp, rbp
 	pop rbp
-	ret
+    ret		
 
 getKey:
 	push rbp
@@ -82,15 +129,6 @@ getKey:
 	ret
 
 	
-inb:
-	push rbp
-	mov rbp, rsp
-	mov rax, 0
-	in al, dx
-	mov rsp, rbp
-	pop rbp
-	ret
-
 section .data
 	key db 0
 	flag db 1

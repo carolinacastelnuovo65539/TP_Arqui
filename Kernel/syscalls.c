@@ -3,6 +3,8 @@
 #include <lib.h>
 #include <time.h>
 #include <keyboard.h>
+#include <syscalls.h>
+
 
 extern int alt;
 extern uint64_t regs[19];
@@ -33,16 +35,16 @@ static uint64_t sys_wait(uint64_t time){
     return 1;
 }
 
-static uint64_t sys_getSeconds(uint64_t * seconds){
+static uint8_t sys_getSeconds(){ 
     return getSeconds();
 }
 
-static uint64_t sys_getMinutes(uint64_t * minutes){
+static uint8_t sys_getMinutes(){
     return getMinutes();
 }
 
-static uint64_t sys_getHours(uint64_t * hours){
-    return getMinutes();
+static uint8_t sys_getHours(){
+    return getHours();
 }
 
 static uint64_t sys_cursor(){
@@ -73,14 +75,11 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_clear();
         break;
     case 3: //seconds
-        sys_getSeconds((uint64_t *) rdi);
-        break;
+        return sys_getSeconds();
     case 4: //minutes
-        sys_getMinutes((uint64_t *) rdi);
-        break;
+        return sys_getMinutes();
     case 5: //hours
-        sys_getHours((uint64_t *) rdi);
-        break;
+        return sys_getHours();
     case 6: //cursor
         sys_cursor();
         break;

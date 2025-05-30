@@ -67,84 +67,38 @@ void printRegisters(){
     }
 }
 
-uint64_t getHours(){
-    uint64_t hours;
-    sys_getHours(&hours);
-    return hours-DIF_UTC;
+uint8_t getHours(){
+    return sys_getHours() - DIF_UTC;
 }
 
-uint64_t getMinutes(){
-    uint64_t minutes;
-    sys_getMinutes(&minutes);
-    return minutes;
+uint8_t getMinutes(){
+    return sys_getMinutes();
 }
 
-uint64_t getSeconds(){
-    uint64_t seconds;
-    sys_getMinutes(&seconds);
-    return seconds;
+uint8_t getSeconds(){
+    return sys_getSeconds();
 }
 
-// static void va_printf(const char* fmt, va_list args){
-//     char buffer[MAX_CHARS] = {0};
-//     const char * aux = fmt;           //puntero
-//     while(*aux){
-//         if(*aux == '%'){
-//             aux++;
-//             int dx = strtoi(aux, &aux);   //si es numero lo devuelve en formato decimal sino develve 0
-//             int len;
-
-//             switch (*aux)
-//             {
-//             case 'c':       //es un char
-//                 putchar(va_arg(args, int));
-//                 break;
-            
-//             case 'd':    //es un entero
-//                 len = itoa(va_arg(args, int), buffer, 10);     //esta en base 10
-//                 printchars('0', dx-len);
-//                 puts(buffer);
-//                 break;
-            
-//             case 'x':       //hexadcimal
-//                 len = itoa(va_arg(args, int), buffer, 16);     //esta en base 16
-//                 printchars('0', dx-len);
-//                 puts(buffer);
-//                 break;
-
-//             case 's':       //es un string
-//                 printchars(' ', dx);
-//                 puts(va_arg(args, char *));
-//                 break;
-//             }
-//         }else {
-//             putchar(*aux);
-//         }
-//         aux++;
+// void printInt(int num) {
+//     char buffer[12]; // Suficiente para almacenar int de 32 bits con signo
+//     int i = 0;
+//     if (num == 0) {
+//         putChar('0');
+//         return;
+//     }
+//     if (num < 0) {   // Maneja el signo
+//         putChar('-');
+//         num = -num;
+//     }
+//     while (num > 0) { // Convierte el número a caracteres
+//         buffer[i++] = (num % 10) + '0';
+//         num /= 10;
+//     }
+//     // Imprime el número en el orden correcto
+//     for (int j = i - 1; j >= 0; j--) {
+//         putChar(buffer[j]);
 //     }
 // }
-
-
-void printInt(int num) {
-    char buffer[12]; // Suficiente para almacenar int de 32 bits con signo
-    int i = 0;
-    if (num == 0) {
-        putChar('0');
-        return;
-    }
-    if (num < 0) {   // Maneja el signo
-        putChar('-');
-        num = -num;
-    }
-    while (num > 0) { // Convierte el número a caracteres
-        buffer[i++] = (num % 10) + '0';
-        num /= 10;
-    }
-    // Imprime el número en el orden correcto
-    for (int j = i - 1; j >= 0; j--) {
-        putChar(buffer[j]);
-    }
-}
 
 void getTime(){
 	uint8_t hours, minutes, seconds;
@@ -159,22 +113,18 @@ void getTime(){
     printDec(minutes);
     putChar(':');
     printDec(seconds);
-
 }
 
 
 void printDec(uint64_t value)
 {
-	printBase(value, (uint32_t)10);
+	printBase(value, 10);
 }
 
 void printBase(uint64_t value, uint32_t base)
 {
 	uintToBase(value, buffer, base);
-	for (int i = 0; buffer[i] != '\0'; i++)
-	{
-		putChar(buffer[i]);
-	}
+	print(buffer, 20);
 }
 
 
