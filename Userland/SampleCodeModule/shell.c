@@ -24,7 +24,7 @@ void changeUsername(){
 	int len = 0;
 	putChar('\n');
 	leftLine();
-	print("Ingrese su nombre de usuario:", 40);
+	print("Enter your username:", 40);
 	while((c = getChar()) != '\n' && len < USER_MAX){
 		if(c != 0){
 			if(c == '\b' && len > 0){
@@ -37,14 +37,14 @@ void changeUsername(){
 		}
 	}
 	if(len >= USER_MAX){
-		print("El nombre de usuario no debe superar los 32 caracteres", 50);
+		print("The username cannot exceed 32 characters", 50);
 		changeUsername();
 		return;
 	}else{
 		username[len] = '\0';
 		USER_SIZE = len;
 		putChar('\n');
-		print("Bienvenido ", 30);
+		print("Welcome ", 30);
 		print(username, USER_SIZE);
 	}
 }
@@ -114,9 +114,9 @@ void checkCommand(char * cmd){
 void start(){
     if(newTerminal){
 		newTerminal = 0;
-		print("Welcome to our terminal!\n", 40);	
+		print("Welcome to our OS!\n", 40);	
 		changeUsername();
-		// print("Nombre de usuario: ", 11);
+		// print("Username: ", 11);
 	}
 }
 
@@ -144,12 +144,11 @@ void terminal(){
 	leftLine();
 	print("Write '-help' to see the list of commands.\n", 70);
 	leftLine();
-	print("Ingrese un comando: \n", 30);
+	print("Enter a command: \n", 30);
 	while(using){
 		leftLine();
 		read();
 	}
-	print("Nos vemos la proxima!\n", 20);
 }
 
 void command_help() {
@@ -158,7 +157,7 @@ void command_help() {
 }
 
 void printHelp() {
-	print("\n    >'help' or 'ls'        - displays this shell information", MAX_BUFF);
+	print("\n    >'help'                - displays this shell information", MAX_BUFF);
 	print("\n    >changeUsername        - change username", MAX_BUFF);
 	print("\n    >username              - display current username", MAX_BUFF);
 	print("\n    >time                  - display current time", MAX_BUFF);
@@ -168,7 +167,7 @@ void printHelp() {
 	print("\n    >registers             - print current register values", MAX_BUFF);
 	print("\n    >zerodiv               - testeo divide by zero exception", MAX_BUFF);
 	print("\n    >invopcode             - testeo invalid op code exception", MAX_BUFF);
-	print("\n    >exit                  - exit el SO  \n", MAX_BUFF);
+	print("\n    >exit                  - exit the OS  \n", MAX_BUFF);
 
 }
 
@@ -196,6 +195,6 @@ void invalid_command(){
 }
 	
 void command_exit() {
-	print("\n Saliendo del SO\n", 20);
+	print("\n See you next time!\n", 20);
 	using = 0;
 }

@@ -106,7 +106,7 @@ void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
     int d = 3 - 2 * radius;
 
     while (x <= y) {
-        // Dibuja los puntos simétricos del círculo
+        // Draws the symmetric points in all octants
         setPixel(centerX + x, centerY + y, color);
         setPixel(centerX - x, centerY + y, color);
         setPixel(centerX + x, centerY - y, color);
@@ -151,7 +151,7 @@ void clear(){
 	for(uint32_t len = 3 * (uint32_t)VBE_mode_info->width * VBE_mode_info->height; len; len--, current++){
 		*current = 0;
 	}
-	//los seteo en 0
+
 	cursorX = 0;
 	cursorY = 0;
 }
@@ -196,12 +196,12 @@ void putCursor() {
 }
 
 static void vd_putChar(char c, Color fuente, Color fondo){
-	//mascara para chequear los bits y saber si pintar ese píxel como parte del texto o del fondo
+	//mask to know which bits to draw as text or background
 	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
 
 	const uint8_t * charMap = font_bitmap + 16 * (c -32);
 
-	//me fijo que el cursor no se vaya de la linea o pantalla
+	//checking that the cursor is within the screen bounds
 	if (cursorX >= VBE_mode_info->width) {
 		cursorX = 0;
 		if ((cursorY + CHAR_HEIGHT) >= VBE_mode_info->height) {
@@ -229,7 +229,7 @@ void vd_reduce(){
 	if(escalaPixel > 1){
 		escalaPixel--;
 	}else{
-		vd_prints("No se puede reducir mas el tamaño\n", 10, WHITE, BLACK);
+		vd_prints("The size cannot be reduced any further.\n", 10, WHITE, BLACK);
 	}
 }
 
@@ -241,7 +241,7 @@ static void scroll(){
     Color *current;
     Color *nextPixel;
 
-    // Desplazar las filas hacia arriba
+	//Move all rows up
     for (int y = 0; y < VBE_mode_info->height - CHAR_HEIGHT; y++) {
         for (int x = 0; x < VBE_mode_info->width; x++) {
             current = (Color *)getPixel(x, y);
@@ -250,7 +250,7 @@ static void scroll(){
         }
     }
 
-    // Rellenar la última fila con negro
+    // Fill the last row with black
     for (int y = VBE_mode_info->height - CHAR_HEIGHT; y < VBE_mode_info->height; y++) {
         for (int x = 0; x < VBE_mode_info->width; x++) {
             current = (Color *)getPixel(x, y);
@@ -279,7 +279,7 @@ static void scroll(){
 }
 
 static uint32_t* getPixel(uint16_t x, uint16_t y) {
-    uint8_t pixelwidth = VBE_mode_info->bpp/8;     //la cantidad de bytes hasta el siguiente pixel a la derecha (bpp: BITS per px)
+    uint8_t pixelwidth = VBE_mode_info->bpp/8;     //number of bytes to the next pixel to the right  (bpp: BITS per px)
     uint16_t pixelHeight = VBE_mode_info->pitch;  
 
     uintptr_t pixel = (uintptr_t)(VBE_mode_info->framebuffer) + (x * pixelwidth) + (y * pixelHeight);

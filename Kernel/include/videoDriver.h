@@ -16,17 +16,29 @@ extern Color BLACK;
 extern Color WHITE;
 
 void vd_prints(const char * str, int len, Color fuente, Color fondo);
+
 void vd_print(const char buffer, Color fuente, Color fondo);
+
 void vd_read(char * buff);
+
 void newLine();
+
 void backspace();
+
 void clear();
+
 void putCursor();
+
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y);
+
 void setPixel(uint16_t x, uint16_t y, Color color);
+
 void vd_reduce();
+
 void vd_increase();
+
 void vd_drawRectangle(int x, int y, int width, int height, Color color);
+
 void vd_drawCircle(int centerX, int centerY, int radius, Color color);
 
 

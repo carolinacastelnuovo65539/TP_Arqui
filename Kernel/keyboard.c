@@ -67,22 +67,21 @@ static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboard_handler() {
     get_key();
-    // Solo procesamos make codes (bit 7 == 0)
     if ((key & 0x80) == 0) {
         if (key == 0x2A || key == 0x36) {
-            shift = 1;  // Shift presionado
+            shift = 1;  // Shift pressed
         } else if (key == 0x38) {
             alt = 1;
             save_registers();
         } else {
-            // Cualquier otra tecla presionada
+            // any other key pressed
             next();
         }
     } else {
         key = key & 0x7F;
-        // Código de tecla liberada (break code)
+        // break code
         if (key == 0x2A || key == 0x36) {
-            shift = 0;  // Shift liberado
+            shift = 0;  // Shift freed
         }
     }
 }
@@ -107,7 +106,7 @@ void next() {
 
 char getBuff() {
     if (read_index == elems) {
-        return 0; // no hay teclas nuevas
+        return 0; // no new keys
     }
     if (read_index >= BUFFER_MAX) {
         read_index = 0;

@@ -11,7 +11,7 @@ typedef struct color{
 }Color;
 
 
-/*--------------COLORES DISPONIBLES--------------*/
+/*--------------AVAILABLE COLORS--------------*/
 static const Color BLACK ={0,0,0};
 static const Color WHITE = {0xFF,0xFF,0xFF};
 static const Color RED = {0xFF, 0,0};
