@@ -42,19 +42,19 @@ static uint64_t sys_wait(uint64_t time){
     return 1;
 }
 
-static uint8_t sys_get_seconds(){ 
+static uint64_t sys_get_seconds(){ 
     //PrintDec(get_seconds());
     //vd_print(' ', BLACK, WHITE);
     return get_seconds();
 }
 
-static uint8_t sys_get_minutes(){
+static uint64_t sys_get_minutes(){
     //PrintDec(get_minutes());
     //vd_print(' ', BLACK, WHITE);
     return get_minutes();
 }
 
-static uint8_t sys_get_hours(){
+static uint64_t sys_get_hours(){
     //PrintDec(get_hours()-3);
     //vd_print(' ', BLACK, WHITE);
     return get_hours();
