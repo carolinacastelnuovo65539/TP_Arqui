@@ -46,6 +46,7 @@ void changeUsername(){
 		putChar('\n');
 		print("Welcome ", 30);
 		print(username, USER_SIZE);
+		putChar('\n');
 	}
 }
 
@@ -65,7 +66,6 @@ void read(){
     }
     command[i] = '\0';
 	checkCommand(command);
-	putChar('\n');
 }
 
 void checkCommand(char * cmd){
@@ -85,7 +85,6 @@ void checkCommand(char * cmd){
 			case 3:
 				command_registers();
 				break;
-
 			case 4:
 				getUserName();
 				break;
@@ -136,11 +135,10 @@ void command_clear(){
 
 static void leftLine(){
 	printColor(username, USER_SIZE, LIGHT_BLUE, BLACK);
-	printColor("~$ ", 5, LIGHT_GREEN, BLACK);
+	printColor("~$ > ", 5, LIGHT_GREEN, BLACK);
 }
 
 void terminal(){
-	putChar('\n');
 	leftLine();
 	print("Write '-help' to see the list of commands.\n", 70);
 	leftLine();
@@ -152,40 +150,55 @@ void terminal(){
 }
 
 void command_help() {
-	print("\n\n=== Preview a preview of available commands ===\n", 25);
+	printColor("\n\n=== Available commands ===\n", 25, YELLOW, BLACK);
 	printHelp();
 }
 
 void printHelp() {
-	print("\n    >'help'                - displays this shell information", MAX_BUFF);
-	print("\n    >changeUsername        - change username", MAX_BUFF);
-	print("\n    >username              - display current username", MAX_BUFF);
-	print("\n    >time                  - display current time", MAX_BUFF);
-	print("\n    >clear                 - clear the display", MAX_BUFF);
-	print("\n    >increaseSize          - increase font size (scaled)", MAX_BUFF);
-	print("\n    >decreaseSize          - decrease font size (scaled)", MAX_BUFF);
-	print("\n    >registers             - print current register values", MAX_BUFF);
-	print("\n    >zerodiv               - testeo divide by zero exception", MAX_BUFF);
-	print("\n    >invopcode             - testeo invalid op code exception", MAX_BUFF);
-	print("\n    >exit                  - exit the OS  \n", MAX_BUFF);
-
+	printColor("\n    -help                  ", MAX_BUFF, ORANGE, BLACK);
+	print("- displays this shell information", MAX_BUFF);
+	printColor("\n    -changeUsername        ", MAX_BUFF, ORANGE, BLACK);
+	print("- change username", MAX_BUFF);
+	printColor("\n    -username              ", MAX_BUFF, ORANGE, BLACK);
+	print("- display current username", MAX_BUFF);
+	printColor("\n    -time                  ", MAX_BUFF, ORANGE, BLACK);
+	print("- display current time", MAX_BUFF);
+	printColor("\n    -clear                 ", MAX_BUFF, ORANGE, BLACK);
+	print("- clear the display", MAX_BUFF);
+	printColor("\n    -increaseSize          ", MAX_BUFF, ORANGE, BLACK);
+	print("- increase font size (scaled)", MAX_BUFF);
+	printColor("\n    -decreaseSize          ", MAX_BUFF, ORANGE, BLACK);
+	print("- decrease font size (scaled)", MAX_BUFF);
+	printColor("\n    -registers             ", MAX_BUFF, ORANGE, BLACK);
+	print("- print current register values", MAX_BUFF);
+	printColor("\n    -zerodiv               ", MAX_BUFF, ORANGE, BLACK);
+	print("- test zero division exception", MAX_BUFF);
+	printColor("\n    -invopcode             ", MAX_BUFF, ORANGE, BLACK);
+	print("- test invalid opcode exception", MAX_BUFF);
+	printColor("\n    -exit                  ", MAX_BUFF, ORANGE, BLACK);
+	print("- exit the OS", MAX_BUFF);
+	printColor("\n    -pognis                ", MAX_BUFF, ORANGE, BLACK);
+	print("- start the game\n", MAX_BUFF);
+	putChar('\n');
 }
 
 void command_time(){
 	print("\nThe local time is: ", 10);
 	getTime();
+	putChar('\n');
 }
 
 void getUserName(){
 	putChar('\n');;
 	leftLine();
 	print(username, 12);
+	putChar('\n');
 }
 
 void command_registers(){
 	print("\nRegisters:\n", 20);
 	printRegisters();
-	putChar('\n');
+	print(" \n", 30); //si no lo hacemos así, se imprime cualquier cosa al final de los registros
 }
 
 void invalid_command(){
@@ -195,6 +208,6 @@ void invalid_command(){
 }
 	
 void command_exit() {
-	print("\n See you next time!\n", 20);
+	print("\nSee you next time!\n", 20);
 	using = 0;
 }

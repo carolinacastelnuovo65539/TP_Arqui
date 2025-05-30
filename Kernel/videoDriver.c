@@ -284,7 +284,6 @@ static uint32_t* getPixel(uint16_t x, uint16_t y) {
 
     uintptr_t pixel = (uintptr_t)(VBE_mode_info->framebuffer) + (x * pixelwidth) + (y * pixelHeight);
     return (uint32_t*)pixel;
-	
 }
 
 void setPixel(uint16_t x, uint16_t y, Color color) {

@@ -13,7 +13,7 @@ extern uint64_t regs[19];
 
 
 // desp borrar
-static char buffer[64] = { '0' };
+static char buff[64] = { '0' };
 
 
 static uint64_t sys_read(uint64_t fd, char * buffer){
@@ -43,20 +43,20 @@ static uint64_t sys_wait(uint64_t time){
 }
 
 static uint8_t sys_get_seconds(){ 
-     PrintDec(get_seconds());
-    vd_print(' ', BLACK, WHITE);
+    //PrintDec(get_seconds());
+    //vd_print(' ', BLACK, WHITE);
     return get_seconds();
 }
 
 static uint8_t sys_get_minutes(){
-     PrintDec(get_minutes());
-    vd_print(' ', BLACK, WHITE);
+    //PrintDec(get_minutes());
+    //vd_print(' ', BLACK, WHITE);
     return get_minutes();
 }
 
 static uint8_t sys_get_hours(){
-    PrintDec(get_hours()-3);
-    vd_print(' ', BLACK, WHITE);
+    //PrintDec(get_hours()-3);
+    //vd_print(' ', BLACK, WHITE);
     return get_hours();
 }
 
@@ -187,8 +187,8 @@ void PrintDec(uint64_t value)
 
 void PrintBase(uint64_t value, uint32_t base)
 {
-    uintToBaseT(value, buffer, base);
-    vd_prints(buffer, 20, BLACK, WHITE);
+    uintToBaseT(value, buff, base);
+    vd_prints(buff, 20, BLACK, WHITE);
 }
 
 static uint32_t uintToBaseT(uint64_t value, char * buffer, uint32_t base)

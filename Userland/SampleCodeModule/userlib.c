@@ -6,7 +6,7 @@
 #define STDOUT 1
 #define DIF_UTC 3
 
-static char buffer[64] = {'\0'};
+static char buffer[64] = {'0'};
 
 static char *nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15","RIP","CS","RFLAGS", "RSP"};
 
@@ -70,16 +70,18 @@ void drawCursor() {
 
 
 static void toHex(uint64_t n, char buf[16]){
-        for(int i = 0; i < 16; i++){
-            int digit = n % 16;
-            buf[i] = (digit < 10 ? '0' : ('A' - 10)) + digit;
-            n /= 16;
-        }
+	int i = 15;
+	do
+	{
+		int num2 = n % 16;
+		buf[i] = (num2 < 10 ? '0' : ('A' - 10)) + num2;
+		n /= 16;
+	} while (i-- != 0);
 }
 
 void printRegisters(){
     putChar('\n');
-    char buff[19];
+    char buff[19] = {'0'};
 	buff[0] = '0';
 	buff[1] = 'x';
 	buff[18] = '\0';
@@ -98,7 +100,7 @@ void printRegisters(){
 				print("   ", 3);
         }
     }else{
-        print("ERROR: presionar primero la tecla ALT\n", 46);
+        print("ERROR: presionar primero la tecla ALT", 46);
     }
 }
 
