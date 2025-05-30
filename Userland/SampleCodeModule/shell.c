@@ -114,7 +114,7 @@ void checkCommand(char * cmd){
 void start(){
     if(newTerminal){
 		newTerminal = 0;
-		print("Bienvenido a nuestra terminal!\n", 40);	
+		print("Welcome to our terminal!\n", 40);	
 		changeUsername();
 		// print("Nombre de usuario: ", 11);
 	}
@@ -135,16 +135,14 @@ void command_clear(){
 }
 
 static void leftLine(){
-	print(username, USER_SIZE);
-	print("~$ ", 5);
+	printColor(username, USER_SIZE, LIGHT_BLUE, BLACK);
+	printColor("~$ ", 5, LIGHT_GREEN, BLACK);
 }
 
 void terminal(){
-	drawRectangle(0, 0, 800, 600, RED);
-	//printColor("Bienvenido a la terminal de ", 30, RED, BLACK);
 	putChar('\n');
 	leftLine();
-	print("Escriba '-help' para ver la lista de comandos disponibles.\n", 70);
+	print("Write '-help' to see the list of commands.\n", 70);
 	leftLine();
 	print("Ingrese un comando: \n", 30);
 	while(using){
@@ -194,7 +192,7 @@ void command_registers(){
 void invalid_command(){
 	putChar('\n');
 	leftLine();
-	print("El comando es invalido. Escriba -help para ver los comandos disponibles\n", 20);
+	print("Invalid command. Write -help to see the list of commands\n", 20);
 }
 	
 void command_exit() {

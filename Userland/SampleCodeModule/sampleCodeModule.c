@@ -1,5 +1,6 @@
 /* sampleCodeModule.c */
 #include <shell.h>
+#include <userlib.h>
 
 char * v = (char*)0xB8000 + 79 * 2;
 
@@ -8,7 +9,6 @@ static int var2 = 0;
 
 
 int main() {
-	
 	start();
 
 	terminal();

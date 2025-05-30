@@ -25,6 +25,7 @@ sys_write:
 
 sys_write_color:
     mov rax, 0x0F
+    mov r10, rcx     ; fuente
     int 80h
     ret
 
@@ -65,6 +66,7 @@ sys_increase:
 
 sys_drawRectangle:
     mov rax, 0x0D
+    mov r10, rcx
     int 80h
     ret
 

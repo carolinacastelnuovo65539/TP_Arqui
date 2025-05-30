@@ -91,6 +91,8 @@ static uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuent
 }
 
 uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax){
+    uint8_t r, g, b;
+    Color color1, color2;
     switch (rax)
     {
     case 0:  //read
@@ -120,17 +122,42 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
     case 11: //reduce size
         sys_reduce();
         break;
-    case 12:
+    case 12: //increase size
         sys_increase();
         break;
-    case 13:
-        sys_drawRectangle(rdi, rsi, rdx, r10, *(Color *)r8);
+    case 13: //draw rectangle
+        r = (r8 >> 16) & 0xFF;
+        g = (r8 >> 8) & 0xFF;
+        b = r8 & 0xFF;
+        color1.red = r;
+        color1.green = g;
+        color1.blue = b;
+        sys_drawRectangle(rdi, rsi, rdx, r10, color1);
         break;
     case 14:
-        sys_drawCircle(rdi, rsi, rdx, *(Color *)r10);
+        r = (r8 >> 16) & 0xFF;
+        g = (r8 >> 8) & 0xFF;
+        b = r8 & 0xFF;
+        color1.red = r;
+        color1.green = g;
+        color1.blue = b;
+        return sys_drawCircle(rdi, rsi, rdx, color1);
         break;
-    case 15:
-        sys_write_color(rdi, (char *)rsi, rdx, *(Color *)r10, *(Color *)r8);
+    case 15: 
+        r = (r10 >> 16) & 0xFF;
+        g = (r10 >> 8) & 0xFF;
+        b = r10 & 0xFF;
+        color1.red = r;
+        color1.green = g;
+        color1.blue = b; 
+
+        r = (r8 >> 16) & 0xFF;
+        g = (r8 >> 8) & 0xFF;
+        b = r8 & 0xFF;
+        color2.red = r;
+        color2.green = g;
+        color2.blue = b;
+        return sys_write_color(rdi, (char *)rsi, rdx, color1, color2);
         break;
     return 1;
     }
