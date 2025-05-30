@@ -21,7 +21,7 @@ void command_registers();
 
 void getUserName();
 
-// void command_exit();
+void command_exit();
 
 void invalid_command();
 

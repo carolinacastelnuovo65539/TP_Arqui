@@ -46,7 +46,6 @@ void changeUsername(){
 		putChar('\n');
 		print("Bienvenido ", 30);
 		print(username, USER_SIZE);
-		putChar('\n');
 	}
 }
 
@@ -89,8 +88,10 @@ void checkCommand(char * cmd){
 
 			case 4:
 				getUserName();
-			// case 5:
-				//command_exit();
+				break;
+			case 5:
+				command_exit();
+				break;
 			case 6:
 				command_increase();
 				break;
@@ -116,7 +117,6 @@ void start(){
 		print("Bienvenido a nuestra terminal!\n", 40);	
 		changeUsername();
 		// print("Nombre de usuario: ", 11);
-		leftLine();
 	}
 }
 
@@ -140,14 +140,18 @@ static void leftLine(){
 }
 
 void terminal(){
-	print("Escriba '-help' para ver la lista de comandos disponibles.\n", 70);
+	drawRectangle(0, 0, 800, 600, RED);
+	//printColor("Bienvenido a la terminal de ", 30, RED, BLACK);
 	putChar('\n');
+	leftLine();
+	print("Escriba '-help' para ver la lista de comandos disponibles.\n", 70);
 	leftLine();
 	print("Ingrese un comando: \n", 30);
 	while(using){
 		leftLine();
 		read();
 	}
+	print("Nos vemos la proxima!\n", 20);
 }
 
 void command_help() {
@@ -171,15 +175,14 @@ void printHelp() {
 }
 
 void command_time(){
-	print("The local time is: ", 10);
+	print("\nThe local time is: ", 10);
 	getTime();
-	putChar('\n');
 }
 
 void getUserName(){
+	putChar('\n');;
 	leftLine();
 	print(username, 12);
-	putChar('\n');
 }
 
 void command_registers(){
@@ -194,6 +197,7 @@ void invalid_command(){
 	print("El comando es invalido. Escriba -help para ver los comandos disponibles\n", 20);
 }
 	
-void exit() {
-	putChar('\n');
+void command_exit() {
+	print("\n Saliendo del SO\n", 20);
+	using = 0;
 }

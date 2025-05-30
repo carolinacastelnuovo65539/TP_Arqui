@@ -29,6 +29,21 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
     sys_write(STDOUT, string, len);
 }
 
+
+void printColor(char * string, int len, Color fuente, Color fondo) {
+    sys_write_color(STDOUT, string, len, fuente, fondo);
+}
+
+
+
+void drawRectangle(int x, int y, int width, int height, Color color) {
+    sys_drawRectangle(x, y, width, height, color);
+}
+
+void drawCircle(int centerX, int centerY, int radius, Color color) {
+    sys_drawCircle(centerX, centerY, radius, color);
+}
+
 //Devuelve 0 si son iguales, distinto de cero sino 
 int strcmp(char * str1, char * str2){
     int i = 0;
@@ -139,7 +154,6 @@ void getTime(){
     minutes = getMinutes();
     seconds = getSeconds();
 
-    putChar('\n');
     printDec(hours);
     putChar(':');
     printDec(minutes);

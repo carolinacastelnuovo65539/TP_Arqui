@@ -57,7 +57,7 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
 
 uint16_t cursorX = 0;
 uint16_t cursorY = 0;
-uint8_t escalaPixel = 2;
+uint8_t escalaPixel = 1;
 #define CHAR_WIDTH 8 * escalaPixel
 #define CHAR_HEIGHT 16 * escalaPixel
 uint16_t cursorOn = 0;
@@ -88,6 +88,42 @@ void vd_print(const char buffer, Color fuente, Color fondo){
 		vd_putChar(buffer, fuente, fondo);
 		break;
 	}
+}
+
+void vd_drawRectangle(int x, int y, int width, int height, Color color) {
+	Color * pixel;
+	for (int i = 0; i < height; i++) {
+		pixel = (Color*) getPixel(x,y+i);
+		for (int j = 0; j < width; j++, pixel++) {
+			*pixel = color;
+		}
+	}
+}
+
+void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
+    int x = 0;
+    int y = radius;
+    int d = 3 - 2 * radius;
+
+    while (x <= y) {
+        // Dibuja los puntos simétricos del círculo
+        setPixel(centerX + x, centerY + y, color);
+        setPixel(centerX - x, centerY + y, color);
+        setPixel(centerX + x, centerY - y, color);
+        setPixel(centerX - x, centerY - y, color);
+        setPixel(centerX + y, centerY + x, color);
+        setPixel(centerX - y, centerY + x, color);
+        setPixel(centerX + y, centerY - x, color);
+        setPixel(centerX - y, centerY - x, color);
+
+        if (d < 0) {
+            d = d + 4 * x + 6;
+        } else {
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
 }
 
 void newLine(){

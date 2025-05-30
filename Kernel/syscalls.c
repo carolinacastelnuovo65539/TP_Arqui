@@ -72,6 +72,24 @@ static uint64_t sys_increase(){
     return 1;
 }
 
+static uint64_t sys_drawRectangle(int x, int y, int width, int height, Color color){
+    vd_drawRectangle(x, y, width, height, color);
+    return 1;
+}
+
+static uint64_t sys_drawCircle(int centerX, int centerY, int radius, Color color){
+    vd_drawCircle(centerX, centerY, radius, color);
+    return 1;
+}
+
+static uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuente, Color fondo){
+    if (fd != 1) {
+        return -1;
+    }
+    vd_prints(buffer, len, fuente, fondo);
+    return 1;
+}
+
 uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax){
     switch (rax)
     {
@@ -104,6 +122,15 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         break;
     case 12:
         sys_increase();
+        break;
+    case 13:
+        sys_drawRectangle(rdi, rsi, rdx, r10, *(Color *)r8);
+        break;
+    case 14:
+        sys_drawCircle(rdi, rsi, rdx, *(Color *)r10);
+        break;
+    case 15:
+        sys_write_color(rdi, (char *)rsi, rdx, *(Color *)r10, *(Color *)r8);
         break;
     return 1;
     }
