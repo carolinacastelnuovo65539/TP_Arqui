@@ -103,7 +103,6 @@ void checkCommand(char * cmd){
 			default:
 				invalid_command();
 			}
-			
 			return;
 		}
 	}

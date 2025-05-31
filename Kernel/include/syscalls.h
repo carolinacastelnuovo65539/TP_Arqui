@@ -35,11 +35,4 @@ static uint64_t sys_drawRectangle(int x, int y, int width, int height, Color col
 static uint64_t sys_drawCircle(int centerX, int centerY, int radius, Color color);
 
 
-// borrar
-void PrintDec(uint64_t value);
-
-void PrintBase(uint64_t value, uint32_t base);
-
-static uint32_t uintToBaseT(uint64_t value, char * buffer, uint32_t base);
-
 #endif

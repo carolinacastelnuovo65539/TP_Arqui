@@ -10,7 +10,7 @@ static char buffer[64] = {'0'};
 
 static char *nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15","RIP","CS","RFLAGS", "RSP"};
 
-static void toHex(uint64_t n, char buf[16]);
+static void to_hex(uint64_t n, char buf[16]);
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 
@@ -69,7 +69,7 @@ void drawCursor() {
 }
 
 
-static void toHex(uint64_t n, char buf[16]){
+static void to_hex(uint64_t n, char buf[16]){
 	int i = 15;
 	do
 	{
@@ -92,7 +92,7 @@ void printRegisters(){
         for(int i = 0; i < 19; i++){
             print(nombreRegistros[i], 5); //este 5 hay que sacarlo
             print(": ", 2);
-            toHex(regs[i], buff + 2);
+            to_hex(regs[i], buff + 2);
             print(buff, 18);
 			if (i % 4 == 3)
 				putChar('\n');
@@ -138,27 +138,6 @@ void clear(){
 void increase(){
     sys_increase();
 }
-
-// void printInt(int num) {
-//     char buffer[12]; // Suficiente para almacenar int de 32 bits con signo
-//     int i = 0;
-//     if (num == 0) {
-//         putChar('0');
-//         return;
-//     }
-//     if (num < 0) {   // Maneja el signo
-//         putChar('-');
-//         num = -num;
-//     }
-//     while (num > 0) { // Convierte el número a caracteres
-//         buffer[i++] = (num % 10) + '0';
-//         num /= 10;
-//     }
-//     // Imprime el número en el orden correcto
-//     for (int j = i - 1; j >= 0; j--) {
-//         putChar(buffer[j]);
-//     }
-// }
 
 void getTime(){
 	int hours, minutes, seconds;
