@@ -21,7 +21,9 @@ char getChar(){
 }
 
 void putChar(char c){
-    char * buff = &c;
+    char buff[2];
+    buff[0] = c;
+    buff[1] = '\0';
     print(buff, 1);
 }
 
@@ -35,13 +37,16 @@ void printColor(char * string, int len, Color fuente, Color fondo) {
 }
 
 
-
 void drawRectangle(int x, int y, int width, int height, Color color) {
     sys_drawRectangle(x, y, width, height, color);
 }
 
 void drawCircle(int centerX, int centerY, int radius, Color color) {
     sys_drawCircle(centerX, centerY, radius, color);
+}
+
+void beep(uint64_t frecuencia, uint64_t tiempo){
+    sys_sound(frecuencia, tiempo);
 }
 
 //Devuelve 0 si son iguales, distinto de cero sino 
@@ -67,7 +72,6 @@ int strlen(char * str){
 void drawCursor() {
     
 }
-
 
 static void to_hex(uint64_t n, char buf[16]){
 	int i = 15;
@@ -137,6 +141,14 @@ void clear(){
 
 void increase(){
     sys_increase();
+}
+
+void zero(){
+    exc_zero();
+}
+
+void opcode(void) { 
+    exc_opcode();
 }
 
 void getTime(){

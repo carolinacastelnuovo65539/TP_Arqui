@@ -5,11 +5,11 @@
 #include <keyboard.h>
 #include <syscalls.h>
 
-
-
-
 extern int alt;
 extern uint64_t regs[19];
+
+extern void sound(uint64_t frecuencia);
+extern void stop_sound();
 
 
 static uint64_t sys_read(uint64_t fd, char * buffer){
@@ -96,6 +96,15 @@ static uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuent
     return 1;
 }
 
+static uint64_t sys_sound(uint64_t frecuencia, uint64_t tiempo){
+    if(frecuencia > 0)
+        sound(frecuencia);
+    wait(tiempo);
+    if(frecuencia > 0)
+        stop_sound();
+    return 1;
+}
+
 static void separate_rgb(Color * color, uint64_t * arg) {
     uint8_t r, g, b;
     r = (*arg >> 16) & 0xFF;
@@ -152,6 +161,9 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         separate_rgb(&color1, &r10);
         separate_rgb(&color2, &r8);
         return sys_write_color(rdi, (char *)rsi, rdx, color1, color2);
+        break;
+    case 16:
+        return sys_sound(rdi, rsi);
         break;
     return 1;
     }

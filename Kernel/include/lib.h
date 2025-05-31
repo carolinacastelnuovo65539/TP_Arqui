@@ -14,4 +14,8 @@ uint8_t rtc_bin(uint8_t value);
 uint64_t get_seconds();
 uint64_t get_minutes();
 uint64_t get_hours();
+
+void sound(uint64_t frecuencia);
+void stop_sound();
+
 #endif

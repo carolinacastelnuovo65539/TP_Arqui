@@ -27,21 +27,7 @@ static const Color VIOLET = {0x93,0,0xFF};
 static const Color DARK_PINK={0xDA,0,0xEC};
 static const Color PINK={0xFF,0,0xFF};
 static const Color WINE={0xB4,0,0x57};
-// static const Color WHITE = {255, 255, 255};
-// static const Color RED = {0, 0, 255};
-// static const Color LIGHT_BLUE = {173, 216, 230};
-// static const Color BLUE = {255, 0, 0};
-// static const Color ORANGE = {16, 160, 255};
-// static const Color YELLOW = {30, 224, 255};
-// static const Color PURPLE = {255, 32, 160};
-// static const Color PINK = {100, 0, 244};
-// static const Color GREEN = {0, 255, 0};
-// static const Color LIGHT_RED = {0, 255, 255};
-// static const Color LIGHT_PURPLE = {255, 0, 255};
-// static const Color LIGHT_ORANGE = {0, 160, 255};
-// static const Color LIGHT_YELLOW = {0, 224, 255};
-// static const Color LIGHT_PINK = {0, 100, 244};
-// static const Color LIGHT_GREEN = {0, 255, 0};
+
 
 int strcmp(char * str1, char * str2);
 
@@ -56,8 +42,6 @@ char getChar();
 void putChar(char c);
  
 void drawCursor();
-
-void printString(char * string);
 
 void printRegisters();
 
@@ -84,5 +68,11 @@ void increase();
 void drawRectangle(int x, int y, int width, int height, Color color);
 
 void drawCircle(int centerX, int centerY, int radius, Color color);
+
+void zero();
+
+void opcode(void);
+
+void beep(uint64_t frecuencia, uint64_t tiempo);
 
 #endif

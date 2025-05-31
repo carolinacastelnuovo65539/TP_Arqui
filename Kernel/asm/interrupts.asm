@@ -15,14 +15,17 @@ GLOBAL _irq05Handler
 GLOBAL _systemCallHandler
 
 GLOBAL _exception0Handler
+GLOBAL _exception6Handler
 GLOBAL save_registers
 
 GLOBAL regs
+GLOBAL exc_regs
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN keyboardHandler
 EXTERN syscall_dispatcher
+EXTERN load_main
 
 SECTION .text
 
@@ -79,14 +82,50 @@ SECTION .text
 
 
 %macro exceptionHandler 1
+	push rax
+	
+	mov [exc_regs+8*1], rbx
+	mov [exc_regs+8*2], rcx
+	mov [exc_regs+8*3], rdx
+	mov [exc_regs+8*4], rsi
+	mov [exc_regs+8*5], rdi
+	mov [exc_regs+8*6], rbp
+	mov [exc_regs+8*7], r8
+	mov [exc_regs+8*8], r9
+	mov [exc_regs+8*9], r10
+	mov [exc_regs+8*10], r11
+	mov [exc_regs+8*11], r12
+	mov [exc_regs+8*12], r13
+	mov [exc_regs+8*13], r14
+	mov [exc_regs+8*14], r15
+
+	
+	mov rax, [rsp+8] ;cargo el rip
+
+	mov [exc_regs + 120], rax
+	
+	mov rax, [rsp+16] ;cargo el cs
+	mov [exc_regs + 128], rax
+	
+	mov rax, [rsp+24] ;cargo el rflags
+	mov [exc_regs + 136], rax
+	
+	mov rax, [rsp+32] ;cargo el rsp
+	mov [exc_regs + 144], rax
+	pop rax
+
+	mov[exc_regs], rax
 	pushState
 
 	mov rdi, %1 
 	call exceptionDispatcher
-
 	popState
+	add rsp, 8
+	push load_main
 	iretq
 %endmacro
+
+
 
 
 _hlt:
@@ -126,6 +165,8 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
+
+	mov [backUpRegs+0], rax
 	mov [backUpRegs+8*1], rbx
 	mov [backUpRegs+8*2], rcx
 	mov [backUpRegs+8*3], rdx
@@ -141,18 +182,21 @@ _irq01Handler:
 	mov [backUpRegs+8*13], r14
 	mov [backUpRegs+8*14], r15
 
-	mov rax, rsp
-	add rax, 160			  
-	mov [backUpRegs + 8*15], rax  ;RSP
+	push rax
+	mov rax, [rsp+8] ;cargo el rip
 
-	mov rax, [rsp+15*8]
-	mov [backUpRegs + 8*16], rax ;RIP
+	mov [backUpRegs + 120], rax
+	
+	mov rax, [rsp+16] ;cargo el cs
+	mov [backUpRegs + 128], rax
+	
+	mov rax, [rsp+24] ;cargo el rflags
+	mov [backUpRegs + 136], rax
+	
+	mov rax, [rsp+32] ;cargo el rsp
+	mov [backUpRegs + 144], rax
+	pop rax
 
-	mov rax, [rsp + 14*8]	;RAX
-	mov [backUpRegs], rax
-
-	mov rax, [rsp+15*9]
-	mov [backUpRegs + 8*17], rax ;RFLAGS
 	irqHandlerMaster 1
 
 save_registers:
@@ -219,6 +263,11 @@ _irq05Handler:
 _exception0Handler:
 	exceptionHandler 0
 
+
+;Invalid Opcode Exception
+_exception6Handler:
+	exceptionHandler 6
+
 _systemCallHandler:
 	pushState
 	mov rbp, rsp
@@ -245,6 +294,7 @@ haltcpu:
 SECTION .bss
 	aux resq 1
 	backUpRegs resq 19
+	exc_regs resq 19
 	regs resq 19
 
 	

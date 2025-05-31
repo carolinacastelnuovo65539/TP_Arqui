@@ -13,7 +13,7 @@ int USER_SIZE = 5;
 static char username[USER_MAX] = "user";
 char command[COMMAND_MAX] = {0};
 
-char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear"};
+char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear", "-beep", "-zerodiv", "-invopcode", "-pognis"};
 
 int newTerminal = 1;
 
@@ -100,6 +100,18 @@ void checkCommand(char * cmd){
 			case 8:
 				command_clear();
 				break;
+			case 9:
+				command_beep();
+				break;
+			case 10:
+				command_zerodiv();
+				break;
+			case 11:
+				command_invopcode();
+				break;
+			case 12:
+				command_pognis();
+				break;
 			default:
 				invalid_command();
 			}
@@ -114,7 +126,8 @@ void start(){
 		newTerminal = 0;
 		print("Welcome to our OS!\n", 40);	
 		changeUsername();
-		// print("Username: ", 11);
+		getTime();
+		print("       [hour:min:sec]\n", 30);
 	}
 }
 
@@ -148,6 +161,23 @@ void terminal(){
 	}
 }
 
+void command_zerodiv(){
+	zero();
+}
+
+void command_invopcode(){
+	opcode();
+}	
+
+void command_beep(){
+	beep(100, 15);
+	putChar('\n');
+}
+
+void command_pognis(){
+
+}
+
 void command_help() {
 	printColor("\n\n=== Available commands ===\n", 25, YELLOW, BLACK);
 	printHelp();
@@ -170,6 +200,8 @@ void printHelp() {
 	print("- decrease font size (scaled)", MAX_BUFF);
 	printColor("\n    -registers             ", MAX_BUFF, ORANGE, BLACK);
 	print("- print current register values", MAX_BUFF);
+	printColor("\n    -beep                  ", MAX_BUFF, ORANGE, BLACK);
+	print("- produces a beep", MAX_BUFF);
 	printColor("\n    -zerodiv               ", MAX_BUFF, ORANGE, BLACK);
 	print("- test zero division exception", MAX_BUFF);
 	printColor("\n    -invopcode             ", MAX_BUFF, ORANGE, BLACK);
@@ -197,7 +229,8 @@ void getUserName(){
 void command_registers(){
 	print("\nRegisters:\n", 20);
 	printRegisters();
-	print(" \n", 30); //si no lo hacemos así, se imprime cualquier cosa al final de los registros
+	// print(" \n", 30); //si no lo hacemos así, se imprime cualquier cosa al final de los registros
+	putChar('\n');
 }
 
 void invalid_command(){

@@ -14,7 +14,8 @@ GLOBAL rtc_bin
 GLOBAL get_seconds
 GLOBAL get_minutes
 GLOBAL get_hours
-
+GLOBAL sound
+GLOBAL stop_sound
 
 section .text
 	
@@ -127,6 +128,42 @@ get_key:
 	pop rbp
 	ret
 
+sound:
+	push rbp
+	push rdx
+	mov rbp, rsp
+
+	mov al, 0xB6
+	out 0x43, al
+
+	mov rdx, 0
+	mov rax, 1193180
+	div rdi
+
+	out 0x42, al
+	mov al, ah
+	out 0x42, al
+
+	in al, 0x61
+	or al, 0x03
+	out 0x61, al
+
+	mov rsp, rbp
+	pop rdx
+	pop rbp
+	ret
+
+stop_sound:
+	push rbp
+	mov rbp, rsp
+	
+	in al, 0x61
+	and al, 0xFC
+	out 0x61, al
+
+	mov rsp, rbp
+	pop rbp
+	ret
 	
 section .data
 	key db 0

@@ -31,4 +31,12 @@ void command_clear();
 
 void command_increase();
 
+void command_zerodiv();
+
+void command_invopcode();
+
+void command_beep();
+
+void command_pognis();
+
 #endif

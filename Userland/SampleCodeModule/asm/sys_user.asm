@@ -10,6 +10,7 @@ GLOBAL sys_increase
 GLOBAL sys_write_color
 GLOBAL sys_drawRectangle
 GLOBAL sys_drawCircle
+GLOBAL sys_sound
 
 section .text
 
@@ -20,12 +21,6 @@ sys_read:
 
 sys_write:
     mov rax, 0x01
-    int 80h
-    ret
-
-sys_write_color:
-    mov rax, 0x0F
-    mov r10, rcx     ; fuente
     int 80h
     ret
 
@@ -72,5 +67,16 @@ sys_drawRectangle:
 
 sys_drawCircle:
     mov rax, 0x0E
+    int 80h
+    ret
+
+sys_write_color:
+    mov rax, 0x0F
+    mov r10, rcx     ; fuente
+    int 80h
+    ret
+
+sys_sound:
+    mov rax, 0x10
     int 80h
     ret
