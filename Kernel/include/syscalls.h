@@ -16,11 +16,11 @@ static void sys_clear();
 
 static uint64_t sys_wait(uint64_t time);
 
-static uint64_t sys_get_seconds();
+static uint64_t sys_get_seconds(uint64_t * seconds);
 
-static uint64_t sys_get_minutes();
+static uint64_t sys_get_minutes(uint64_t * minutes);
 
-static uint64_t sys_get_hours();
+static uint64_t sys_get_hours(uint64_t * hours);
 
 static uint64_t sys_cursor();
 

@@ -105,15 +105,21 @@ void printRegisters(){
 }
 
 uint64_t get_hours(){
-    return sys_get_hours() - DIF_UTC;
+    uint64_t hour;
+    sys_get_hours(&hour);
+    return hour - DIF_UTC;
 }
 
 uint64_t get_minutes(){
-    return sys_get_minutes();
+    uint64_t minutes;
+    sys_get_minutes(&minutes);
+    return minutes;
 }
 
 uint64_t get_seconds(){
-    return sys_get_seconds();
+    uint64_t seconds;
+    sys_get_seconds(&seconds);
+    return seconds;
 }
 
 void reduce(){
@@ -128,26 +134,26 @@ void increase(){
     sys_increase();
 }
 
-// void printInt(int num) {
-//     char buffer[12]; // Suficiente para almacenar int de 32 bits con signo
-//     int i = 0;
-//     if (num == 0) {
-//         putChar('0');
-//         return;
-//     }
-//     if (num < 0) {   // Maneja el signo
-//         putChar('-');
-//         num = -num;
-//     }
-//     while (num > 0) { // Convierte el número a caracteres
-//         buffer[i++] = (num % 10) + '0';
-//         num /= 10;
-//     }
-//     // Imprime el número en el orden correcto
-//     for (int j = i - 1; j >= 0; j--) {
-//         putChar(buffer[j]);
-//     }
-// }
+void printInt(int num) {
+    char buffer[12]; // Suficiente para almacenar int de 32 bits con signo
+    int i = 0;
+    if (num == 0) {
+        putChar('0');
+        return;
+    }
+    if (num < 0) {   // Maneja el signo
+        putChar('-');
+        num = -num;
+    }
+    while (num > 0) { // Convierte el número a caracteres
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    }
+    // Imprime el número en el orden correcto
+    for (int j = i - 1; j >= 0; j--) {
+        putChar(buffer[j]);
+    }
+}
 
 void getTime(){
 	uint64_t hours, minutes, seconds;
@@ -156,11 +162,11 @@ void getTime(){
     minutes = get_minutes();
     seconds = get_seconds();
 
-    printDec(hours);
+    printInt(hours);
     putChar(':');
-    printDec(minutes);
+    printInt(minutes);
     putChar(':');
-    printDec(seconds);
+    printInt(seconds);
 }
 
 

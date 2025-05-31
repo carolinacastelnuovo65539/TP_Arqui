@@ -42,22 +42,19 @@ static uint64_t sys_wait(uint64_t time){
     return 1;
 }
 
-static uint64_t sys_get_seconds(){ 
-    //PrintDec(get_seconds());
-    //vd_print(' ', BLACK, WHITE);
-    return get_seconds();
+static uint64_t sys_get_seconds(uint64_t * seconds){ 
+    *seconds = get_seconds();
+    return 1;
 }
 
-static uint64_t sys_get_minutes(){
-    //PrintDec(get_minutes());
-    //vd_print(' ', BLACK, WHITE);
-    return get_minutes();
+static uint64_t sys_get_minutes(uint64_t * minutes){
+    *minutes = get_minutes();
+    return 1;
 }
 
-static uint64_t sys_get_hours(){
-    //PrintDec(get_hours()-3);
-    //vd_print(' ', BLACK, WHITE);
-    return get_hours();
+static uint64_t sys_get_hours(uint64_t * hours){
+    *hours = get_hours();
+    return 1;
 }
 
 static uint64_t sys_cursor(){
@@ -118,11 +115,11 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_clear();
         break;
     case 3: //seconds
-        return sys_get_seconds();
+        return sys_get_seconds((uint64_t *)rdi);
     case 4: //minutes
-        return sys_get_minutes();
+        return sys_get_minutes((uint64_t *)rdi);
     case 5: //hours
-        return sys_get_hours();
+        return sys_get_hours((uint64_t *)rdi);
     case 6: //cursor
         sys_cursor();
         break;
