@@ -148,10 +148,10 @@ void backspace(){
 
 void clear(){
 	uint8_t * current = (uint8_t*)((uint64_t)VBE_mode_info->framebuffer);
-	for(uint32_t len = 3 * (uint32_t)VBE_mode_info->width * VBE_mode_info->height; len; len--, current++){
+	// (VBE_mode_info->bpp)/8 -> bytes por pixel
+	for(uint32_t len = ((VBE_mode_info->bpp)/8) * (uint32_t)VBE_mode_info->width * VBE_mode_info->height; len; len--, current++){
 		*current = 0;
 	}
-
 	cursorX = 0;
 	cursorY = 0;
 }

@@ -11,6 +11,7 @@
 extern int alt;
 extern uint64_t regs[19];
 
+
 static uint64_t sys_read(uint64_t fd, char * buffer){
     if (fd != 0){
         return -1;
@@ -95,8 +96,17 @@ static uint64_t sys_write_color(uint64_t fd, char * buffer, int len, Color fuent
     return 1;
 }
 
-uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax){
+static void separate_rgb(Color * color, uint64_t * arg) {
     uint8_t r, g, b;
+    r = (*arg >> 16) & 0xFF;
+    g = (*arg >> 8) & 0xFF;
+    b = *arg & 0xFF;
+    color->red = r;
+    color->green = g;
+    color->blue = b;
+}
+
+uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, uint64_t r8, uint64_t rax){
     Color color1, color2;
     switch (rax)
     {
@@ -131,37 +141,16 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_increase();
         break;
     case 13: //draw rectangle
-        r = (r8 >> 16) & 0xFF;
-        g = (r8 >> 8) & 0xFF;
-        b = r8 & 0xFF;
-        color1.red = r;
-        color1.green = g;
-        color1.blue = b;
+        separate_rgb(&color1, &r8);
         sys_drawRectangle(rdi, rsi, rdx, r10, color1);
         break;
     case 14:
-        r = (r8 >> 16) & 0xFF;
-        g = (r8 >> 8) & 0xFF;
-        b = r8 & 0xFF;
-        color1.red = r;
-        color1.green = g;
-        color1.blue = b;
+        separate_rgb(&color1, &r8);
         return sys_drawCircle(rdi, rsi, rdx, color1);
         break;
     case 15: 
-        r = (r10 >> 16) & 0xFF;
-        g = (r10 >> 8) & 0xFF;
-        b = r10 & 0xFF;
-        color1.red = r;
-        color1.green = g;
-        color1.blue = b; 
-
-        r = (r8 >> 16) & 0xFF;
-        g = (r8 >> 8) & 0xFF;
-        b = r8 & 0xFF;
-        color2.red = r;
-        color2.green = g;
-        color2.blue = b;
+        separate_rgb(&color1, &r10);
+        separate_rgb(&color2, &r8);
         return sys_write_color(rdi, (char *)rsi, rdx, color1, color2);
         break;
     return 1;
