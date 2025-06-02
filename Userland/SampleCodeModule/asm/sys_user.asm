@@ -74,6 +74,7 @@ sys_drawRectangle:
 
 sys_drawCircle:
     mov rax, 0x0E
+    mov r10, rcx     ; fuente
     int 80h
     ret
 

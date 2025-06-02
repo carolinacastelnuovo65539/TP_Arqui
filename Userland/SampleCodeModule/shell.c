@@ -137,7 +137,9 @@ void start(){
 
 
 void command_pognis(){
+	using = 0;
     command_clear();
+	game_running = 1;
 
     increase();
     printColorCentered("Welcome to Pognis game!\n", strlen("Welcome to Pognis game!\n"), LIGHT_BLUE, BLACK);
@@ -156,7 +158,11 @@ void command_pognis(){
 	while(((players = getChar()) != '1' && players != '2')) {
 		
 	}
-	start_game(players);
+	start_game_pongis(players);
+
+	clear();
+	using = 1;
+	
     // char c;
     // while((c = getChar()) != '1' && c != '2'){
     // }
@@ -238,8 +244,8 @@ void printHelp() {
 	print("- display current username", MAX_BUFF);
 	printColor("\n    -time                  ", MAX_BUFF, ORANGE, BLACK);
 	print("- display current time", MAX_BUFF);
-	printColor("\n    -date                ", MAX_BUFF, ORANGE, BLACK);
-	print("- display UTC date\n", MAX_BUFF);
+	printColor("\n    -date                  ", MAX_BUFF, ORANGE, BLACK);
+	print("- display UTC date", MAX_BUFF);
 	printColor("\n    -clear                 ", MAX_BUFF, ORANGE, BLACK);
 	print("- clear the display", MAX_BUFF);
 	printColor("\n    -increaseSize          ", MAX_BUFF, ORANGE, BLACK);

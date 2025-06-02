@@ -123,11 +123,13 @@ static uint64_t sys_sound(uint64_t frecuencia, uint64_t tiempo){
 
 static uint64_t sys_get_width(uint64_t * width){
     *width = vd_get_width();
+    return 1;
 }
 
 
 static uint64_t sys_get_height(uint64_t * height){
     *height = vd_get_height();
+    return 1;
 }
 
 static uint64_t sys_set_cursorX(uint64_t x){
@@ -189,7 +191,7 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         sys_drawRectangle(rdi, rsi, rdx, r10, color1);
         break;
     case 14:
-        separate_rgb(&color1, &r8);
+        separate_rgb(&color1, &r10);
         return sys_drawCircle(rdi, rsi, rdx, color1);
         break;
     case 15: 

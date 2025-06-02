@@ -46,9 +46,9 @@ void init_players(TPlayer player1, TPlayer player2){
 void start_game(char players){
     draw_game();
     num_players = players;
-    if(num_players == 1) {
+    if(num_players == '1') {
         update1();
-    }else if(num_players == 2){
+    }else if(num_players == '2'){
         update2();
     }
     clear();

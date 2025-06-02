@@ -100,64 +100,60 @@ void vd_drawRectangle(int x, int y, int width, int height, Color color) {
 	}
 }
 
-void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
-	Color * pixel;
-    int radiusSquared = radius * radius;
+
+// void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
+//     Color * pixel;
+//     int radiusSquared = radius * radius;
     
-    for (int y = centerY - radius; y <= centerY + radius; y++) {
-        int dy = y - centerY;
-        int dySquared = dy * dy;
+//     for (int y = centerY - radius; y <= centerY + radius; y++) {
+//         int dy = y - centerY;
+//         int dySquared = dy * dy;
         
-        // Encontrar el rango x válido para esta fila y
-        int startX = centerX - radius;
-        int endX = centerX + radius;
+//         // Encontrar el rango x válido para esta fila y
+//         int startX = centerX - radius;
+//         int endX = centerX + radius;
         
-        // Optimización: encontrar el primer x válido
-        while (startX <= centerX) {
-            int dx = startX - centerX;
-            if (dx * dx + dySquared <= radiusSquared) {
-                break;
-            }
-            startX++;
-        }
+//         // Optimización: encontrar el primer x válido
+//         while (startX <= centerX) {
+//             int dx = startX - centerX;
+//             if (dx * dx + dySquared <= radiusSquared) {
+//                 break;
+//             }
+//             startX++;
+//         }
         
-        // Encontrar el último x válido
-        while (endX >= centerX) {
-            int dx = endX - centerX;
-            if (dx * dx + dySquared <= radiusSquared) {
-                break;
-            }
-            endX--;
-        }
+//         // Encontrar el último x válido
+//         while (endX >= centerX) {
+//             int dx = endX - centerX;
+//             if (dx * dx + dySquared <= radiusSquared) {
+//                 break;
+//             }
+//             endX--;
+//         }
         
-        // Dibujar la línea horizontal si hay píxeles válidos
-        if (startX <= endX) {
-            pixel = (Color*) getPixel(startX, y);
-            for (int x = startX; x <= endX; x++, pixel++) {
+//         // Dibujar la línea horizontal si hay píxeles válidos
+//         if (startX <= endX) {
+//             pixel = (Color*) getPixel(startX, y);
+//             for (int x = startX; x <= endX; x++, pixel++) {
+//                 *pixel = color;
+//             }
+//         }
+//     }
+// }
+
+
+void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
+    int r2 = radius * radius;
+
+    for (int dy = -radius; dy <= radius; dy++) {
+        int y = centerY + dy;
+        for (int dx = -radius; dx <= radius; dx++) {
+            if (dx * dx + dy * dy <= r2) {
+                Color *pixel = (Color*) getPixel(centerX + dx, y);
                 *pixel = color;
             }
         }
     }
-    // Color * pixel;
-    // int startY = centerY - radius;
-    // int endY = centerY + radius;
-    
-    // for (int y = startY; y <= endY; y++) {
-    //     // Calcular el ancho de la fila en este y
-    //     int dy = y - centerY;
-    //     int distanceSquared = dy * dy;
-        
-    //     if (distanceSquared <= radius * radius) {
-    //         int halfWidth = (int)sqrt(radius * radius - distanceSquared);
-    //         int startX = centerX - halfWidth;
-    //         int width = 2 * halfWidth + 1;
-            
-    //         pixel = (Color*) getPixel(startX, y);
-    //         for (int j = 0; j < width; j++, pixel++) {
-    //             *pixel = color;
-    //         }
-    //     }
-    // }
 }
 
 void newLine(){
@@ -313,6 +309,14 @@ static void scroll(){
 }
 
 static uint32_t* getPixel(uint16_t x, uint16_t y) {
+	// uint8_t pixelWidth = VBE_mode_info->bpp/8;     
+    // uint16_t pitch = VBE_mode_info->pitch;  
+
+    // // CORRECTO: Primero calculamos el offset de la fila (y * pitch)
+    // // luego añadimos el offset dentro de la fila (x * pixelWidth)
+    // uintptr_t pixel = (uintptr_t)(VBE_mode_info->framebuffer) + (y * pitch) + (x * pixelWidth);
+    // return (uint32_t*)pixel;
+	
     uint8_t pixelwidth = VBE_mode_info->bpp/8;     //number of bytes to the next pixel to the right  (bpp: BITS per px)
     uint16_t pixelHeight = VBE_mode_info->pitch;  
 

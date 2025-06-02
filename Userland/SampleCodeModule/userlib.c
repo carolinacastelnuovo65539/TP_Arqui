@@ -35,19 +35,19 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
 }
 
 
-void printColorCentered(char *msg, int len, Color fg, Color bg) {
-    // Calcula los espacios necesarios para centrar horizontalmente
-    int spaces = (set_width() - len) / 2;
-    set_cursorX(spaces);
+void printColorCentered(char *msg, int len, int arg, Color fg, Color bg) {
+    int screen_width = set_width(); // asumimos que esta función existe
+    int screen_height = set_height();
 
-    // Imprime los espacios para centrar
-    // for(int i = 0; i < spaces; i++) {
-    //     putChar(' ');
-    // }
-    // Imprime el mensaje con el color especificado
+    // 8 -> char Width
+    int spaces = (screen_width - 8*len) / 2;
+    
+    if (spaces < 0) spaces = 0;
+
+    set_cursorX(spaces); // ajusta solo la posición horizontal
+    set_cursorY((screen_height)/2)
     printColor(msg, len, fg, bg);
 }
-
 
 void printColor(char * string, int len, Color fuente, Color fondo) {
     sys_write_color(STDOUT, string, len, fuente, fondo);
