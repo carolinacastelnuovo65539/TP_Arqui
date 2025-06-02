@@ -1,22 +1,15 @@
 GLOBAL cpuVendor
 
-
 GLOBAL get_key
-GLOBAL inb
-GLOBAL outb
 
 GLOBAL key
 GLOBAL flag
 
 GLOBAL rtc_bin
-GLOBAL get_seconds
-GLOBAL get_minutes
-GLOBAL get_hours
+GLOBAL get_cmos
+
 GLOBAL sound
 GLOBAL stop_sound
-GLOBAL get_day
-GLOBAL get_month
-GLOBAL get_year
 
 section .text
 	
@@ -70,94 +63,20 @@ rtc_bin:
 	ret
 
 
-	
-get_seconds:
+get_cmos:
 	push rbp
 	mov rbp, rsp
 
 	call rtc_bin
 
-    mov al, 0x00
-    out 70h, al
-    in al, 71h
-	
-	mov rsp, rbp
-	pop rbp
-    ret
-
-get_minutes:
-	push rbp
-	mov rbp, rsp
-
-	call rtc_bin
-
-    mov al, 0x02
-    out 70h, al
-    in al, 71h
-
-	mov rsp, rbp
-	pop rbp
-    ret
-
-get_hours:
-	push rbp
-	mov rbp, rsp
-
-	call rtc_bin
-
-    mov al, 0x04
+    mov al, dil
     out 70h, al
     in al, 71h
 
 
 	mov rsp, rbp
 	pop rbp
-    ret		
-
-
-get_day:
-	push rbp
-	mov rbp, rsp
-
-	call rtc_bin
-
-    mov al, 0x07
-    out 70h, al
-    in al, 71h
-	
-	mov rsp, rbp
-	pop rbp
-    ret
-
-get_month:
-	push rbp
-	mov rbp, rsp
-
-	call rtc_bin
-
-    mov al, 0x08
-    out 70h, al
-    in al, 71h
-
-	mov rsp, rbp
-	pop rbp
-    ret
-
-get_year:
-	push rbp
-	mov rbp, rsp
-
-	call rtc_bin
-
-    mov al, 0x09
-    out 70h, al
-    in al, 71h
-
-
-	mov rsp, rbp
-	pop rbp
-    ret		
-
+    ret	
 
 get_key:
 	push rbp

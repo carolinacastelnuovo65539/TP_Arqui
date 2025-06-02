@@ -10,7 +10,7 @@ extern uint64_t regs[19];
 
 extern void sound(uint64_t frecuencia);
 extern void stop_sound();
-
+extern uint8_t get_cmos(uint8_t port);
 
 static uint64_t sys_read(uint64_t fd, char * buffer){
     if (fd != 0){
@@ -39,32 +39,32 @@ static uint64_t sys_wait(uint64_t time){
 }
 
 static uint64_t sys_get_seconds(uint64_t * seconds){ 
-    *seconds = get_seconds();
+    *seconds = get_cmos(0x00);
     return 1;
 }
 
 static uint64_t sys_get_minutes(uint64_t * minutes){
-    *minutes = get_minutes();
+    *minutes = get_cmos(0x02);
     return 1;
 }
 
 static uint64_t sys_get_hours(uint64_t * hours){
-    *hours = get_hours();
+    *hours = get_cmos(0x04);
     return 1;
 }
 
 static uint64_t sys_get_day(uint64_t * day){ 
-    *day = get_day();
+    *day = get_cmos(0x07);
     return 1;
 }
 
 static uint64_t sys_get_month(uint64_t * month){
-    *month = get_month();
+    *month = get_cmos(0x08);
     return 1;
 }
 
 static uint64_t sys_get_year(uint64_t * year){
-    *year = get_year();
+    *year = get_cmos(0x09);
     return 1;
 }
 
