@@ -121,6 +121,25 @@ static uint64_t sys_sound(uint64_t frecuencia, uint64_t tiempo){
     return 1;
 }
 
+static uint64_t sys_get_width(uint64_t * width){
+    *width = vd_get_width();
+}
+
+
+static uint64_t sys_get_height(uint64_t * height){
+    *height = vd_get_height();
+}
+
+static uint64_t sys_set_cursorX(uint64_t x){
+    vd_set_cursorX(x);
+    return 1;
+}
+
+static uint64_t sys_set_cursorY(uint64_t y){
+    vd_set_cursorY(y);
+    return;
+}
+
 static void separate_rgb(Color * color, uint64_t * arg) {
     uint8_t r, g, b;
     r = (*arg >> 16) & 0xFF;
@@ -189,6 +208,18 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         break;
     case 19:
         return sys_get_year((uint64_t*)rdi);
+        break;
+    case 20:
+        return sys_get_height((uint64_t*)rdi);
+        break;
+    case 21:
+        return sys_get_width((uint64_t*)rdi);
+        break;
+    case 22:
+        return sys_set_cursorX(rdi);
+        break;
+    case 23:
+        return sys_set_cursorY(rdi);
         break;
     }
 }

@@ -15,6 +15,8 @@ static void to_hex(uint64_t n, char buf[16]);
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 
+uint64_t height, width;
+
 char getChar(){
     char c;
     sys_read(0, &c);
@@ -30,6 +32,20 @@ void putChar(char c){
 
 void print(char * string, int len) { //preguntar si es más lógico que no se le pase la longitud
     sys_write(STDOUT, string, len);
+}
+
+
+void printColorCentered(char *msg, int len, Color fg, Color bg) {
+    // Calcula los espacios necesarios para centrar horizontalmente
+    int spaces = (set_width() - len) / 2;
+    set_cursorX(spaces);
+
+    // Imprime los espacios para centrar
+    // for(int i = 0; i < spaces; i++) {
+    //     putChar(' ');
+    // }
+    // Imprime el mensaje con el color especificado
+    printColor(msg, len, fg, bg);
 }
 
 
@@ -157,6 +173,15 @@ uint64_t get_year(){
     return year+2000;
 }
 
+uint64_t set_height(){
+    sys_get_height(&height);
+    return height;
+}
+
+uint64_t set_width(){
+    sys_get_width(&width);
+    return width;
+}
 
 void reduce(){
     sys_reduce();
@@ -220,6 +245,13 @@ void printBase(uint64_t value, uint32_t base)
 	print(buffer, 20);
 }
 
+void set_cursorX(uint64_t value) {
+    sys_set_cursorX(value);
+}
+
+void set_cursorY(uint64_t value) {
+    sys_set_cursorY(value);
+}
 
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
 {

@@ -37,3 +37,11 @@ extern uint64_t sys_drawCircle(int centerX, int centerY, int radius, Color color
 
 extern uint64_t sys_sound(uint64_t frecuencia, uint64_t tiempo);
 
+extern uint64_t sys_get_height();
+
+extern uint64_t sys_get_width();
+
+extern uint64_t sys_set_cursorX(uint64_t value);
+
+extern uint64_t sys_set_cursorY(uint64_t value);
+

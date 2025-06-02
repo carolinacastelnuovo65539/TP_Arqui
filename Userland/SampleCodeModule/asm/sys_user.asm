@@ -14,7 +14,10 @@ GLOBAL sys_write_color
 GLOBAL sys_drawRectangle
 GLOBAL sys_drawCircle
 GLOBAL sys_sound
-
+GLOBAL sys_get_width
+GLOBAL sys_get_height
+GLOBAL sys_set_cursorX
+GLOBAL sys_set_cursorY
 
 section .text
 
@@ -99,3 +102,25 @@ sys_get_year:
     mov rax, 0x13
     int 80h
     ret
+
+sys_get_height:
+    mov rax, 0x14
+    int 80h
+    ret
+
+sys_get_width:
+    mov rax, 0x15
+    int 80h
+    ret
+
+sys_set_cursorX:
+    mov rax, 0x16
+    int 80h
+    ret
+    
+sys_set_cursorY:
+    mov rax, 0x17
+    int 80h
+    ret
+
+

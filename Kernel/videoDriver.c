@@ -101,29 +101,63 @@ void vd_drawRectangle(int x, int y, int width, int height, Color color) {
 }
 
 void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
-    int x = 0;
-    int y = radius;
-    int d = 3 - 2 * radius;
-
-    while (x <= y) {
-        // Draws the symmetric points in all octants
-        setPixel(centerX + x, centerY + y, color);
-        setPixel(centerX - x, centerY + y, color);
-        setPixel(centerX + x, centerY - y, color);
-        setPixel(centerX - x, centerY - y, color);
-        setPixel(centerX + y, centerY + x, color);
-        setPixel(centerX - y, centerY + x, color);
-        setPixel(centerX + y, centerY - x, color);
-        setPixel(centerX - y, centerY - x, color);
-
-        if (d < 0) {
-            d = d + 4 * x + 6;
-        } else {
-            d = d + 4 * (x - y) + 10;
-            y--;
+	Color * pixel;
+    int radiusSquared = radius * radius;
+    
+    for (int y = centerY - radius; y <= centerY + radius; y++) {
+        int dy = y - centerY;
+        int dySquared = dy * dy;
+        
+        // Encontrar el rango x válido para esta fila y
+        int startX = centerX - radius;
+        int endX = centerX + radius;
+        
+        // Optimización: encontrar el primer x válido
+        while (startX <= centerX) {
+            int dx = startX - centerX;
+            if (dx * dx + dySquared <= radiusSquared) {
+                break;
+            }
+            startX++;
         }
-        x++;
+        
+        // Encontrar el último x válido
+        while (endX >= centerX) {
+            int dx = endX - centerX;
+            if (dx * dx + dySquared <= radiusSquared) {
+                break;
+            }
+            endX--;
+        }
+        
+        // Dibujar la línea horizontal si hay píxeles válidos
+        if (startX <= endX) {
+            pixel = (Color*) getPixel(startX, y);
+            for (int x = startX; x <= endX; x++, pixel++) {
+                *pixel = color;
+            }
+        }
     }
+    // Color * pixel;
+    // int startY = centerY - radius;
+    // int endY = centerY + radius;
+    
+    // for (int y = startY; y <= endY; y++) {
+    //     // Calcular el ancho de la fila en este y
+    //     int dy = y - centerY;
+    //     int distanceSquared = dy * dy;
+        
+    //     if (distanceSquared <= radius * radius) {
+    //         int halfWidth = (int)sqrt(radius * radius - distanceSquared);
+    //         int startX = centerX - halfWidth;
+    //         int width = 2 * halfWidth + 1;
+            
+    //         pixel = (Color*) getPixel(startX, y);
+    //         for (int j = 0; j < width; j++, pixel++) {
+    //             *pixel = color;
+    //         }
+    //     }
+    // }
 }
 
 void newLine(){
@@ -299,4 +333,26 @@ void vd_read(char * buff){
 	if(*buff == 0){
 		return;
 	}
+}
+
+uint64_t vd_get_width(){
+	return VBE_mode_info->width;
+}
+
+uint64_t vd_get_height(){
+	return VBE_mode_info->height;
+}
+
+void vd_set_cursorX(uint64_t x){
+	if(x >= VBE_mode_info->width || x < 0){
+		return;
+	}
+	cursorX = x;
+}
+
+void vd_set_cursorY(uint64_t y){
+	if(y >= VBE_mode_info->height || y < 0){
+		return;
+	}
+	cursorY = y;
 }

@@ -7,19 +7,24 @@ int num_players = 1;
 
 TPlayer player1, player2;
 
+static const uint16_t cursorScoreX1=0;
+static const uint16_t cursorScoreY1=0;
+static const uint16_t cursorScoreX2=28*SQUARESIZE - 10;
+static const uint16_t cursorScoreY2=0;
+
 void init_game(){
+    draw_game();
     if(num_players == 1){
         init_player(player1);
     }else if(num_players == 2){
         init_players(player1, player2);
     }
-
 }
 
 void init_player(TPlayer p){
     if(p != 0){
         p->x = 10;
-        p->y = (SCREEN_HEIGHT - PLAYER_RADIUS) / 2;
+        p->y = (set_height() - PLAYER_RADIUS) / 2;
         p->radius = PLAYER_RADIUS;
         p->score = 0;
         p->playing = 1;
@@ -29,32 +34,72 @@ void init_player(TPlayer p){
 
 void init_players(TPlayer player1, TPlayer player2){
     init_player(player1);
-    player2->x = SCREEN_WIDTH - PLAYER_RADIUS - 10;
-    player2->y = (SCREEN_HEIGHT - PLAYER_RADIUS) / 2;
+    player2->x = set_width() - PLAYER_RADIUS - 10;
+    player2->y = (set_height() - PLAYER_RADIUS) / 2;
     player2->radius = PLAYER_RADIUS;
     player2->score = 0;
     player2->playing = 1;
     player2->color = BLUE;
 }
 
-void update_game1() {
+
+void start_game(char players){
+    draw_game();
+    num_players = players;
+    if(num_players == 1) {
+        update1();
+    }else if(num_players == 2){
+        update2();
+    }
+    clear();
+}
+
+void update2(){
     char c;
+    init_players(player1, player2);
+    while(player1->playing && player2->playing && game_running){
+        move_cursor(cursorScoreX1, cursorScoreY1);
+        print_score(player1);
+        move_cursor(cursorScoreX2, cursorScoreY2);
+        print_score(player2);
+        if((c = getChar()) != 0){
+            c = to_lower(c);
+
+            if (c == 27) { // ESC
+                game_running = 0;
+                clear();
+                break;
+            }
+
+            move_player(player1, c);
+            move_player(player2, c);
+        }
+    }
+    clear();
+
+        
+    }
+
+void update1(){
+    char c;
+    init_player(player1);
     while(player1->playing && game_running){
+        move_cursor(cursorScoreX1, cursorScoreY1);
         print_score(player1);
         if((c = getChar()) != 0){
             c = to_lower(c);
 
             if (c == 27) { // ESC
                 game_running = 0;
+                clear();
                 break;
             }
 
             move_player(player1, c);
         }
-        // Aquí podrías actualizar la pelota y dibujar el juego si corresponde
     }
     clear();
-    // end_game1();
+    //end1();
 }
 
 void move_player(TPlayer p, char key) {
@@ -106,8 +151,7 @@ void move_player(TPlayer p, char key) {
 void update_game2() {
     char c;
     while(player1->playing && player2->playing && game_running){
-        print_score(player1);
-        print_score(player2);
+        
 
         if((c = getChar()) != 0){
             c = to_lower(c);
@@ -116,8 +160,11 @@ void update_game2() {
                 game_running = 0;
                 break;
             }
-
+            move_cursor(cursorScoreX1, cursorScoreY1);
+            print_score(player1);
             move_player(player1, c);
+            move_cursor(cursorScoreX2, cursorScoreY2);
+            print_score(player2);
             move_player(player2, c);
         }
         // Aquí podrías actualizar la pelota y dibujar el juego si corresponde
@@ -136,77 +183,6 @@ void reset_ball(void) {
     ball.dy = (ball.dy > 0) ? -BALL_SPEED : BALL_SPEED;
 }
 
-// void update_game() {
-//     char key = getChar();
-    
-//     // Controles jugador 1 (WASD - movimiento completo)
-//      if (key == 'w' || key == 'W') {  // W - Arriba
-//         if (player1->y > 0)
-//             player1->y -= PLAYER_SPEED;
-//     }
-//     if (key == 's' || key == 'S') {  // S - Abajo
-//         if (player1->y < SCREEN_HEIGHT - PLAYER_RADIUS)
-//             player1->y += PLAYER_SPEED;
-//     }
-//     if (key == 'a' || key == 'A') {  // A - Izquierda
-//         if (player1->x > 0)
-//             player1->x -= PLAYER_SPEED;
-//     }
-//     if (key == 'd' || key == 'D') {  // D - Derecha
-//         if (player1->x < SCREEN_WIDTH - PLAYER_RADIUS)
-//             player1->x += PLAYER_SPEED;
-//     }
-    
-//     // Controles jugador 2 (Flechas direccionales - movimiento completo)
-
-//     // los hexa ni idea, desp q nos anda player 1 vemos :/
-
-//     if(num_players == 2){
-//         if (key == 0x48) {  // Flecha arriba
-//             if (player2->y > 0)
-//                 player2->y -= PLAYER_SPEED;
-//         }
-//         if (key == 0x50) {  // Flecha abajo
-//             if (player2->y < SCREEN_HEIGHT - PLAYER_RADIUS)
-//                 player2->y += PLAYER_SPEED;  // Corregido: era PLAYER_RADIUS
-//         }
-//         if (key == 0x4B) {  // Flecha izquierda
-//             if (player2->x > 0)
-//                 player2->x -= PLAYER_SPEED;
-//         }
-//         if (key == 0x4D) {  // Flecha derecha
-//             if (player2->x < SCREEN_WIDTH - PLAYER_RADIUS)
-//                 player2->x += PLAYER_SPEED;
-//         }
-//     }
-    
-//     // ESC para salir
-//     if (key == 0x01) {
-//         game_running = 0;
-//         return;
-//     }
-    
-//     // Mover pelota
-//     ball.x += ball.dx;
-//     ball.y += ball.dy;
-    
-//     // Colisiones con bordes superior/inferior
-//     if (ball.y <= 0 || ball.y >= SCREEN_HEIGHT - BALL_RADIUS) {
-//         ball.dy = -ball.dy;
-//     }
-    
-//     // Verificar goles
-//     if (ball.x <= 0) {
-//         player2->score++;
-//         reset_ball();
-//     }
-//     if (ball.x >= SCREEN_WIDTH - BALL_RADIUS) {
-//         player1->score++;
-//         reset_ball();
-//     }
-    
-//     check_collisions();
-// }
 
 void check_collisions(void) {
     // Colisión con paddle izquierdo (player1)
@@ -246,61 +222,30 @@ void check_collisions(void) {
     if (ball.dy < -4) ball.dy = -4;
 }
 
+
 void draw_game(void) {
     // Limpiar pantalla
     clear();
-    
-    // Dibujar players
-    drawCircle(player1->x, player1->y, player1->radius, player1->color);
-    drawCircle(player2->x, player2->y, player2->radius, player2->color);
-    
-    // Dibujar pelota
-    drawCircle(ball.x, ball.y, ball.size, WHITE);
-    
-    // Dibujar línea central (punteada)
-    for (int i = 0; i < SCREEN_HEIGHT; i += 8) {
-        drawRectangle(SCREEN_WIDTH/2 - 1, i, 2, 4, WHITE);
-    }
-    
-    // Dibujar puntuación (simplificado - números como rectángulos)
-    // draw_score(50, 20, player1.score);
-    // draw_score(250, 20, player2.score);
 
-    print_score(player1);
-    print_score(player2);
+    // 1. Dibujar el fondo/cancha como un rectángulo verde
+    drawRectangle(0, 0, set_width(), set_height(), LIGHT_GREEN);
+
+    // 2. Dibujar los jugadores como "bolbs" (círculos de colores)
+    drawCircle(player1->x, player1->y, player1->radius, BLUE);
+    drawCircle(player2->x, player2->y, player2->radius, ORANGE);
+
+    // 3. Dibujar la pelota
+    drawCircle(ball.x, ball.y, ball.size, WHITE);
+
 }
 
 
 void print_score(TPlayer p) {
-    printColor("SCORE: ", 7, LIGHT_BLUE, DARK_PINK);
+    printColor("SCORE: ", 7, BLUE, WHITE);
     printDec(p->score);
 }
 
-/*
-void draw_score(int x, int y, int score) {
-    // Representación simple de números usando rectángulos
-    // Por simplicidad, solo mostramos hasta 9
-    if (score > 9) score = 9;
-    
-    // Dibujar el número como un patrón de puntos
-    switch(score) {
-        case 0:
-            drawRectangle(x, y, 20, 4, WHITE);
-            drawRectangle(x, y, 4, 20, WHITE);
-            draw_rectangle(x+16, y, 4, 20, WHITE);
-            draw_rectangle(x, y+16, 20, 4, WHITE);
-            break;
-        case 1:
-            draw_rectangle(x+8, y, 4, 20, WHITE);
-            break;
-        case 2:
-            drawRectangle(x, y, 20, 4, WHITE);
-            drawRectangle(x+16, y, 4, 8, WHITE);
-            draw_rectangle(x, y+8, 20, 4, WHITE);
-            draw_rectangle(x, y+12, 4, 8, WHITE);
-            draw_rectangle(x, y+16, 20, 4, WHITE);
-            break;
-        // ... más números
-    }
+void move_cursor(uint64_t x, uint64_t y){
+    set_cursorX(x);
+    set_cursorY(y);
 }
-    */

@@ -40,5 +40,12 @@ void vd_drawRectangle(int x, int y, int width, int height, Color color);
 
 void vd_drawCircle(int centerX, int centerY, int radius, Color color);
 
+uint64_t vd_get_height();
+
+uint64_t vd_get_width();
+
+void vd_set_cursorX(uint64_t x);
+
+void vd_set_cursorY(uint64_t y);
 
 #endif
