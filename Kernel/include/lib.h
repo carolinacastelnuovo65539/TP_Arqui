@@ -15,6 +15,10 @@ uint64_t get_seconds();
 uint64_t get_minutes();
 uint64_t get_hours();
 
+uint64_t get_day();
+uint64_t get_month();
+uint64_t get_year();
+
 void sound(uint64_t frecuencia);
 void stop_sound();
 

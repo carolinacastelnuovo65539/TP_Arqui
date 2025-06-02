@@ -5,6 +5,7 @@
 #define STDIN 0
 #define STDOUT 1
 #define DIF_UTC 3
+#define DIF_LOWER 'a'-'A'
 
 static char buffer[64] = {'0'};
 
@@ -71,6 +72,13 @@ int strlen(char * str){
 
 void drawCursor() {
     
+}
+
+char to_lower(char c) {
+    if (c >= 'A' && c <= 'Z') {
+        return c + DIF_LOWER;  // Diferencia entre 'A' y 'a' en ASCII
+    }
+    return c;
 }
 
 static void to_hex(uint64_t n, char buf[16]){

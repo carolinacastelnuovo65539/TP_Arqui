@@ -79,4 +79,6 @@ void beep(uint64_t frecuencia, uint64_t tiempo);
 
 void get_cmos(uint64_t (*fun1)(void), uint64_t (*fun2)(void), uint64_t (*fun3)(void), char separate);
 
+char to_lower(char c);
+
 #endif

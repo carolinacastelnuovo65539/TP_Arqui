@@ -1,5 +1,6 @@
 #include <shell.h>
 #include <userlib.h>
+#include <pognis.h>
 
 #define USER_MAX 32
 #define COMMAND_MAX 100
@@ -134,6 +135,36 @@ void start(){
 	}
 }
 
+void command_pognis(){
+	print("\nWelcome to Pognis game!\n", 30);
+	print("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n", 40);
+	print("To exit the game, press 'ESC' key.\n", 40);
+	print("Enter the amount of players (1 or 2): ", 40);
+	char c = getChar();
+	if(c == '1'){
+		num_players = 1;
+		print("Starting Pognis with 1 player...\n", 30);
+		init_game();
+		while(game_running){
+			update_game1();
+			draw_game();
+		}
+	}else if(c == '2'){
+		num_players = 2;
+		print("Starting Pognis with 2 players...\n", 30);
+		init_game();
+		while(game_running){
+			update_game2();
+			draw_game();
+		}
+	}else{
+		print("Invalid input. Please enter 1 or 2.\n", 30);
+		command_pognis();
+		return;
+	}
+
+}
+
 void command_reduce(){
 	clear();
 	reduce();
@@ -175,10 +206,6 @@ void command_invopcode(){
 void command_beep(){
 	beep(100, 15);
 	putChar('\n');
-}
-
-void command_pognis(){
-
 }
 
 void command_help() {
