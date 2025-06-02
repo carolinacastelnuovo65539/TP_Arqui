@@ -15,6 +15,12 @@ extern uint64_t sys_get_minutes(uint64_t * minutes);
 
 extern uint64_t sys_get_hours(uint64_t * hours);
 
+extern uint64_t sys_get_day(uint64_t * seconds);
+
+extern uint64_t sys_get_month(uint64_t * minutes);
+
+extern uint64_t sys_get_year(uint64_t * hours);
+
 extern uint64_t sys_reduce();
 
 extern uint64_t sys_clear();

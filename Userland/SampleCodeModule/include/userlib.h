@@ -55,6 +55,8 @@ void clear();
 
 void getTime();
 
+void getDate();
+
 void printBase(uint64_t value, uint32_t base);
 
 void printDec(uint64_t value);
@@ -74,5 +76,7 @@ void zero();
 void opcode(void);
 
 void beep(uint64_t frecuencia, uint64_t tiempo);
+
+void get_cmos(uint64_t (*fun1)(void), uint64_t (*fun2)(void), uint64_t (*fun3)(void), char separate);
 
 #endif

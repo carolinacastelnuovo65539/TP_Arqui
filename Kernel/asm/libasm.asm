@@ -5,8 +5,6 @@ GLOBAL get_key
 GLOBAL inb
 GLOBAL outb
 
-
-
 GLOBAL key
 GLOBAL flag
 
@@ -16,6 +14,9 @@ GLOBAL get_minutes
 GLOBAL get_hours
 GLOBAL sound
 GLOBAL stop_sound
+GLOBAL get_day
+GLOBAL get_month
+GLOBAL get_year
 
 section .text
 	
@@ -112,6 +113,51 @@ get_hours:
 	mov rsp, rbp
 	pop rbp
     ret		
+
+
+get_day:
+	push rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x07
+    out 70h, al
+    in al, 71h
+	
+	mov rsp, rbp
+	pop rbp
+    ret
+
+get_month:
+	push rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x08
+    out 70h, al
+    in al, 71h
+
+	mov rsp, rbp
+	pop rbp
+    ret
+
+get_year:
+	push rbp
+	mov rbp, rsp
+
+	call rtc_bin
+
+    mov al, 0x09
+    out 70h, al
+    in al, 71h
+
+
+	mov rsp, rbp
+	pop rbp
+    ret		
+
 
 get_key:
 	push rbp

@@ -29,6 +29,8 @@ void command_reduce();
 
 void command_clear();
 
+void command_date();
+
 void command_increase();
 
 void command_zerodiv();

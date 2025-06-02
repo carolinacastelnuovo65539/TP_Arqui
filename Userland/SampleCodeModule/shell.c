@@ -3,7 +3,7 @@
 
 #define USER_MAX 32
 #define COMMAND_MAX 100
-#define COMMANDS 13
+#define COMMANDS 14
 #define MAX_BUFF 15
 
 static void leftLine();
@@ -13,7 +13,7 @@ int USER_SIZE = 5;
 static char username[USER_MAX] = "user";
 char command[COMMAND_MAX] = {0};
 
-char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear", "-beep", "-zerodiv", "-invopcode", "-pognis"};
+char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear", "-beep", "-zerodiv", "-invopcode", "-pognis", "-date"};
 
 int newTerminal = 1;
 
@@ -112,6 +112,9 @@ void checkCommand(char * cmd){
 			case 12:
 				command_pognis();
 				break;
+			case 13:
+				command_date();
+				break;
 			default:
 				invalid_command();
 			}
@@ -192,6 +195,8 @@ void printHelp() {
 	print("- display current username", MAX_BUFF);
 	printColor("\n    -time                  ", MAX_BUFF, ORANGE, BLACK);
 	print("- display current time", MAX_BUFF);
+	printColor("\n    -date                ", MAX_BUFF, ORANGE, BLACK);
+	print("- display UTC date\n", MAX_BUFF);
 	printColor("\n    -clear                 ", MAX_BUFF, ORANGE, BLACK);
 	print("- clear the display", MAX_BUFF);
 	printColor("\n    -increaseSize          ", MAX_BUFF, ORANGE, BLACK);
@@ -214,8 +219,15 @@ void printHelp() {
 }
 
 void command_time(){
-	print("\nThe local time is: ", 10);
+	// cuando ss < 10 los imprime sin un cero adelante
+	print("\nThe local time [hour:min:sec] is: ", 10);
 	getTime();
+	putChar('\n');
+}
+
+void command_date() {
+	print("\nThe UTC date [month/day/year] is: ", 10);
+	getDate();
 	putChar('\n');
 }
 

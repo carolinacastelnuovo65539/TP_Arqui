@@ -53,6 +53,22 @@ static uint64_t sys_get_hours(uint64_t * hours){
     return 1;
 }
 
+static uint64_t sys_get_day(uint64_t * day){ 
+    *day = get_day();
+    return 1;
+}
+
+static uint64_t sys_get_month(uint64_t * month){
+    *month = get_month();
+    return 1;
+}
+
+static uint64_t sys_get_year(uint64_t * year){
+    *year = get_year();
+    return 1;
+}
+
+
 static uint64_t sys_cursor(){
     putCursor();
     return 1;
@@ -165,6 +181,14 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
     case 16:
         return sys_sound(rdi, rsi);
         break;
-    return 1;
+    case 17:
+        return sys_get_day((uint64_t*)rdi);
+        break;
+    case 18:
+        return sys_get_month((uint64_t*)rdi);
+        break;
+    case 19:
+        return sys_get_year((uint64_t*)rdi);
+        break;
     }
 }

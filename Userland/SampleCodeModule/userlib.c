@@ -131,6 +131,25 @@ uint64_t get_seconds(){
     return seconds;
 }
 
+uint64_t get_day(){
+    uint64_t day;
+    sys_get_day(&day);
+    return day;
+}
+
+uint64_t get_month(){
+    uint64_t month;
+    sys_get_month(&month);
+    return month;
+}
+
+uint64_t get_year(){
+    uint64_t year;
+    sys_get_year(&year);
+    return year+2000;
+}
+
+
 void reduce(){
     sys_reduce();
 }
@@ -152,23 +171,39 @@ void opcode(void) {
 }
 
 void getTime(){
-	int hours, minutes, seconds;
-
-    hours = get_hours();
-    minutes = get_minutes();
-    seconds = get_seconds();
-
-    printDec(hours);
-    putChar(':');
-    printDec(minutes);
-    putChar(':');
-    printDec(seconds);
+    get_cmos(get_hours, get_minutes, get_seconds, ':');
 }
 
 
+void getDate() {
+    get_cmos(get_month, get_day, get_year, '/');
+}
+
+void get_cmos(uint64_t (*fun1)(void), uint64_t (*fun2)(void), uint64_t (*fun3)(void), char separate) {
+    int first, second, third;
+    first = fun1();
+    second = fun2();
+    third = fun3();
+
+    printDec(first);
+    putChar(separate);
+    printDec(second);
+    putChar(separate);
+    printDec(third);
+}
+
 void printDec(uint64_t value)
 {
-	printBase(value, 10);
+    // Si el número es menor que 10, agrega un 0 adelante
+    if (value >= 0 && value < 10) {
+        char paddedBuffer[3];
+        paddedBuffer[0] = '0';
+        paddedBuffer[1] = value + '0';
+        paddedBuffer[2] = '\0';
+        print(paddedBuffer, 2);
+    } else {
+        printBase(value, 10);
+    }
 }
 
 void printBase(uint64_t value, uint32_t base)

@@ -4,6 +4,9 @@ GLOBAL sys_registersInfo
 GLOBAL sys_get_seconds
 GLOBAL sys_get_minutes
 GLOBAL sys_get_hours
+GLOBAL sys_get_day
+GLOBAL sys_get_month
+GLOBAL sys_get_year
 GLOBAL sys_reduce
 GLOBAL sys_clear
 GLOBAL sys_increase
@@ -11,6 +14,7 @@ GLOBAL sys_write_color
 GLOBAL sys_drawRectangle
 GLOBAL sys_drawCircle
 GLOBAL sys_sound
+
 
 section .text
 
@@ -78,5 +82,20 @@ sys_write_color:
 
 sys_sound:
     mov rax, 0x10
+    int 80h
+    ret
+
+sys_get_day:
+    mov rax, 0x11
+    int 80h
+    ret
+
+sys_get_month:
+    mov rax, 0x12
+    int 80h
+    ret
+
+sys_get_year:
+    mov rax, 0x13
     int 80h
     ret
