@@ -18,6 +18,9 @@ GLOBAL sys_get_width
 GLOBAL sys_get_height
 GLOBAL sys_set_cursorX
 GLOBAL sys_set_cursorY
+GLOBAL sys_get_char_width
+GLOBAL sys_get_char_height
+GLOBAL sys_wait
 
 section .text
 
@@ -43,6 +46,11 @@ sys_get_minutes:
 
 sys_get_hours:
     mov rax, 0x05
+    int 80h
+    ret
+
+sys_wait:
+    mov rax, 0x07
     int 80h
     ret
 
@@ -124,4 +132,12 @@ sys_set_cursorY:
     int 80h
     ret
 
+sys_get_char_width:
+    mov rax, 0x18
+    int 80h
+    ret
 
+sys_get_char_height:
+    mov rax, 0x19
+    int 80h
+    ret

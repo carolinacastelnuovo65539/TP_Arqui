@@ -132,6 +132,16 @@ static uint64_t sys_get_height(uint64_t * height){
     return 1;
 }
 
+static uint64_t sys_get_char_height(uint64_t * char_height) {
+    *char_height = vd_get_char_height();
+    return 1;
+}
+
+static uint64_t sys_get_char_width(uint64_t * char_width) {
+    *char_width = vd_get_char_width();
+    return 1;
+}
+
 static uint64_t sys_set_cursorX(uint64_t x){
     vd_set_cursorX(x);
     return 1;
@@ -222,6 +232,12 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         break;
     case 23:
         return sys_set_cursorY(rdi);
+        break;
+    case 24:
+        return sys_get_char_width((uint64_t*)rdi);
+        break;
+    case 25:
+        return sys_get_char_height((uint64_t*)rdi);
         break;
     }
 }

@@ -45,3 +45,7 @@ extern uint64_t sys_set_cursorX(uint64_t value);
 
 extern uint64_t sys_set_cursorY(uint64_t value);
 
+extern uint64_t sys_get_char_width(uint64_t * charWidth);
+
+extern uint64_t sys_get_char_height(uint64_t charHeight);
+

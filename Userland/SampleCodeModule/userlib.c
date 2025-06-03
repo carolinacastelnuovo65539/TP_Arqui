@@ -35,17 +35,20 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
 }
 
 
-void printColorCentered(char *msg, int len, int arg, Color fg, Color bg) {
+// arg_number -> argumento para poder centrar en una misma pantalla mas de una linea
+void printColorCentered(char *msg, int arg_number, Color fg, Color bg, uint64_t char_width, uint64_t char_height) {
     int screen_width = set_width(); // asumimos que esta función existe
     int screen_height = set_height();
 
     // 8 -> char Width
-    int spaces = (screen_width - 8*len) / 2;
+
+    int len = strlen(msg);
+    int spaces = (screen_width - char_width*len) / 2;
     
     if (spaces < 0) spaces = 0;
 
     set_cursorX(spaces); // ajusta solo la posición horizontal
-    set_cursorY((screen_height)/2)
+    set_cursorY(((screen_height)/2)+arg_number*char_height);
     printColor(msg, len, fg, bg);
 }
 
@@ -64,6 +67,10 @@ void drawCircle(int centerX, int centerY, int radius, Color color) {
 
 void beep(uint64_t frecuencia, uint64_t tiempo){
     sys_sound(frecuencia, tiempo);
+}
+
+void sleep(uint64_t time){
+    sys_wait(time);
 }
 
 //Devuelve 0 si son iguales, distinto de cero sino 
@@ -181,6 +188,18 @@ uint64_t set_height(){
 uint64_t set_width(){
     sys_get_width(&width);
     return width;
+}
+
+uint64_t get_char_width() {
+    uint64_t char_width;
+    sys_get_char_width(&char_width);
+    return char_width;
+}
+
+uint64_t get_char_height() {
+    uint64_t char_height;
+    sys_get_char_width(&char_height);
+    return char_height;
 }
 
 void reduce(){

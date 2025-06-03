@@ -81,7 +81,7 @@ void get_cmos(uint64_t (*fun1)(void), uint64_t (*fun2)(void), uint64_t (*fun3)(v
 
 char to_lower(char c);
 
-void printColorCentered(char *msg, int len, Color fg, Color bg);
+void printColorCentered(char *msg, int arg_number, Color fg, Color bg, uint64_t char_width, uint64_t char_height);
 
 uint64_t set_height();
 
@@ -91,5 +91,10 @@ void set_cursorX(uint64_t value);
 
 void set_cursorY(uint64_t value);
 
+uint64_t get_char_width();
+
+uint64_t get_char_height();
+
+void sleep(uint64_t time);
 
 #endif

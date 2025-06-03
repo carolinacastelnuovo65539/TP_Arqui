@@ -100,6 +100,13 @@ void vd_drawRectangle(int x, int y, int width, int height, Color color) {
 	}
 }
 
+uint64_t vd_get_char_width() {
+	return CHAR_WIDTH;
+}
+
+uint64_t vd_get_char_height() {
+	return CHAR_HEIGHT;
+}
 
 // void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
 //     Color * pixel;

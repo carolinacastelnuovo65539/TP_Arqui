@@ -14,7 +14,7 @@ int USER_SIZE = 5;
 static char username[USER_MAX] = "user";
 char command[COMMAND_MAX] = {0};
 
-char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear", "-beep", "-zerodiv", "-invopcode", "-pognis", "-date"};
+char * commands[] = {"-help", "-time", "-changeUsername", "-registers", "-username", "-exit", "-increaseSize", "-decreaseSize", "-clear", "-beep", "-zerodiv", "-invopcode", "-pongis", "-date"};
 
 int newTerminal = 1;
 
@@ -139,20 +139,16 @@ void start(){
 void command_pognis(){
 	using = 0;
     command_clear();
-	game_running = 1;
 
     increase();
-    printColorCentered("Welcome to Pognis game!\n", strlen("Welcome to Pognis game!\n"), LIGHT_BLUE, BLACK);
+    printColorCentered("Welcome to Pognis game!\n", 0 ,LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
     reduce();
-    printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n", 
-                      strlen("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n"), 
-                      LIGHT_BLUE, BLACK);
-    printColorCentered("To exit the game, press 'ESC' key.\n", 
-                      strlen("To exit the game, press 'ESC' key.\n"), 
-                      LIGHT_BLUE, BLACK);
-    printColorCentered("Enter the amount of players (1 or 2): ", 
-                      strlen("Enter the amount of players (1 or 2): "), 
-                      LIGHT_BLUE, BLACK);
+
+
+	// ESTO TENGO Q CAMBIARLO, HACER DESPUES!
+    printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n", 1 ,LIGHT_BLUE, BLACK, 8, 32);
+    printColorCentered("To exit the game, press 'ESC' key.\n", 2 , LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
+    printColorCentered("Enter the amount of players (1 or 2): ", 3,LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
 	char players;
 
 	while(((players = getChar()) != '1' && players != '2')) {
@@ -262,7 +258,7 @@ void printHelp() {
 	print("- test invalid opcode exception", MAX_BUFF);
 	printColor("\n    -exit                  ", MAX_BUFF, ORANGE, BLACK);
 	print("- exit the OS", MAX_BUFF);
-	printColor("\n    -pognis                ", MAX_BUFF, ORANGE, BLACK);
+	printColor("\n    -pongis                ", MAX_BUFF, ORANGE, BLACK);
 	print("- start the game\n", MAX_BUFF);
 	putChar('\n');
 }

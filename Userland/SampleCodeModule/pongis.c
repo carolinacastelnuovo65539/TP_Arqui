@@ -24,6 +24,7 @@ void updateGame2(char input1, char input2);
 int ballInHole();
 
 void start_game_pongis(char players) {
+    game_running = 1;
     num_players = players - '0';
     screenW = set_width();
     screenH = set_height();
@@ -41,7 +42,6 @@ void start_game_pongis(char players) {
     hole = (Hole){screenW / 2, screenH / 4, 15, HOLE_COLOR};
 
     drawGame();
-
 
     while (game_running) {
         char input1 = getChar();
@@ -66,7 +66,7 @@ void start_game_pongis(char players) {
         // drawGame();
 
         if (ballInHole()) {
-            printColorCentered("¡La bola entró en el hoyo!\n", 28, YELLOW, FIELD_COLOR);
+            printColorCentered("¡La bola entró en el hoyo!\n", 28, YELLOW, FIELD_COLOR, 8, 16);
             beep(1000, 30);
             game_running = 0;
             //sleep(2);  // Pequeña pausa para mostrar el mensaje
@@ -74,11 +74,11 @@ void start_game_pongis(char players) {
             break;
         }
     }
-    
+    clear();
+    game_running = 0;
 }
 
 void drawGame() {
-    clear();
 
     drawRectangle(0, 0, screenW, screenH, FIELD_COLOR);
 
@@ -93,7 +93,33 @@ void drawGame() {
     drawCircle(hole.x, hole.y, hole.radius, hole.color);
 }
 
+void drawPlayer(Paddle p){
+    drawCircle(p.x, p.y, p.radius, p.color);
+}
+
+// void updateGame1(char input) {
+//     switch (to_lower(input)) {
+//         case 'w': player1.y -= SPEED; break;
+//         case 's': player1.y += SPEED; break;
+//         case 'a': player1.x -= SPEED; break;
+//         case 'd': player1.x += SPEED; break;
+//         case ' ': // disparo
+//             ball.x += (hole.x - ball.x) / 10;
+//             ball.y += (hole.y - ball.y) / 10;
+//             break;
+//     }
+//     // sleep(3);
+//     drawGame();
+//     // drawPlayer(player1);
+// }
+
 void updateGame1(char input) {
+    // Guardar posiciones anteriores
+    int oldX = player1.x;
+    int oldY = player1.y;
+    int oldBallX = ball.x;
+    int oldBallY = ball.y;
+
     switch (to_lower(input)) {
         case 'w': player1.y -= SPEED; break;
         case 's': player1.y += SPEED; break;
@@ -104,10 +130,61 @@ void updateGame1(char input) {
             ball.y += (hole.y - ball.y) / 10;
             break;
     }
+
+    // Solo redibujar si hubo cambios
+    if (oldX != player1.x || oldY != player1.y) {
+        // Borrar posición anterior
+        drawCircle(oldX, oldY, player1.radius, FIELD_COLOR);
+        // Dibujar nueva posición
+        drawCircle(player1.x, player1.y, player1.radius, player1.color);
+        
+        // Redibujar el hoyo si el jugador está cerca
+        if (checkCollision(player1.x, player1.y, player1.radius, hole.x, hole.y, hole.radius)) {
+            drawCircle(hole.x, hole.y, hole.radius, hole.color);
+        }
+        
+        // Verificar colisión con la pelota y moverla
+        if (checkCollision(player1.x, player1.y, player1.radius, ball.x, ball.y, ball.radius)) {
+            // Calcula dirección del empuje
+            int dx = ball.x - player1.x;
+            int dy = ball.y - player1.y;
+            
+            // Mueve la pelota
+            ball.x += dx / 5;
+            ball.y += dy / 5;
+            
+            // Redibujar la pelota en su nueva posición
+            drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+            drawCircle(ball.x, ball.y, ball.radius, ball.color);
+        }
+    }
 }
+
+// void updateGame2(char input1, char input2) {
+//     updateGame1(input1);
+
+//     switch (to_lower(input2)) {
+//         case 'i': player2.y -= SPEED; break;
+//         case 'k': player2.y += SPEED; break;
+//         case 'j': player2.x -= SPEED; break;
+//         case 'l': player2.x += SPEED; break;
+//         case ' ': // disparo
+//             ball.x += (hole.x - ball.x) / 10;
+//             ball.y += (hole.y - ball.y) / 10;
+//             break;
+//     }
+//     sleep(3);
+//     drawGame();
+//     // drawPlayer(player2);
+// }
 
 void updateGame2(char input1, char input2) {
     updateGame1(input1);
+
+    int oldX = player2.x;
+    int oldY = player2.y;
+    int oldBallX = ball.x;
+    int oldBallY = ball.y;
 
     switch (to_lower(input2)) {
         case 'i': player2.y -= SPEED; break;
@@ -119,7 +196,30 @@ void updateGame2(char input1, char input2) {
             ball.y += (hole.y - ball.y) / 10;
             break;
     }
+
+    if (oldX != player2.x || oldY != player2.y) {
+        drawCircle(oldX, oldY, player2.radius, FIELD_COLOR);
+        drawCircle(player2.x, player2.y, player2.radius, player2.color);
+        
+        // Redibujar el hoyo si el jugador está cerca
+        if (checkCollision(player2.x, player2.y, player2.radius, hole.x, hole.y, hole.radius)) {
+            drawCircle(hole.x, hole.y, hole.radius, hole.color);
+        }
+        
+        // Verificar colisión con la pelota y moverla
+        if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
+            int dx = ball.x - player2.x;
+            int dy = ball.y - player2.y;
+            
+            ball.x += dx / 5;
+            ball.y += dy / 5;
+            
+            drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+            drawCircle(ball.x, ball.y, ball.radius, ball.color);
+        }
+    }
 }
+
 
 int ballInHole() {
     int dx = ball.x - hole.x;
