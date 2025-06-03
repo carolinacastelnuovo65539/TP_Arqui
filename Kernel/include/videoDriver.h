@@ -48,4 +48,9 @@ void vd_set_cursorX(uint64_t x);
 
 void vd_set_cursorY(uint64_t y);
 
+uint64_t vd_get_char_height();
+uint64_t vd_get_char_width();
+
+
+
 #endif

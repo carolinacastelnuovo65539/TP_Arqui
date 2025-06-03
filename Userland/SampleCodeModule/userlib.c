@@ -34,23 +34,28 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
     sys_write(STDOUT, string, len);
 }
 
-
-// arg_number -> argumento para poder centrar en una misma pantalla mas de una linea
-void printColorCentered(char *msg, int arg_number, Color fg, Color bg, uint64_t char_width, uint64_t char_height) {
+// Imprime centrado tanto en altura como en ancho
+// Si se la llama varias veces y se quiere que se impriman todas centradas ...
+// Previo a su uso, settear height_print_centered=0,
+void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint64_t char_height) {
     int screen_width = set_width(); // asumimos que esta función existe
     int screen_height = set_height();
 
-    // 8 -> char Width
+    if (height_print_centered==0) {
+        height_print_centered=(screen_height)/2;
+    }
 
     int len = strlen(msg);
     int spaces = (screen_width - char_width*len) / 2;
     
     if (spaces < 0) spaces = 0;
 
-    set_cursorX(spaces); // ajusta solo la posición horizontal
-    set_cursorY(((screen_height)/2)+arg_number*char_height);
+    set_cursorX(spaces); // posición horizontal
+    set_cursorY(height_print_centered); // posicion vertical
     printColor(msg, len, fg, bg);
+    height_print_centered += char_height; // Desplazamiento vertical
 }
+
 
 void printColor(char * string, int len, Color fuente, Color fondo) {
     sys_write_color(STDOUT, string, len, fuente, fondo);
@@ -198,7 +203,7 @@ uint64_t get_char_width() {
 
 uint64_t get_char_height() {
     uint64_t char_height;
-    sys_get_char_width(&char_height);
+    sys_get_char_height(&char_height);
     return char_height;
 }
 

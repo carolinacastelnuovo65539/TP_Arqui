@@ -28,6 +28,8 @@ static const Color DARK_PINK={0xDA,0,0xEC};
 static const Color PINK={0xFF,0,0xFF};
 static const Color WINE={0xB4,0,0x57};
 
+static uint64_t height_print_centered=0; // used when printing more than one line (height centered) 
+
 
 int strcmp(char * str1, char * str2);
 
@@ -81,7 +83,7 @@ void get_cmos(uint64_t (*fun1)(void), uint64_t (*fun2)(void), uint64_t (*fun3)(v
 
 char to_lower(char c);
 
-void printColorCentered(char *msg, int arg_number, Color fg, Color bg, uint64_t char_width, uint64_t char_height);
+void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint64_t char_height);
 
 uint64_t set_height();
 

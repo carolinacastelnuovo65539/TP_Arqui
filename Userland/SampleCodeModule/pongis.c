@@ -66,7 +66,8 @@ void start_game_pongis(char players) {
         // drawGame();
 
         if (ballInHole()) {
-            printColorCentered("¡La bola entró en el hoyo!\n", 28, YELLOW, FIELD_COLOR, 8, 16);
+            height_print_centered = 0;
+            printColorCentered("¡La bola entró en el hoyo!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height());
             beep(1000, 30);
             game_running = 0;
             //sleep(2);  // Pequeña pausa para mostrar el mensaje
