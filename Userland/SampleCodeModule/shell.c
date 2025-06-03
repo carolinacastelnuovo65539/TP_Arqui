@@ -1,6 +1,6 @@
 #include <shell.h>
 #include <userlib.h>
-#include <pognis.h>
+#include <pongis.h>
 
 #define USER_MAX 32
 #define COMMAND_MAX 100
