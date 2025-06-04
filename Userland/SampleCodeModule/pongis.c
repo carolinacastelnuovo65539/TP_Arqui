@@ -7,11 +7,15 @@
 #define PADDLE_COLOR RED
 #define BALL_COLOR WHITE
 #define HOLE_COLOR BLACK
+#define BALL_SPEED 20
+#define WALL_BOUNCE -1
 
 static int screenW, screenH;
 static int game_running = 1;
 static int num_players;
 static int last_player_hit = 0; // 1 para jugador 1, 2 para jugador 2
+static double ball_dx = 0;
+static double ball_dy = 0;
 
 static Paddle player1;
 static Paddle player2;
@@ -67,7 +71,7 @@ void start_game_pongis(char players) {
 
         if (ballInHole()) {
             height_print_centered = 0;
-            printColorCentered("¡La bola entró en el hoyo!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height());
+            printColorCentered("The ball entered the hole!\n", YELLOW, BLACK, get_char_width(), get_char_height());
             beep(1000, 30);
             game_running = 0;
             //sleep(2);  // Pequeña pausa para mostrar el mensaje
@@ -151,8 +155,8 @@ void updateGame1(char input) {
             int dy = ball.y - player1.y;
             
             // Mueve la pelota
-            ball.x += dx / 5;
-            ball.y += dy / 5;
+            ball.x += (dx * BALL_SPEED) / 5;
+            ball.y += (dy * BALL_SPEED) / 5;
             
             // Redibujar la pelota en su nueva posición
             drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
@@ -212,8 +216,8 @@ void updateGame2(char input1, char input2) {
             int dx = ball.x - player2.x;
             int dy = ball.y - player2.y;
             
-            ball.x += dx / 5;
-            ball.y += dy / 5;
+            ball.x += (dx * BALL_SPEED) / 5;
+            ball.y += (dy * BALL_SPEED) / 5;
             
             drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
             drawCircle(ball.x, ball.y, ball.radius, ball.color);
@@ -223,9 +227,12 @@ void updateGame2(char input1, char input2) {
 
 
 int ballInHole() {
+    // Si la pelota está lo suficientemente cerca del centro del hoyo
     int dx = ball.x - hole.x;
     int dy = ball.y - hole.y;
-    return dx * dx + dy * dy <= hole.radius * hole.radius;
+    
+    // Usamos un radio más pequeño que el del hoyo para hacer más fácil anotar
+    return dx * dx + dy * dy <= (hole.radius + ball.radius) * (hole.radius + ball.radius);
 }
 
 
@@ -250,5 +257,37 @@ void handleBallCollision(Paddle *player, int player_num) {
         
         // Efecto de sonido al golpear
         beep(500, 10);
+    }
+}
+
+// Agregar esta función nueva
+void keepInBounds(int *x, int *y, int radius) {
+    // Límites horizontales
+    if (*x - radius < 0) *x = radius;
+    if (*x + radius > screenW) *x = screenW - radius;
+    
+    // Límites verticales
+    if (*y - radius < 0) *y = radius;
+    if (*y + radius > screenH) *y = screenH - radius;
+}
+
+// Agregar esta función para el rebote de la pelota
+void handleBallBounce() {
+    int bounced = 0;
+    
+    // Rebote horizontal
+    if (ball.x - ball.radius < 0 || ball.x + ball.radius > screenW) {
+        ball_dx *= WALL_BOUNCE;
+        bounced = 1;
+    }
+    
+    // Rebote vertical
+    if (ball.y - ball.radius < 0 || ball.y + ball.radius > screenH) {
+        ball_dy *= WALL_BOUNCE;
+        bounced = 1;
+    }
+    
+    if (bounced) {
+        beep(400, 10);  // Sonido de rebote
     }
 }
