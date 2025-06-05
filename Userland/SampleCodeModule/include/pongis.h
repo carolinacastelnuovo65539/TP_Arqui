@@ -4,27 +4,27 @@
 void start_game_pongis(char players);
 
 typedef struct {
-    int x, y;
+    double x, y;
     int scoreNum;
 } Score;
 
 typedef struct {
-    int x, y;
-    int radius;
+    double x, y;
+    double radius;
     Score score;
     Color color;
 } Paddle;
 
 typedef struct {
-    int x, y;
-    int radius;
+    double x, y;
+    double radius;
     Color color;
 } Ball;
 
 typedef struct {
-    int x, y;
-    int radius;
-    int outRadius;
+    double x, y;
+    double radius;
+    double outRadius;
     Color outColor;
     Color color;
 } Hole;
@@ -33,13 +33,13 @@ void start_game_pongis(char players);
 
 void handleBallCollision(Paddle *player, int player_num);
 
-int checkCollision(int x1, int y1, int r1, int x2, int y2, int r2);
+int checkCollision(double x1, double y1, double r1, double x2, double y2, double r2);
 
 void checkIfBorderPlayer(Paddle * p);
 
 void checkIfBorderBall(Ball * b, double *dx, double *dy);
 
-int checkScoreCollision(int x1, int y1, int r1, int x2, int y2);
+int checkScoreCollision(double x1, double y1, double r1, double x2, double y2);
 
 void resetLevel();
 

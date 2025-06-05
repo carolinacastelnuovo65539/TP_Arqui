@@ -12,20 +12,21 @@ static char * nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","
 
 
 
-static void pasoHexa(uint64_t num1, char buffer[16]){
+static void pasoHexa(uint64_t num1, char buffer[18]){
+	buffer[0] = '0';
+	buffer[1] = 'x';
 	int i = 15;
-	do
-	{
+	for (int i = 17; i >= 2; i--) {
 		int num2 = num1 % 16;
-		buffer[i] = (num2 < 10 ? '0' : ('A' - 10)) + num2;
+		buffer[i] = (num2 < 10) ? ('0' + num2) : ('A' + num2 - 10);
 		num1 /= 16;
-	} while (i-- != 0);
-	buffer[15]='\0';
+	}
+	buffer[18] = '\0';
 }
 
 
 void print_regs(){
-	char buffer[16];
+	char buffer[19];
 	for(int i = 0; i < 19; i++){
 		vd_prints(nombreRegistros[i], 100, WHITE, BLACK); //este 5 hay que sacarlo
 		vd_prints(": ", 2, WHITE, BLACK);

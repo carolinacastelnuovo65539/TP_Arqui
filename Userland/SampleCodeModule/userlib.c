@@ -115,13 +115,11 @@ char to_lower(char c) {
 }
 
 static void to_hex(uint64_t n, char buf[16]){
-	int i = 15;
-	do
-	{
+	for (int i=15; i>=0; i--) {
 		int num2 = n % 16;
 		buf[i] = (num2 < 10 ? '0' : ('A' - 10)) + num2;
 		n /= 16;
-	} while (i-- != 0);
+    }
 }
 
 void printRegisters(){
