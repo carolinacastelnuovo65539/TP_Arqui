@@ -3,9 +3,6 @@
 #define ZERO_EXCEPTION_ID 0
 #define OPCODE_EXCEPTION_ID 6
 
-int flag_zero = 1; // Flag to indicate if a zero division exception has occurred
-
-
 
 extern uint64_t exc_regs[19];
 static char * nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15","RIP","CS","RFLAGS", "RSP"};
@@ -37,7 +34,7 @@ void print_regs(){
 }
 
 static void zero_division() {
-	vd_prints("\nZERO DIVISION EXCEPTION\n", 25, WHITE, BLACK);
+	vd_prints("\nZERO DIVISION EXCEPTION\n", 28, WHITE, BLACK);
 	print_regs();
 	vd_print('\n', WHITE, BLACK);	
 }
@@ -49,8 +46,7 @@ static void opcode_exception() {
 }
 
 void exceptionDispatcher(int exception) {
-	if (exception == ZERO_EXCEPTION_ID && flag_zero)
-		{flag_zero = 0; // Reset the zero flag
+	if (exception == ZERO_EXCEPTION_ID ){
 		zero_division();}
 	else if(exception == OPCODE_EXCEPTION_ID)
 		opcode_exception();
