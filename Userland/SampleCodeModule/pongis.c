@@ -44,6 +44,7 @@ static Hole hole;
 
 void start_game_pongis(char players) {
     game_running = 1;
+    current_level = 1;
     num_players = players - '0';
     screenW = set_width();
     screenH = set_height();
