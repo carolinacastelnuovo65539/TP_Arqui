@@ -376,8 +376,16 @@ void updateGame2(uint8_t * pressed_keys) {
         if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius)){
             drawCircle(player1.x, player1.y, player1.radius, FIELD_COLOR);
             drawCircle(player2.x, player2.y, player2.radius, FIELD_COLOR);
-            player2.x = oldX;
-            player2.y = oldY;
+            if(player2.x < player1.x) {
+                player2.x = oldX - 3; 
+            } else {
+                player2.x = oldX + 3;
+            }
+            if(player2.y < player1.y) {
+                player2.y = oldY - 3; 
+            } else {
+                player2.y = oldY + 3;
+            }
             drawCircle(player1.x, player1.y, player1.radius, player1.color);
             drawCircle(player2.x, player2.y, player2.radius, player2.color);
         }
