@@ -29,7 +29,7 @@ static int last_player_hit = 0; // 1 para jugador 1, 2 para jugador 2
 static double ball_dx = 0;
 static double ball_dy = 0;
 static int current_level = 1;
-static int max_levels = 1;
+static int max_levels = 5;
 static int score_width;
 static int score_height;
 static double oldBallX;
