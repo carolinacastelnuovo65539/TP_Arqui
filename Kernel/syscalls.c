@@ -149,7 +149,15 @@ static uint64_t sys_set_cursorX(uint64_t x){
 
 static uint64_t sys_set_cursorY(uint64_t y){
     vd_set_cursorY(y);
-    return;
+    return 1;
+}
+
+static uint64_t sys_get_pressed_keys(uint8_t * arreglo) {
+    uint8_t * aux = get_pressed_keys();
+    for (int i=0; i<MAX_KEYS; i++) {
+        arreglo[i] = aux[i];
+    }
+    return 1;
 }
 
 static void separate_rgb(Color * color, uint64_t * arg) {
@@ -239,5 +247,9 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
     case 25:
         return sys_get_char_height((uint64_t*)rdi);
         break;
+    case 26:
+        return sys_get_pressed_keys((uint8_t*)rdi);
+        break;
     }
+    return -1;
 }

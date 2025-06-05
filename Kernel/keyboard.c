@@ -4,6 +4,8 @@
 #include <videoDriver.h>
 
 #define BUFFER_MAX 256
+#define TRUE 1
+#define FALSE !TRUE
 
 extern uint8_t inb(uint16_t port);
 extern void get_key();
@@ -18,6 +20,9 @@ int elems = 0;
 int read_index = 0;
 
 char BUFFER[BUFFER_MAX] = {0};
+uint8_t pressed_keys[MAX_KEYS] = {FALSE};
+
+
 
 static const char mayusc[] = {
       0,   27, '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+',
@@ -42,32 +47,11 @@ static const char minusc[] = {
 
 static const char * mapaLetras[] = {minusc, mayusc};
 
-// void keyboard_handler(){
-//     // vd_prints("Tecla presionada: ", 16, WHITE, BLACK);
-
-//     //Hasta acá está llegando
-//     if(key <= 0x79 || key == 0x38 || key == 0xAA || key == 0xB6){
-//       // if(key == 0x38){ //La tecla del ALT
-//       //       guardar_registros();
-//       // }
-//       // shift presionad
-//       if (key == 0x2A || key == 0x36) {
-//         shift = 1;
-//       }
-//       // shift no presionado
-//       if(key == 0xAA || key == 0xB6){
-//         shift = 0;
-//       }
-//       char c = mapaLetras[shift][key];
-//       vd_print(c, WHITE, BLACK);
-//       next();
-//     }
-   
-// }
 
 void keyboard_handler() {
     get_key();
     if ((key & 0x80) == 0) {
+        pressed_keys[key] = TRUE;   // la tecla esta presionada
         if (key == 0x2A || key == 0x36) {
             shift = 1;  // Shift pressed
         } else if (key == 0x38) {
@@ -79,6 +63,7 @@ void keyboard_handler() {
         }
     } else {
         key = key & 0x7F;
+        pressed_keys[key] = FALSE;  // la tecla no esta presionada
         // break code
         if (key == 0x2A || key == 0x36) {
             shift = 0;  // Shift freed
@@ -91,18 +76,8 @@ void next() {
     if( elems == BUFFER_MAX ) {
         elems = 0;
     } 
-    BUFFER[ elems++ ] = mapaLetras[shift][(int)key];
+    BUFFER[elems++] = mapaLetras[shift][(int)key];
 }
-
-
-
-
-// char getKeyboard(){
-//     if((key >= 0x10 && key <= 0x19) || (key >= 0x1E && key <= 0x26) || (key >= 0x2C && key <= 0x32)){
-//       return mapaLetras[shift][(int)key];
-//     }
-//     return mapaLetras[shift][(int)key];
-// }
 
 char getBuff() {
     if (read_index == elems) {
@@ -118,4 +93,8 @@ int getAltFlag(){
   int ans = alt;
   alt = 0;
   return ans;
+}
+
+uint8_t * get_pressed_keys() {
+    return pressed_keys;
 }

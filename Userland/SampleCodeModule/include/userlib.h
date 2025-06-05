@@ -21,15 +21,14 @@ static const Color ORANGE = {0xFF,0xB3,0x66};
 static const Color YELLOW = {0xFF,0xF1,0x76};
 static const Color LIGHT_GREEN = {0x9A,0xFF,0x9A};
 static const Color DARK_GREEN = {0,0x9C,0x02};
-static const Color LIGHT_BLUE={0x74,0xC0,0xFC};
+static const Color LIGHT_BLUE={0x64,0x95,0xED};
 static const Color DARK_BLUE={0,0,0xD2};
-static const Color VIOLET = {0x93,0,0xFF};
+static const Color VIOLET = {0x8A,0x2B,0xE2};
 static const Color DARK_PINK={0xDA,0,0xEC};
 static const Color PINK={0xFF,0,0xFF};
 static const Color WINE={0xB4,0,0x57};
-
-static uint64_t height_print_centered=0; // used when printing more than one line (height centered) 
-
+static const Color LIGHT_RED={0xCD,0x5C,0x5C};
+static const Color TEAL = {0x00,0x80,0x80};
 
 int strcmp(char * str1, char * str2);
 
@@ -98,5 +97,7 @@ uint64_t get_char_width();
 uint64_t get_char_height();
 
 void sleep(uint64_t time);
+
+void get_pressed_keys(uint8_t * pressed_keys);
 
 #endif

@@ -6,6 +6,10 @@
 #define STDOUT 1
 #define DIF_UTC 3
 #define DIF_LOWER 'a'-'A'
+#define MAX_KEYS 128
+#define TRUE 1
+#define FALSE !TRUE
+
 
 static char buffer[64] = {'0'};
 
@@ -13,6 +17,7 @@ static char *nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R
 
 static void to_hex(uint64_t n, char buf[16]);
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
+
 
 
 uint64_t height, width;
@@ -275,6 +280,10 @@ void set_cursorX(uint64_t value) {
 
 void set_cursorY(uint64_t value) {
     sys_set_cursorY(value);
+}
+
+void get_pressed_keys(uint8_t * pressed_keys) {
+    sys_get_pressed_keys(pressed_keys);
 }
 
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)

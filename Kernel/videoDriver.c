@@ -108,46 +108,6 @@ uint64_t vd_get_char_height() {
 	return CHAR_HEIGHT;
 }
 
-// void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
-//     Color * pixel;
-//     int radiusSquared = radius * radius;
-    
-//     for (int y = centerY - radius; y <= centerY + radius; y++) {
-//         int dy = y - centerY;
-//         int dySquared = dy * dy;
-        
-//         // Encontrar el rango x válido para esta fila y
-//         int startX = centerX - radius;
-//         int endX = centerX + radius;
-        
-//         // Optimización: encontrar el primer x válido
-//         while (startX <= centerX) {
-//             int dx = startX - centerX;
-//             if (dx * dx + dySquared <= radiusSquared) {
-//                 break;
-//             }
-//             startX++;
-//         }
-        
-//         // Encontrar el último x válido
-//         while (endX >= centerX) {
-//             int dx = endX - centerX;
-//             if (dx * dx + dySquared <= radiusSquared) {
-//                 break;
-//             }
-//             endX--;
-//         }
-        
-//         // Dibujar la línea horizontal si hay píxeles válidos
-//         if (startX <= endX) {
-//             pixel = (Color*) getPixel(startX, y);
-//             for (int x = startX; x <= endX; x++, pixel++) {
-//                 *pixel = color;
-//             }
-//         }
-//     }
-// }
-
 
 void vd_drawCircle(int centerX, int centerY, int radius, Color color) {
     int r2 = radius * radius;

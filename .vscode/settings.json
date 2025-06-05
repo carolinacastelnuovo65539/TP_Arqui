@@ -59,6 +59,7 @@
   "files.associations": {
     "keyboard.h": "c",
     "string.h": "c",
-    "math.h": "c"
+    "math.h": "c",
+    "stdint.h": "c"
   }
 }

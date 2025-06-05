@@ -21,6 +21,7 @@ GLOBAL sys_set_cursorY
 GLOBAL sys_get_char_width
 GLOBAL sys_get_char_height
 GLOBAL sys_wait
+GLOBAL sys_get_pressed_keys
 
 section .text
 
@@ -139,5 +140,10 @@ sys_get_char_width:
 
 sys_get_char_height:
     mov rax, 0x19
+    int 80h
+    ret
+
+sys_get_pressed_keys:
+    mov rax, 0x1A
     int 80h
     ret

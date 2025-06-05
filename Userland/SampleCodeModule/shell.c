@@ -140,7 +140,7 @@ void command_pognis(){
 	using = 0;
     command_clear();
     increase();
-    printColorCentered("Welcome to Pognis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 1);
+    printColorCentered("Welcome to Pongis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 1);
     reduce();
 
 	printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
@@ -195,8 +195,8 @@ void command_clear(){
 }
 
 static void leftLine(){
-	printColor(username, USER_SIZE, LIGHT_BLUE, BLACK);
-	printColor("~$ > ", 5, LIGHT_GREEN, BLACK);
+	printColor(username, USER_SIZE, TEAL, BLACK);
+	printColor("~$ > ", 5, VIOLET, BLACK);
 }
 
 void terminal(){

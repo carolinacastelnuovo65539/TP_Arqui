@@ -1,7 +1,8 @@
-#include <stdio.h>
+#include <stdint.h>
+#include <userlib.h>
 
-extern void exc_zero();
+extern uint64_t exc_zero();
 
-extern void exc_opcode();
+extern uint64_t exc_opcode();
 
-extern void _hlt();
+extern uint64_t _hlt();
