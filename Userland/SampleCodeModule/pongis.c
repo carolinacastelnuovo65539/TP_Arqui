@@ -29,7 +29,7 @@ static int last_player_hit = 0; // 1 para jugador 1, 2 para jugador 2
 static double ball_dx = 0;
 static double ball_dy = 0;
 static int current_level = 1;
-static int max_levels = 5;
+static int max_levels = 1;
 static int score_width;
 static int score_height;
 static double oldBallX;
@@ -49,13 +49,6 @@ void start_game_pongis(char players) {
     screenH = set_height();
 
     srand(screenW * screenH * get_seconds() * get_minutes() * get_hours());
-
-    // player1_x = player1.x;
-    // player1_y = player1.y;
-    // if (num_players == 2) {
-    //     player2_x = player2.x;
-    //     player2_y = player2.y;
-    // }
 
     clear();
 
@@ -135,8 +128,6 @@ void start_game_pongis(char players) {
             updateGame2(pressed_keys);
         }
 
-        // drawGame();
-
         if (ballInHole()) {
             if( last_player_hit == 1) {
                 player1.score.scoreNum++;
@@ -147,17 +138,16 @@ void start_game_pongis(char players) {
             }
             current_level++;
             if( current_level > max_levels){
-                // height_print_centered = 0;
                 drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
                 drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
                 drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 drawCircle(hole.x, hole.y, ball.radius, ball.color);
                 increase();
-                printColorCentered("Congratulations! You completed all levels!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
+                printColorCentered("Congratulations! You completed all levels!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
                 if(player1.score.scoreNum > player2.score.scoreNum){
-                    printColorCentered("Player 1 won the game!\n", YELLOW, FIELD_COLOR, get_char_width, get_char_height, 0);
+                    printColorCentered("Player 1 won the game!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 0);
                 }else{
-                    printColorCentered("Player 2 won the game!\n", YELLOW, FIELD_COLOR, get_char_width, get_char_height, 0);
+                    printColorCentered("Player 2 won the game!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 0);
                 }
                 reduce();
                 beep(1000, 30);
@@ -165,13 +155,12 @@ void start_game_pongis(char players) {
                 break;
             }else {
                 // Siguiente nivel
-                // height_print_centered = 0;
                 drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
                 drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
                 drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 drawCircle(hole.x, hole.y, ball.radius, ball.color);
                 increase();
-                printColorCentered("Level completed! Get ready for the next one!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
+                printColorCentered("Level completed! Get ready for the next one!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
                 
                 reduce();
                 beep(1000, 30);
@@ -187,9 +176,9 @@ void start_game_pongis(char players) {
                 }
             }
         }
-        getChar();
     }
-    clear();
+    clean_buff();
+    // clear();
     game_running = 0;
 }
 
@@ -199,11 +188,9 @@ void drawGame() {
 
     drawPlayer(player1);
 
-    // drawCircle(player1.x, player1.y, player1.radius, player1.color);
 
     if (num_players == 2) {
         drawPlayer(player2);
-        // drawCircle(player2.x, player2.y, player2.radius, player2.color);
     }
 
     drawCircle(ball.x, ball.y, ball.radius, ball.color);
@@ -222,12 +209,6 @@ void updateGame1(uint8_t * pressed_keys) {
     int oldX = (int)player1.x;
     int oldY = (int) player1.y;
 
-    // Mover jugador usando variables con decimales
-    // if (pressed_keys[SC_W] && player1_y > player1.radius) player1_y -= SPEED;
-    // if (pressed_keys[SC_S] && player1_y < screenH - player1.radius) player1_y += SPEED;
-    // if (pressed_keys[SC_A] && player1_x > player1.radius) player1_x -= SPEED;
-    // if (pressed_keys[SC_D] && player1_x < screenW - player1.radius) player1_x += SPEED;
-
     if (pressed_keys[SC_W] && (player1.y - SPEED) > player1.radius) 
          player1.y -= SPEED;
     if (pressed_keys[SC_S] && (player1.y + SPEED) < (screenH - player1.radius)) 
@@ -237,8 +218,6 @@ void updateGame1(uint8_t * pressed_keys) {
     if (pressed_keys[SC_D] && (player1.x + SPEED) < (screenW - player1.radius)) 
         player1.x += SPEED;
 
-
-    // checkIfBorderPlayer(&player1);
     // Actualizar posiciones enteras solo si hubo un cambio significativo
     int newX = (int) player1.x;
     int newY = (int) player1.y;
@@ -246,10 +225,6 @@ void updateGame1(uint8_t * pressed_keys) {
     if (newX != oldX || newY != oldY) {
         // Borrar la posición anterior
         drawCircle(oldX, oldY, player1.radius, FIELD_COLOR);
-        
-        // Actualizar la posición
-        // player1.x = newX;
-        // player1.y = newY;
         
         // Verificar límites
         checkIfBorderPlayer(&player1);
@@ -294,11 +269,10 @@ void updateGame1(uint8_t * pressed_keys) {
         if (checkCollision(player1.x, player1.y, player1.radius, ball.x, ball.y, ball.radius)) {
             double dx = ball.x - player1.x;
             double dy = ball.y - player1.y;
-            
-            
 
             // Movemos la pelota gradualmente
             for(int i = 0; i < BALL_SPEED; i++) {
+                sleep(1);
                 // Guardamos la última posicion
                 oldBallX = ball.x;
                 oldBallY = ball.y;
@@ -313,22 +287,29 @@ void updateGame1(uint8_t * pressed_keys) {
                 // Verificamos limites
                 checkIfBorderBall(&ball, &ball_dx, &ball_dy);
 
+                if(ballInHole()){
+                    last_player_hit = 1;
+                    return ;
+                }
+
                 if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
                     drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
                     drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 }
-                
-                
-                    // Dibujamos la nueva posición
-                    drawCircle(ball.x, ball.y, ball.radius, ball.color);
-                    drawPlayer(player1);
 
-                    // Actualizamos la posicion anterior
-                    oldBallX = ball.x;
-                    oldBallY = ball.y;
+                // if(checkCollision(oldBallX, oldBallY, ball.radius, player2.x, player2.y, player2.radius)){
+                //     drawPlayer(player2);
+                // }
 
-                    sleep(1);
+                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player2, &ball_dx, &ball_dy);
                 
+                // Dibujamos la nueva posición
+                drawCircle(ball.x, ball.y, ball.radius, ball.color);
+                drawPlayer(player1);
+
+                // Actualizamos la posicion anterior
+                oldBallX = ball.x;
+                oldBallY = ball.y;
             }
             
             last_player_hit = 1;
@@ -356,10 +337,6 @@ void updateGame2(uint8_t * pressed_keys) {
     if (newX != oldX || newY != oldY) {
         // Borrar posición anterior
         drawCircle(oldX, oldY, player2.radius, FIELD_COLOR);
-        
-        // Actualizar posición
-        // player2.x = newX;
-        // player2.y = newY;
         
         // Verificar límites
         checkIfBorderPlayer(&player2);
@@ -398,7 +375,6 @@ void updateGame2(uint8_t * pressed_keys) {
             drawScore(&player2);
         }
 
-
         // Verificar colisión con la pelota
         if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
             double dx = ball.x - player2.x;
@@ -407,6 +383,7 @@ void updateGame2(uint8_t * pressed_keys) {
             
             
             for(int i = 0; i < BALL_SPEED; i++) {
+                sleep(1);
                 // Guardamos la última posición
                 oldBallX = ball.x;
                 oldBallY = ball.y;
@@ -421,12 +398,17 @@ void updateGame2(uint8_t * pressed_keys) {
                 // Verificar límites
                 checkIfBorderBall(&ball, &ball_dx, &ball_dy);
 
+                if(ballInHole()){
+                    last_player_hit = 2;
+                    return ;
+                }
+
                 if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
                     drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
                     drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 }
                 
-                
+                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player1, &ball_dx, &ball_dy);
                 
                 // Dibujar nueva posición
                 drawCircle(ball.x, ball.y, ball.radius, ball.color);
@@ -436,94 +418,13 @@ void updateGame2(uint8_t * pressed_keys) {
                 oldBallX = ball.x;
                 oldBallY = ball.y;
 
-                sleep(1);
             }
-            // drawCircle(ball.x, ball.y, ball.radius, FIELD_COLOR);
             
-            // ball.x += (dx * BALL_SPEED) / 2;
-            // ball.y += (dy * BALL_SPEED) / 2;
-            
-            // checkIfBorderBall(&ball, &ball_dx, &ball_dy);
-
-            // if (checkCollision(ball.x, ball.y, ball.radius, hole.x, hole.y, hole.radius)) {
-            //     drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-            //     drawCircle(hole.x, hole.y, hole.radius, hole.color);
-            // }
-            
-            // drawCircle(ball.x, ball.y, ball.radius, ball.color);
             last_player_hit = 2;
             beep(800, 20);
         }
     }
 }
-
-// void updateGame2(uint8_t * pressed_keys) {
-//     updateGame1(pressed_keys);
-
-//     int oldX = player2.x;
-//     int oldY = player2.y;
-//     int oldBallX = ball.x;
-//     int oldBallY = ball.y;
-
-//     if (pressed_keys[SC_I]) player2.y -= SPEED;
-//     if (pressed_keys[SC_K]) player2.y += SPEED;
-//     if (pressed_keys[SC_J]) player2.x -= SPEED;
-//     if (pressed_keys[SC_L]) player2.x += SPEED;
-//     if (pressed_keys[SC_SPACE]) {
-//         ball.x += (hole.x - ball.x) / 10;
-//         ball.y += (hole.y - ball.y) / 10;
-//     }
-
-   
-   
-//     if (oldX != player2.x || oldY != player2.y) {
-//         checkIfBorderPlayer(&player2);
-//         drawCircle(oldX, oldY, player2.radius, FIELD_COLOR);
-
-//         // Verificar colisión con el hoyo
-//         if (checkCollision(player2.x, player2.y, player2.radius, hole.x, hole.y, hole.radius)) {
-//             drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-//             drawCircle(hole.x, hole.y, hole.radius, hole.color);
-//         }
-        
-//         drawCircle(player2.x, player2.y, player2.radius, player2.color);
-        
-//         if(checkScoreCollision(player2.x, player2.y, player2.radius, player1.score.x, player1.score.y)){
-//             drawScore(&player1);
-//         }
-
-//         if(checkScoreCollision(player2.x, player2.y, player2.radius, player2.score.x, player2.score.y)){
-//             drawScore(&player2);
-//         }
-
-//         if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
-//             int dx = ball.x - player2.x;
-//             int dy = ball.y - player2.y;
-            
-//             // Guardamos la última posición antes de mover
-//             oldBallX = ball.x;
-//             oldBallY = ball.y;
-
-//             // Movemos y dibujamos la pelota
-//             ball.x += (dx * BALL_SPEED) / 5;
-//             ball.y += (dy * BALL_SPEED) / 5;
-
-//             checkIfBorderBall(&ball, &ball_dx, &ball_dy);
-            
-//             // Borramos la posición anterior
-//             drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
-
-//             if (checkCollision(ball.x, ball.y, ball.radius, hole.x, hole.y, hole.radius)) {
-//                 player2.score.scoreNum++;
-//                 drawScore(&player2);
-//                 drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-//                 drawCircle(hole.x, hole.y, hole.radius, hole.color);
-//             }
-//             // Dibujamos la nueva posición
-//             drawCircle(ball.x, ball.y, ball.radius, ball.color);
-//         }
-//     }
-// }
 
 
 int ballInHole() {
@@ -603,6 +504,33 @@ void checkIfBorderBall(Ball *b, double *dx, double *dy){
         b->y = set_height() - b->radius - 25;  // Offset pequeño
         if(*dy > 0) 
             *dy = -*dy;  // Solo invertir si va hacia abajo
+    }
+}
+
+void checkCollisionBallPlayer(double oldBallX, double oldBallY, double ball_radius, Paddle * p ,double *dx, double *dy) {
+    if (checkCollision(oldBallX, oldBallY, ball_radius, p->x, p->y, p->radius)) {
+        drawPlayer(*p);
+        // Rebote horizontal
+        if (oldBallX < p->x) { // Pelota a la izquierda del jugador
+            ball.x = p->x - p->radius - ball_radius - 25; // Offset pequeño
+            if (*dx > 0) 
+                *dx = -*dx; // Invertir dirección horizontal
+        } else if (oldBallX > p->x) { // Pelota a la derecha del jugador
+            ball.x = p->x + p->radius + ball_radius + 25; // Offset pequeño
+            if (*dx < 0) 
+                *dx = -*dx; // Invertir dirección horizontal
+        }
+
+        // Rebote vertical
+        if (oldBallY < p->y) { // Pelota arriba del jugador
+            ball.y = p->y - p->radius - ball_radius - 25; // Offset pequeño
+            if (*dy > 0) 
+                *dy = -*dy; // Invertir dirección vertical
+        } else if (oldBallY > p->y) { // Pelota abajo del jugador
+            ball.y = p->y + p->radius + ball_radius + 25; // Offset pequeño
+            if (*dy < 0)
+                *dy = -*dy; // Invertir dirección vertical
+        }
     }
 }
 
@@ -689,35 +617,3 @@ void moveCursor(uint64_t x, uint64_t y){
     set_cursorX(x);
     set_cursorY(y);
 }
-
-// // Agregar esta función nueva
-// void keepInBounds(int *x, int *y, int radius) {
-//     // Límites horizontales
-//     if (*x - radius < 0) *x = radius;
-//     if (*x + radius > screenW) *x = screenW - radius;
-    
-//     // Límites verticales
-//     if (*y - radius < 0) *y = radius;
-//     if (*y + radius > screenH) *y = screenH - radius;
-// }
-
-// // Agregar esta función para el rebote de la pelota
-// void handleBallBounce() {
-//     int bounced = 0;
-    
-//     // Rebote horizontal
-//     if (ball.x - ball.radius < 0 || ball.x + ball.radius > screenW) {
-//         ball_dx *= WALL_BOUNCE;
-//         bounced = 1;
-//     }
-    
-//     // Rebote vertical
-//     if (ball.y - ball.radius < 0 || ball.y + ball.radius > screenH) {
-//         ball_dy *= WALL_BOUNCE;
-//         bounced = 1;
-//     }
-    
-//     if (bounced) {
-//         beep(400, 10);  // Sonido de rebote
-//     }
-// }

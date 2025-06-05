@@ -210,6 +210,8 @@ uint64_t get_char_height() {
     return char_height;
 }
 
+
+
 void reduce(){
     sys_reduce();
 }
@@ -282,6 +284,10 @@ void set_cursorY(uint64_t value) {
 
 void get_pressed_keys(uint8_t * pressed_keys) {
     sys_get_pressed_keys(pressed_keys);
+}
+
+void clean_buff(){
+    sys_clean_buffer();
 }
 
 static uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)

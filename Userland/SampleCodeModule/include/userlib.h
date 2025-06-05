@@ -19,6 +19,7 @@ static const Color GREEN = {0,0xFF,0};
 static const Color BLUE = {0,0,0xFF};
 static const Color ORANGE = {0xFF,0xB3,0x66};
 static const Color YELLOW = {0xFF,0xF1,0x76};
+static const Color BRIGHT_YELLOW ={0xFF,0xAA,0x00};
 static const Color LIGHT_GREEN = {0x9A,0xFF,0x9A};
 static const Color DARK_GREEN = {0,0x9C,0x02};
 static const Color LIGHT_BLUE={0x64,0x95,0xED};
@@ -99,5 +100,7 @@ uint64_t get_char_height();
 void sleep(uint64_t time);
 
 void get_pressed_keys(uint8_t * pressed_keys);
+
+void clean_buff();
 
 #endif

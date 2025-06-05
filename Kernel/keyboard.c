@@ -98,3 +98,11 @@ int getAltFlag(){
 uint8_t * get_pressed_keys() {
     return pressed_keys;
 }
+
+void clean_buffer() {
+    for (int i = 0; i < BUFFER_MAX; i++) {
+        BUFFER[i] = 0;
+    }
+    elems = 0;
+    read_index = 0;
+}

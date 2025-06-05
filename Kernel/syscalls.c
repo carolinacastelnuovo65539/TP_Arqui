@@ -68,6 +68,11 @@ static uint64_t sys_get_year(uint64_t * year){
     return 1;
 }
 
+static uint64_t sys_clean_buffer(){
+    clean_buffer();
+    return 1;
+}
+
 
 static uint64_t sys_cursor(){
     putCursor();
@@ -249,6 +254,9 @@ uint64_t syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r
         break;
     case 26:
         return sys_get_pressed_keys((uint8_t*)rdi);
+        break;
+    case 27:
+        return sys_clean_buffer();
         break;
     }
     return -1;

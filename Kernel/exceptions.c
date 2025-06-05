@@ -46,9 +46,6 @@ static void opcode_exception() {
 	vd_prints("\nINVALID OPCODE EXCEPTION\n", 28, WHITE, BLACK);
 	print_regs();
 	vd_print('\n', WHITE, BLACK);	
-	// while(1){
-	// 	_hlt();
-	// }
 }
 
 void exceptionDispatcher(int exception) {

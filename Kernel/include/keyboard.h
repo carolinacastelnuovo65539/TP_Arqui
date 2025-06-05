@@ -11,3 +11,5 @@ char getBuff();
 int getAltFlag();
 
 uint8_t * get_pressed_keys();
+
+void clean_buffer();

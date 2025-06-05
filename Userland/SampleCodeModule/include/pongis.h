@@ -41,6 +41,8 @@ void checkIfBorderBall(Ball * b, double *dx, double *dy);
 
 int checkScoreCollision(double x1, double y1, double r1, double x2, double y2);
 
+void checkCollisionBallPlayer(double oldBallX, double oldBallY, double ball_radius, Paddle * p ,double *dx, double *dy);
+
 void resetLevel();
 
 void drawScore(Paddle * p);

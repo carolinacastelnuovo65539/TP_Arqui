@@ -22,6 +22,7 @@ GLOBAL sys_get_char_width
 GLOBAL sys_get_char_height
 GLOBAL sys_wait
 GLOBAL sys_get_pressed_keys
+GLOBAL sys_clean_buffer
 
 section .text
 
@@ -145,5 +146,10 @@ sys_get_char_height:
 
 sys_get_pressed_keys:
     mov rax, 0x1A
+    int 80h
+    ret
+
+sys_clean_buffer:
+    mov rax, 0x1B
     int 80h
     ret

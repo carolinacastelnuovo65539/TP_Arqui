@@ -51,3 +51,5 @@ extern uint64_t sys_get_char_height(uint64_t * charHeight);
 
 extern uint64_t sys_get_pressed_keys(uint8_t * key);
 
+extern uint64_t sys_clean_buffer();
+
