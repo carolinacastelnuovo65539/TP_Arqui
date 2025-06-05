@@ -29,9 +29,11 @@ static int last_player_hit = 0; // 1 para jugador 1, 2 para jugador 2
 static double ball_dx = 0;
 static double ball_dy = 0;
 static int current_level = 1;
-static int max_levels = 4;
+static int max_levels = 5;
 static int score_width;
 static int score_height;
+static double oldBallX;
+static double oldBallY;
 
 static Paddle player1;
 static Paddle player2;
@@ -95,9 +97,9 @@ void start_game_pongis(char players) {
             (num_players == 2 && checkCollision(ball.x, ball.y, ball.radius, player2.x, player2.y, player2.radius)));
 
     // Initialize hole with random position
-    hole.radius = 30;
+    hole.radius = 35;
     hole.color = HOLE_COLOR;
-    hole.outRadius = 36;
+    hole.outRadius = 42;
     hole.outColor = WHITE;
 
     do {
@@ -146,8 +148,17 @@ void start_game_pongis(char players) {
             current_level++;
             if( current_level > max_levels){
                 // height_print_centered = 0;
+                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+                drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
+                drawCircle(hole.x, hole.y, hole.radius, hole.color);
+                drawCircle(hole.x, hole.y, ball.radius, ball.color);
                 increase();
                 printColorCentered("Congratulations! You completed all levels!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
+                if(player1.score.scoreNum > player2.score.scoreNum){
+                    printColorCentered("Player 1 won the game!\n", YELLOW, FIELD_COLOR, get_char_width, get_char_height, 0);
+                }else{
+                    printColorCentered("Player 2 won the game!\n", YELLOW, FIELD_COLOR, get_char_width, get_char_height, 0);
+                }
                 reduce();
                 beep(1000, 30);
                 sleep(1);
@@ -155,6 +166,10 @@ void start_game_pongis(char players) {
             }else {
                 // Siguiente nivel
                 // height_print_centered = 0;
+                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+                drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
+                drawCircle(hole.x, hole.y, hole.radius, hole.color);
+                drawCircle(hole.x, hole.y, ball.radius, ball.color);
                 increase();
                 printColorCentered("Level completed! Get ready for the next one!\n", YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
                 
@@ -247,7 +262,7 @@ void updateGame1(uint8_t * pressed_keys) {
         // Dibujar en la nueva posición
         drawCircle(player1.x, player1.y, player1.radius, player1.color);
         
-        if(checkScoreCollision(player1.x, player1.y, player1.radius, player1.score.x, player1.score.y)){
+        if(checkScoreCollision(player1.x, player1.y, player1.radius, player1.score.x , player1.score.y)){
             drawScore(&player1);
         }
 
@@ -258,8 +273,21 @@ void updateGame1(uint8_t * pressed_keys) {
         }
 
         if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius) && num_players == 2) {
-            player1.x = oldX;
-            player1.y = oldY;
+            sleep(4);
+            drawCircle(player1.x, player1.y, player1.radius, FIELD_COLOR);
+            drawCircle(player2.x, player2.y, player2.radius, FIELD_COLOR);
+            if(player1.x < player2.x) {
+                player1.x = oldX - 3; 
+            } else {
+                player1.x = oldX + 3;
+            }
+            if(player1.y < player2.y) {
+                player1.y = oldY - 3; 
+            } else {
+                player1.y = oldY + 3;
+            }
+            drawCircle(player1.x, player1.y, player1.radius, player1.color);
+            drawCircle(player2.x, player2.y, player2.radius, player2.color);
         }
 
         // Verificar colisión con la pelota
@@ -271,18 +299,18 @@ void updateGame1(uint8_t * pressed_keys) {
 
             // Movemos la pelota gradualmente
             for(int i = 0; i < BALL_SPEED; i++) {
-                // Guardamos la última posición
-                double oldBallX = ball.x;
-                double oldBallY = ball.y;
+                // Guardamos la última posicion
+                oldBallX = ball.x;
+                oldBallY = ball.y;
                 
-                // Borramos la posición anterior
+                // Borramos la posicion anterior
                 drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
                 
-                // Calculamos la nueva posición
+                // Calculamos la nueva posicion
                 ball.x += (dx * BALL_SPEED) / 5;
                 ball.y += (dy * BALL_SPEED) / 5;
                 
-                // Verificamos límites
+                // Verificamos limites
                 checkIfBorderBall(&ball, &ball_dx, &ball_dy);
 
                 if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
@@ -291,15 +319,16 @@ void updateGame1(uint8_t * pressed_keys) {
                 }
                 
                 
-                // Dibujamos la nueva posición
-                drawCircle(ball.x, ball.y, ball.radius, ball.color);
-                drawPlayer(player1);
+                    // Dibujamos la nueva posición
+                    drawCircle(ball.x, ball.y, ball.radius, ball.color);
+                    drawPlayer(player1);
 
-                // Actualizamos la posición anterior
-                oldBallX = ball.x;
-                oldBallY = ball.y;
+                    // Actualizamos la posicion anterior
+                    oldBallX = ball.x;
+                    oldBallY = ball.y;
 
-                sleep(1);
+                    sleep(1);
+                
             }
             
             last_player_hit = 1;
@@ -340,8 +369,18 @@ void updateGame2(uint8_t * pressed_keys) {
             drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
             drawCircle(hole.x, hole.y, hole.radius, hole.color);
         }
+
         // Dibujar nueva posición
         drawCircle(player2.x, player2.y, player2.radius, player2.color);
+        
+        if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius)){
+            drawCircle(player1.x, player1.y, player1.radius, FIELD_COLOR);
+            drawCircle(player2.x, player2.y, player2.radius, FIELD_COLOR);
+            player2.x = oldX;
+            player2.y = oldY;
+            drawCircle(player1.x, player1.y, player1.radius, player1.color);
+            drawCircle(player2.x, player2.y, player2.radius, player2.color);
+        }
 
         if(checkScoreCollision(player2.x, player2.y, player2.radius, player1.score.x, player1.score.y)){
             drawScore(&player1);
@@ -351,10 +390,6 @@ void updateGame2(uint8_t * pressed_keys) {
             drawScore(&player2);
         }
 
-        if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius)){
-            player2.x = oldX;
-            player2.y = oldY;
-        }
 
         // Verificar colisión con la pelota
         if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
@@ -365,8 +400,8 @@ void updateGame2(uint8_t * pressed_keys) {
             
             for(int i = 0; i < BALL_SPEED; i++) {
                 // Guardamos la última posición
-                double oldBallX = ball.x;
-                double oldBallY = ball.y;
+                oldBallX = ball.x;
+                oldBallY = ball.y;
 
                 // Borrar la posición anterior
                 drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
@@ -587,17 +622,21 @@ void resetLevel() {
     // Aumentar la dificultad con cada nivel
     switch(current_level) {
         case 2:
-            // Nivel 2: Hoyo más pequeño
+            //Nivel 2: Hoyo mas pequeño
+            hole.radius = 30;
+            hole.outRadius = 36;
+        case 3:
+            // Nivel 3: Hoyo más pequeño
             hole.radius = 25;
             hole.outRadius = 30;
             break;
-        case 3:
-            // Nivel 2: Hoyo más pequeño
+        case 4:
+            // Nivel 4: Hoyo más pequeño
             hole.radius = 20;
             hole.outRadius = 24;
             break;
-        case 4:
-            // Nivel 3: Hoyo aún más pequeño y pelota más pequeña
+        case 5:
+            // Nivel 5: Hoyo aún más pequeño y pelota más pequeña
             hole.radius = 15;
             hole.outRadius = 18;
             ball.radius = 8;
