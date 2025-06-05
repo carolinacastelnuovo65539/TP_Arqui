@@ -139,16 +139,13 @@ void start(){
 void command_pognis(){
 	using = 0;
     command_clear();
-	height_print_centered = 0;
     increase();
-    printColorCentered("Welcome to Pognis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
+    printColorCentered("Welcome to Pognis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 1);
     reduce();
 
-	
-	// ESTO TENGO Q CAMBIARLO, HACER DESPUES!
-    printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
-    printColorCentered("To exit the game, press 'ESC' key.\n", LIGHT_BLUE, BLACK, get_char_width(),get_char_height());
-    printColorCentered("Enter the amount of players (1 or 2): ",LIGHT_BLUE, BLACK, get_char_width(), get_char_height());
+	printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
+    printColorCentered("To exit the game, press 'ESC' key.\n", LIGHT_BLUE, BLACK, get_char_width(),get_char_height(), 0);
+    printColorCentered("Enter the amount of players (1 or 2): ",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
 	char players;
 
 	while(((players = getChar()) != '1' && players != '2')) {

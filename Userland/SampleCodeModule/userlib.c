@@ -37,12 +37,12 @@ void print(char * string, int len) { //preguntar si es más lógico que no se le
 // Imprime centrado tanto en altura como en ancho
 // Si se la llama varias veces y se quiere que se impriman todas centradas ...
 // Previo a su uso, settear height_print_centered=0,
-void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint64_t char_height) {
+void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint64_t char_height, uint8_t centered) {
     int screen_width = set_width(); // asumimos que esta función existe
     int screen_height = set_height();
 
-    if (height_print_centered==0) {
-        height_print_centered=(screen_height)/2;
+    if (centered) {
+        height=(screen_height)/2;
     }
 
     int len = strlen(msg);
@@ -51,9 +51,9 @@ void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint
     if (spaces < 0) spaces = 0;
 
     set_cursorX(spaces); // posición horizontal
-    set_cursorY(height_print_centered); // posicion vertical
+    set_cursorY(height); // posicion vertical
     printColor(msg, len, fg, bg);
-    height_print_centered += char_height; // Desplazamiento vertical
+    height += char_height; // Desplazamiento vertical
 }
 
 
