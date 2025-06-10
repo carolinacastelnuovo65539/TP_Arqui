@@ -39,32 +39,32 @@ static void sys_wait(uint64_t time){
 }
 
 static void sys_get_seconds(uint64_t * seconds){ 
-    *seconds = get_cmos(0x00);
+    *seconds = get_cmos(RTC_SECONDS);
     return;
 }
 
 static void sys_get_minutes(uint64_t * minutes){
-    *minutes = get_cmos(0x02);
+    *minutes = get_cmos(RTC_MINUTES);
     return;
 }
 
 static void sys_get_hours(uint64_t * hours){
-    *hours = get_cmos(0x04);
+    *hours = get_cmos(RTC_HOURS);
     return;
 }
 
 static void sys_get_day(uint64_t * day){ 
-    *day = get_cmos(0x07);
+    *day = get_cmos(RTC_DAY);
     return;
 }
 
 static void sys_get_month(uint64_t * month){
-    *month = get_cmos(0x08);
+    *month = get_cmos(RTC_MONTH);
     return;
 }
 
 static void sys_get_year(uint64_t * year){
-    *year = get_cmos(0x09);
+    *year = get_cmos(RTC_YEAR);
     return;
 }
 

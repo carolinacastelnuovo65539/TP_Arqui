@@ -144,14 +144,14 @@ void start_game_pongis(char players) {
                 drawCircle(hole.x, hole.y, ball.radius, ball.color);
                 increase();
                 printColorCentered("Congratulations! You completed all levels!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
-                if(player1.score.scoreNum > player2.score.scoreNum){
+                if(num_players == 2 && player1.score.scoreNum > player2.score.scoreNum){
                     printColorCentered("Player 1 won the game!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 0);
-                }else{
+                }else if(num_players == 2){
                     printColorCentered("Player 2 won the game!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 0);
                 }
                 reduce();
                 beep(1000, 10);
-                sleep(3);
+                sleep(50);
                 break;
             }else {
                 // Siguiente nivel
@@ -164,7 +164,7 @@ void start_game_pongis(char players) {
                 
                 reduce();
                 beep(1000, 10);
-                sleep(1);
+                sleep(25);
                 
                 // Resetear posiciones para el siguiente nivel
                 resetLevel();

@@ -238,7 +238,6 @@ void printHelp() {
 }
 
 void command_time(){
-	// cuando ss < 10 los imprime sin un cero adelante
 	print("\nThe local time [hour:min:sec] is: ");
 	getTime();
 	putChar('\n');

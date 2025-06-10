@@ -5,7 +5,13 @@
 #define BUFFER_MAX 256
 #define TRUE 1
 #define FALSE !TRUE
+#define UNPRESSED_BIT 0x80
+#define LSHIFT 0x2A
+#define RSHIFT 0x36
+#define ALT 0x38
+#define KEY_MASK 0x7F
 
+#define IS_SHIFT(arg) ((arg==LSHIFT) || (arg==RSHIFT))
 
 extern uint8_t inb(uint16_t port);
 extern void get_key();
@@ -50,11 +56,11 @@ static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboard_handler() {
     get_key();
-    if ((key & 0x80) == 0) {
+    if ((key & UNPRESSED_BIT) == 0) {
         pressed_keys[key] = TRUE;   // la tecla esta presionada
-        if (key == 0x2A || key == 0x36) {
+        if (IS_SHIFT(key)) {
             shift = 1;  // Shift pressed
-        } else if (key == 0x38) {
+        } else if (key == ALT) {
             alt = 1;
             save_registers();
         } else {
@@ -62,10 +68,9 @@ void keyboard_handler() {
             next();
         }
     } else {
-        key = key & 0x7F;
+        key = key & KEY_MASK;
         pressed_keys[key] = FALSE;  // la tecla no esta presionada
-        // break code
-        if (key == 0x2A || key == 0x36) {
+        if (IS_SHIFT(key)) {
             shift = 0;  // Shift freed
         }
     }

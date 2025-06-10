@@ -24,7 +24,7 @@ static void pasoHexa(uint64_t num1, char buffer[18]){
 void print_regs(){
 	char buffer[19];
 	for(int i = 0; i < 19; i++){
-		vd_prints(nombreRegistros[i], WHITE, BLACK); //este 5 hay que sacarlo
+		vd_prints(nombreRegistros[i], WHITE, BLACK);
 		vd_prints(": ", WHITE, BLACK);
 		pasoHexa(exc_regs[i], buffer);
 		vd_prints(buffer, WHITE, BLACK);
