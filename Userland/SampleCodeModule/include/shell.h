@@ -5,8 +5,6 @@ void start();
 
 void terminal();
 
-void leftLine();
-
 void read();
 
 void checkCommand(char * cmd);
