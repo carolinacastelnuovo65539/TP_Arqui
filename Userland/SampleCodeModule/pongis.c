@@ -266,70 +266,62 @@ void updateGame1(uint8_t * pressed_keys) {
             drawCircle(player2.x, player2.y, player2.radius, player2.color);
         }
 
-        // Verificar colisión con la pelota
-        move_ball(player1);
+        // Verificar colisión con la pelotaMore actions
+        if (checkCollision(player1.x, player1.y, player1.radius, ball.x, ball.y, ball.radius)) {
+            double dx = ball.x - player1.x;
+            double dy = ball.y - player1.y;
+
+            // Movemos la pelota gradualmente
+            for(int i = 0; i < BALL_SPEED; i++) {
+                sleep(1);
+                // Guardamos la última posicion
+                oldBallX = ball.x;
+                oldBallY = ball.y;
+
+                // Borramos la posicion anterior
+                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+
+                // Calculamos la nueva posicion
+                ball.x += (dx * BALL_SPEED) / 5;
+                ball.y += (dy * BALL_SPEED) / 5;
+
+                // Verificamos limites
+                checkIfBorderBall(&ball, &ball_dx, &ball_dy);
+
+                if(ballInHole()){
+                    last_player_hit = 1;
+                    return ;
+                }
+
+                if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
+                    drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
+                    drawCircle(hole.x, hole.y, hole.radius, hole.color);
+                }
+
+                if(checkScoreCollision(oldBallX, oldBallY, ball.radius, player1.score.x, player1.score.y)){
+                    drawScore(&player1);
+                }
+
+                if(num_players == 2 && checkScoreCollision(oldBallX, oldBallY, ball.radius, player2.score.x, player2.score.y)){
+                    drawScore(&player2);
+                }
+
+                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player2, &ball_dx, &ball_dy);
+
+                // Dibujamos la nueva posición
+                drawCircle(ball.x, ball.y, ball.radius, ball.color);
+                drawPlayer(player1);
+
+                // Actualizamos la posicion anterior
+                oldBallX = ball.x;
+                oldBallY = ball.y;
+            }
+            last_player_hit = 1;
+            // beep(800, 15);
+        }
     }
 }
 
-void move_ball(Paddle player){
-    // Verificar colisión con la pelota
-    if (checkCollision(player.x, player.y, player.radius, ball.x, ball.y, ball.radius)) {
-        double dx = ball.x - player.x;
-        double dy = ball.y - player.y;
-
-        // Movemos la pelota gradualmente
-        for(int i = 0; i < BALL_SPEED; i++) {
-            sleep(1);
-            // Guardamos la última posicion
-            oldBallX = ball.x;
-            oldBallY = ball.y;
-                    
-            // Borramos la posicion anterior
-            drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
-                    
-            // Calculamos la nueva posicion
-            ball.x += (dx * BALL_SPEED) / 5;
-            ball.y += (dy * BALL_SPEED) / 5;
-                    
-            // Verificamos limites
-            checkIfBorderBall(&ball, &ball_dx, &ball_dy);
-
-            if(ballInHole()){
-                last_player_hit = 1;
-                return ;
-            }
-
-            if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
-                drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-                drawCircle(hole.x, hole.y, hole.radius, hole.color);
-            }
-
-            if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
-                drawScore(&player1);
-            }
-
-            if(num_players == 2 && checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
-                drawScore(&player2);
-            }
-
-            // if(checkCollision(oldBallX, oldBallY, ball.radius, player2.x, player2.y, player2.radius)){
-            //     drawPlayer(player2);
-            // }
-
-            checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player2, &ball_dx, &ball_dy);
-                    
-            // Dibujamos la nueva posición
-            drawCircle(ball.x, ball.y, ball.radius, ball.color);
-            drawPlayer(player);
-
-            // Actualizamos la posicion anterior
-            oldBallX = ball.x;
-            oldBallY = ball.y;
-        } 
-        last_player_hit = 1;
-        // beep(800, 15);   
-    }
-}
 
 void updateGame2(uint8_t * pressed_keys) {
     updateGame1(pressed_keys);
@@ -389,8 +381,61 @@ void updateGame2(uint8_t * pressed_keys) {
         }
 
 
-        // Verificar colisión con la pelota
-        move_ball(player2);
+        // Verificar colisión con la pelotaAdd commentMore actions
+        if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
+            double dx = ball.x - player2.x;
+            double dy = ball.y - player2.y;
+
+
+
+            for(int i = 0; i < BALL_SPEED; i++) {
+                sleep(1);
+                // Guardamos la última posición
+                oldBallX = ball.x;
+                oldBallY = ball.y;
+
+                // Borrar la posición anterior
+                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+
+                // Mover la pelota gradualmente
+                ball.x += (dx * BALL_SPEED) / 5;
+                ball.y += (dy * BALL_SPEED) / 5;
+
+                // Verificar límites
+                checkIfBorderBall(&ball, &ball_dx, &ball_dy);
+
+                if(ballInHole()){
+                    last_player_hit = 2;
+                    return ;
+                }
+
+                if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
+                    drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
+                    drawCircle(hole.x, hole.y, hole.radius, hole.color);
+                }
+
+                if(checkScoreCollision(oldBallX, oldBallY, ball.radius, player1.score.x, player1.score.y)){
+                    drawScore(&player1);
+                }
+
+                if(checkScoreCollision(oldBallX, oldBallY, ball.radius, player2.score.x, player2.score.y)){
+                    drawScore(&player2);
+                }
+
+                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player1, &ball_dx, &ball_dy);
+
+                // Dibujar nueva posición
+                drawCircle(ball.x, ball.y, ball.radius, ball.color);
+                drawPlayer(player2);
+
+                // Actualizamos la posición anterior
+                oldBallX = ball.x;
+                oldBallY = ball.y;
+            }
+
+            last_player_hit = 2;
+            // beep(800, 15);
+        }
     }
 }
 
