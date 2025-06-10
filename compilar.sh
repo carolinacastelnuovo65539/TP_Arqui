@@ -2,6 +2,8 @@
 
 CONTAINER_NAME=tpe_contain
 
+
+
 echo "Iniciando contenedor $CONTAINER_NAME..."
 docker start $CONTAINER_NAME
 
@@ -15,5 +17,5 @@ docker exec -it $CONTAINER_NAME make -C /root/Toolchain
 echo "Compilando proyecto completo..."
 docker exec -it $CONTAINER_NAME make -C /root
 
-# echo "Deteniendo contenedor..."
-# docker stop $CONTAINER_NAME
+echo "Deteniendo contenedor..."
+docker stop $CONTAINER_NAME
