@@ -9,6 +9,7 @@ static int var2 = 0;
 
 
 int main() {
+	
 	start();
 
 	terminal();

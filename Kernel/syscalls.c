@@ -74,11 +74,6 @@ static void sys_clean_buffer(){
 }
 
 
-static void sys_cursor(){
-    putCursor();
-    return;
-}
-
 static void sys_registersInfo(uint64_t registros[19], uint64_t * flag){
     *flag = getAltFlag();
     if(*flag){

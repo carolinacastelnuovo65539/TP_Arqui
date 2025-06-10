@@ -41,8 +41,6 @@ void printColor(char * string, Color fuente, Color fondo);
 char getChar();
 
 void putChar(char c);
- 
-void drawCursor();
 
 void printRegisters();
 
@@ -101,5 +99,7 @@ void sleep(uint64_t time);
 void get_pressed_keys(uint8_t * pressed_keys);
 
 void clean_buff();
+
+void scanf(char *buffer, int max_length);
 
 #endif

@@ -36,15 +36,13 @@ void putChar(char c){
     print(buff);
 }
 
-void print(char * string) { //preguntar si es más lógico que no se le pase la longitud
+void print(char * string) {
     sys_write(STDOUT, string);
 }
 
-// Imprime centrado tanto en altura como en ancho
-// Si se la llama varias veces y se quiere que se impriman todas centradas ...
-// Previo a su uso, settear height_print_centered=0,
+
 void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint64_t char_height, uint8_t centered) {
-    int screen_width = set_width(); // asumimos que esta función existe
+    int screen_width = set_width(); 
     int screen_height = set_height();
 
     if (centered) {
@@ -104,9 +102,6 @@ int strlen(char * str){
     return i;
 }
 
-void drawCursor() {
-    
-}
 
 char to_lower(char c) {
     if (c >= 'A' && c <= 'Z') {
@@ -133,8 +128,9 @@ void printRegisters(){
     uint64_t flag = 0;
     sys_registersInfo(regs, &flag);
     if(flag == 1){
+        print("Registers:\n");
         for(int i = 0; i < 19; i++){
-            print(nombreRegistros[i]); //este 5 hay que sacarlo
+            print(nombreRegistros[i]);
             print(": ");
             to_hex(regs[i], buff + 2);
             print(buff);
@@ -144,7 +140,7 @@ void printRegisters(){
 				print("   ");
         }
     }else{
-        print("ERROR: presionar primero la tecla ALT");
+        print("ERROR: press the ALT key first");
     }
 }
 
@@ -211,7 +207,20 @@ uint64_t get_char_height() {
     return char_height;
 }
 
+void scanf(char *buffer, int max_length) {
+    int i = 0;
+    char c;
 
+    while (i < max_length - 1) {
+        c = getChar(); 
+        if (c == '\n' || c == '\r') { 
+            break;
+        }
+        buffer[i++] = c;
+    }
+
+    buffer[i] = '\0'; 
+}
 
 void reduce(){
     sys_reduce();

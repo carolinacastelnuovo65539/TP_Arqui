@@ -155,29 +155,6 @@ void command_pognis(){
 
 	clear();
 	using = 1;
-	
-    // char c;
-    // while((c = getChar()) != '1' && c != '2'){
-    // }
-    // if(c == '1'){
-    //     num_players = 1;
-    //     print("Starting Pognis with 1 player...\n", 30);
-    //     init_game();
-    //     while(game_running){
-    //         update_game1();
-    //         draw_game();
-    //     }
-    // }else if(c == '2'){
-    //     num_players = 2;
-    //     print("Starting Pognis with 2 players...\n", 30);
-    //     init_game();
-    //     while(game_running){
-    //         update_game2();
-    //         draw_game();
-    //     }
-    // }
-	// command_clear();
-	// using = 0;
 }
 
 void command_reduce(){
@@ -281,9 +258,7 @@ void getUserName(){
 }
 
 void command_registers(){
-	print("\nRegisters:\n");
 	printRegisters();
-	// print(" \n", 30); //si no lo hacemos así, se imprime cualquier cosa al final de los registros
 	putChar('\n');
 }
 

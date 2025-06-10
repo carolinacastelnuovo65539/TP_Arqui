@@ -26,8 +26,6 @@ void backspace();
 
 void clear();
 
-void putCursor();
-
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y);
 
 void setPixel(uint16_t x, uint16_t y, Color color);

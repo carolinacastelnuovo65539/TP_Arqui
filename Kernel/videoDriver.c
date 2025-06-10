@@ -153,44 +153,6 @@ void clear(){
 	cursorY = 0;
 }
 
-void putCursor() {
-
-	int cx, cy;
-	Color fuente = cursorOn ? BLACK : WHITE;
-	Color fondo = cursorOn ? BLACK : WHITE;
-	
-	int mask[8] = {0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80};
-	
-	const unsigned char * charMap;
-
-	if (cursorOn) {
-		charMap = font_bitmap + 16 * (' ' - 32);
-		cursorOn = 0;
-	} else {
-		charMap = font_bitmap + 16 * (' ' - 32);
-		cursorOn = 1;
-	}
-
-	if (cursorX >= VBE_mode_info->width) {
-		cursorX = 0;
-		if ((cursorY + CHAR_HEIGHT) > VBE_mode_info->height) {
-			cursorY -= CHAR_HEIGHT;
-			scroll();
-		} else {
-			cursorY += CHAR_HEIGHT;
-		}
-	}
-
-	for (cy = 0; cy<16; cy++) {
-		for (cx=0; cx<8; cx++){
-			for (int i=0; i<escalaPixel; i++) {
-				for (int j=0; j<escalaPixel; j++) {
-					setPixel(cursorX + (8-cx) * escalaPixel + i, cursorY + cy * escalaPixel + j, charMap[cy] & mask[cx] ? fuente : fondo);
-				}
-			}
-		}
-	}
-}
 
 static void vd_putChar(char c, Color fuente, Color fondo){
 	//mask to know which bits to draw as text or background
@@ -254,35 +216,9 @@ static void scroll(){
             *current = BLACK;
         }
     }
-
-	// Color * current;
-	// Color * nextPixel;
-
-	// for (int i = 0; i < VBE_mode_info->height - CHAR_HEIGHT; i++){
-	// 	for(int j = 0; j < VBE_mode_info->width - CHAR_WIDTH; j++){
-	// 		current = ( Color *) getPixel(i, j);
-	// 		nextPixel = ( Color *) getPixel(i + CHAR_HEIGHT, j);
-	// 		*current = *nextPixel;
-	// 	}
-	// }
-
-	// //que la linea de abajo despues de hacer el scroll hacia arriba sea negra
-	// for(int i = 0; i < CHAR_HEIGHT; i++){
-	// 	for(int j = 0; j < VBE_mode_info->width; j++){
-	// 		current = (Color *)getPixel(VBE_mode_info->height - CHAR_HEIGHT + i, j);
-	// 		*current = BLACK;
-	// 	}
-	// }
 }
 
 static uint32_t* getPixel(uint16_t x, uint16_t y) {
-	// uint8_t pixelWidth = VBE_mode_info->bpp/8;     
-    // uint16_t pitch = VBE_mode_info->pitch;  
-
-    // // CORRECTO: Primero calculamos el offset de la fila (y * pitch)
-    // // luego añadimos el offset dentro de la fila (x * pixelWidth)
-    // uintptr_t pixel = (uintptr_t)(VBE_mode_info->framebuffer) + (y * pitch) + (x * pixelWidth);
-    // return (uint32_t*)pixel;
 	
     uint8_t pixelwidth = VBE_mode_info->bpp/8;     //number of bytes to the next pixel to the right  (bpp: BITS per px)
     uint16_t pixelHeight = VBE_mode_info->pitch;  

@@ -33,15 +33,13 @@ void print_regs(){
 }
 
 static void zero_division() {
-	vd_prints("\nZERO DIVISION EXCEPTION\n", WHITE, BLACK);
+	vd_prints("\nERROR: ZERO DIVISION EXCEPTION\n", WHITE, BLACK);
 	print_regs();
-	vd_print('\n', WHITE, BLACK);	
 }
 
 static void opcode_exception() {
-	vd_prints("\nINVALID OPCODE EXCEPTION\n", WHITE, BLACK);
-	print_regs();
-	vd_print('\n', WHITE, BLACK);	
+	vd_prints("\nERROR: INVALID OPCODE EXCEPTION\n", WHITE, BLACK);
+	print_regs();	
 }
 
 void exceptionDispatcher(int exception) {
