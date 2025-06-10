@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONTAINER_NAME=tpe_contain2
+CONTAINER_NAME=tpe_contain
 
 # Verificar si el contenedor ya existe
 if [ "$(docker ps -a -q -f name=$CONTAINER_NAME)" ]; then
