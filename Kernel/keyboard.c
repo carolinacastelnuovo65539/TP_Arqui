@@ -1,22 +1,10 @@
 #include <keyboard.h>
-#include <naiveConsole.h>
 #include <lib.h>
 #include <videoDriver.h>
 
 #define BUFFER_MAX 256
 #define TRUE 1
 #define FALSE !TRUE
-#define LSHIFT 0x2A
-#define RSHIFT 0x36
-#define LALT 0x38
-#define UNPRESSED_BIT 0x80
-#define KEY_MASK 0x7F
-
-#define IS_PRESSED(var) (((var) & UNPRESSED_BIT) == 0)
-#define IS_SHIFT(var) (KEY_VALUE(var) == LSHIFT || KEY_VALUE(var) == RSHIFT)
-#define IS_ALT(key) (KEY_VALUE(key) == LALT)
-#define REAL_VALUE(var) ((var) & KEY_MASK)
-
 
 extern uint8_t inb(uint16_t port);
 extern void get_key();
@@ -61,12 +49,11 @@ static const char * mapaLetras[] = {minusc, mayusc};
 
 void keyboard_handler() {
     get_key();
-    if (IS_PRESSED(key)) {
+    if ((key & 0x80) == 0) {
         pressed_keys[key] = TRUE;   // la tecla esta presionada
-        
-        if (IS_SHIFT(key)) {
+        if (key == 0x2A || key == 0x36) {
             shift = 1;  // Shift pressed
-        } else if (IS_ALT(key)) {
+        } else if (key == 0x38) {
             alt = 1;
             save_registers();
         } else {
@@ -74,10 +61,10 @@ void keyboard_handler() {
             next();
         }
     } else {
-        key = REAL_VALUE(key);
+        key = key & 0x7F;
         pressed_keys[key] = FALSE;  // la tecla no esta presionada
         // break code
-        if (IS_SHIFT(key)) {
+        if (key == 0x2A || key == 0x36) {
             shift = 0;  // Shift freed
         }
     }

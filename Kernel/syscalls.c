@@ -190,73 +190,74 @@ void syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, 
         break;
     case 3: //seconds
         sys_get_seconds((uint64_t *)rdi);
+        break;
     case 4: //minutes
         sys_get_minutes((uint64_t *)rdi);
+        break;
     case 5: //hours
         sys_get_hours((uint64_t *)rdi);
-    case 6: //cursor
-        sys_cursor();
         break;
-    case 7:
+    case 6:
         sys_wait(rdi);
         break;
-    case 10: //registers
+    case 7: //registers
         sys_registersInfo((uint64_t *) rdi, (uint64_t *) rsi);
         break;
-    case 11: //reduce size
+    case 8: //reduce size
         sys_reduce();
         break;
-    case 12: //increase size
+    case 9: //increase size
         sys_increase();
         break;
-    case 13: //draw rectangle
+    case 10: //draw rectangle
         separate_rgb(&color1, &r8);
         sys_drawRectangle(rdi, rsi, rdx, r10, color1);
         break;
-    case 14:
+    case 11:
         separate_rgb(&color1, &r10);
         return sys_drawCircle(rdi, rsi, rdx, color1);
         break;
-    case 15: 
+    case 12: 
         separate_rgb(&color1, &r10);
         separate_rgb(&color2, &r8);
         sys_write_color(rdi, (char *)rsi, rdx, color1, color2);
         break;
-    case 16:
+    case 13:
         sys_sound(rdi, rsi);
         break;
-    case 17:
+    case 14:
         sys_get_day((uint64_t*)rdi);
         break;
-    case 18:
+    case 15:
         sys_get_month((uint64_t*)rdi);
         break;
-    case 19:
+    case 16:
         sys_get_year((uint64_t*)rdi);
         break;
-    case 20:
+    case 17:
         sys_get_height((uint64_t*)rdi);
         break;
-    case 21:
+    case 18:
         sys_get_width((uint64_t*)rdi);
         break;
-    case 22:
+    case 19:
         sys_set_cursorX(rdi);
         break;
-    case 23:
+    case 20:
         sys_set_cursorY(rdi);
         break;
-    case 24:
+    case 21:
         sys_get_char_width((uint64_t*)rdi);
         break;
-    case 25:
+    case 22:
         sys_get_char_height((uint64_t*)rdi);
         break;
-    case 26:
+    case 23:
         sys_get_pressed_keys((uint8_t*)rdi);
         break;
-    case 27:
+    case 24:
         sys_clean_buffer();
         break;
     }
+    return;
 }
