@@ -3,7 +3,6 @@
 
 #include <stdint.h>
 
-
 typedef struct color{
     uint8_t red;
     uint8_t green;

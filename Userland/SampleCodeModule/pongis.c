@@ -41,7 +41,6 @@ static Ball ball;
 static Hole hole;
 
 
-
 void start_game_pongis(char players) {
     game_running = 1;
     current_level = 1;
@@ -152,7 +151,7 @@ void start_game_pongis(char players) {
                 }
                 reduce();
                 beep(1000, 10);
-                sleep(1);
+                sleep(3);
                 break;
             }else {
                 // Siguiente nivel
@@ -268,63 +267,67 @@ void updateGame1(uint8_t * pressed_keys) {
         }
 
         // Verificar colisión con la pelota
-        if (checkCollision(player1.x, player1.y, player1.radius, ball.x, ball.y, ball.radius)) {
-            double dx = ball.x - player1.x;
-            double dy = ball.y - player1.y;
+        move_ball(player1);
+    }
+}
 
-            // Movemos la pelota gradualmente
-            for(int i = 0; i < BALL_SPEED; i++) {
-                sleep(1);
-                // Guardamos la última posicion
-                oldBallX = ball.x;
-                oldBallY = ball.y;
-                
-                // Borramos la posicion anterior
-                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
-                
-                // Calculamos la nueva posicion
-                ball.x += (dx * BALL_SPEED) / 5;
-                ball.y += (dy * BALL_SPEED) / 5;
-                
-                // Verificamos limites
-                checkIfBorderBall(&ball, &ball_dx, &ball_dy);
+void move_ball(Paddle player){
+    // Verificar colisión con la pelota
+    if (checkCollision(player.x, player.y, player.radius, ball.x, ball.y, ball.radius)) {
+        double dx = ball.x - player.x;
+        double dy = ball.y - player.y;
 
-                if(ballInHole()){
-                    last_player_hit = 1;
-                    return ;
-                }
+        // Movemos la pelota gradualmente
+        for(int i = 0; i < BALL_SPEED; i++) {
+            sleep(1);
+            // Guardamos la última posicion
+            oldBallX = ball.x;
+            oldBallY = ball.y;
+                    
+            // Borramos la posicion anterior
+            drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
+                    
+            // Calculamos la nueva posicion
+            ball.x += (dx * BALL_SPEED) / 5;
+            ball.y += (dy * BALL_SPEED) / 5;
+                    
+            // Verificamos limites
+            checkIfBorderBall(&ball, &ball_dx, &ball_dy);
 
-                if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
-                    drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-                    drawCircle(hole.x, hole.y, hole.radius, hole.color);
-                }
-
-                if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
-                    drawScore(&player1);
-                }
-
-                if(num_players == 2 && checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
-                    drawScore(&player2);
-                }
-
-                // if(checkCollision(oldBallX, oldBallY, ball.radius, player2.x, player2.y, player2.radius)){
-                //     drawPlayer(player2);
-                // }
-
-                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player2, &ball_dx, &ball_dy);
-                
-                // Dibujamos la nueva posición
-                drawCircle(ball.x, ball.y, ball.radius, ball.color);
-                drawPlayer(player1);
-
-                // Actualizamos la posicion anterior
-                oldBallX = ball.x;
-                oldBallY = ball.y;
+            if(ballInHole()){
+                last_player_hit = 1;
+                return ;
             }
-            
-            last_player_hit = 1;
-            beep(800, 15);
-        }
+
+            if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
+                drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
+                drawCircle(hole.x, hole.y, hole.radius, hole.color);
+            }
+
+            if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
+                drawScore(&player1);
+            }
+
+            if(num_players == 2 && checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
+                drawScore(&player2);
+            }
+
+            // if(checkCollision(oldBallX, oldBallY, ball.radius, player2.x, player2.y, player2.radius)){
+            //     drawPlayer(player2);
+            // }
+
+            checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player2, &ball_dx, &ball_dy);
+                    
+            // Dibujamos la nueva posición
+            drawCircle(ball.x, ball.y, ball.radius, ball.color);
+            drawPlayer(player);
+
+            // Actualizamos la posicion anterior
+            oldBallX = ball.x;
+            oldBallY = ball.y;
+        } 
+        last_player_hit = 1;
+        // beep(800, 15);   
     }
 }
 
@@ -387,61 +390,7 @@ void updateGame2(uint8_t * pressed_keys) {
 
 
         // Verificar colisión con la pelota
-        if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
-            double dx = ball.x - player2.x;
-            double dy = ball.y - player2.y;
-
-            
-            
-            for(int i = 0; i < BALL_SPEED; i++) {
-                sleep(1);
-                // Guardamos la última posición
-                oldBallX = ball.x;
-                oldBallY = ball.y;
-
-                // Borrar la posición anterior
-                drawCircle(oldBallX, oldBallY, ball.radius, FIELD_COLOR);
-                
-                // Mover la pelota gradualmente
-                ball.x += (dx * BALL_SPEED) / 5;
-                ball.y += (dy * BALL_SPEED) / 5;
-                
-                // Verificar límites
-                checkIfBorderBall(&ball, &ball_dx, &ball_dy);
-
-                if(ballInHole()){
-                    last_player_hit = 2;
-                    return ;
-                }
-
-                if (checkCollision(oldBallX, oldBallY, ball.radius, hole.x, hole.y, hole.outRadius)) {
-                    drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
-                    drawCircle(hole.x, hole.y, hole.radius, hole.color);
-                }
-
-                if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
-                    drawScore(&player1);
-                }
-
-                if(checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
-                    drawScore(&player2);
-                }
-                
-                checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player1, &ball_dx, &ball_dy);
-                
-                // Dibujar nueva posición
-                drawCircle(ball.x, ball.y, ball.radius, ball.color);
-                drawPlayer(player2);
-
-                // Actualizamos la posición anterior
-                oldBallX = ball.x;
-                oldBallY = ball.y;
-
-            }
-            
-            last_player_hit = 2;
-            beep(800, 15);
-        }
+        move_ball(player2);
     }
 }
 
@@ -503,27 +452,36 @@ void checkIfBorderPlayer(Paddle * p){
 }
 
 void checkIfBorderBall(Ball *b, double *dx, double *dy){
-    const double OFFSET = 25; // Offset pequeño para evitar rebotes instantáneos
+    const double OFFSET = 25; // Reducir el offset para un rebote más suave
+    
     // Rebote horizontal
     if(b->x - b->radius <= 0){
-        b->x = b->radius + OFFSET;  // Offset pequeño
-        if(*dx < 0) 
-            *dx = -*dx;  // Solo invertir si va hacia la izquierda
+        // Posicionar correctamente la pelota
+        b->x = b->radius + OFFSET;
+        if(*dx < 0) {
+            *dx = -*dx;
+        }
     }else if(b->x + b->radius >= set_width()){
-        b->x = set_width() - b->radius - OFFSET;  // Offset pequeño
-        if(*dx > 0) 
-            *dx = -*dx;  // Solo invertir si va hacia la derecha
+        // Posicionar correctamente la pelota
+        b->x = set_width() - b->radius - OFFSET;
+        if(*dx > 0) {
+            *dx = -*dx;
+        }
     }
 
     // Rebote vertical
     if(b->y - b->radius <= 0){
-        b->y = b->radius + OFFSET;  // Offset pequeño
-        if(*dy < 0) 
-            *dy = -*dy;  // Solo invertir si va hacia arriba
+        // Posicionar correctamente la pelota
+        b->y = b->radius + OFFSET;
+        if(*dy < 0) {
+            *dy = -*dy;
+        }
     }else if(b->y + b->radius >= set_height()){
-        b->y = set_height() - b->radius - OFFSET;  // Offset pequeño
-        if(*dy > 0) 
-            *dy = -*dy;  // Solo invertir si va hacia abajo
+        // Posicionar correctamente la pelota
+        b->y = set_height() - b->radius - OFFSET;
+        if(*dy > 0) {
+            *dy = -*dy;
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <userlib.h>
 #include <sys_user.h>
+#include <exceptions.h>
 
 #define STDIN 0
 #define STDOUT 1

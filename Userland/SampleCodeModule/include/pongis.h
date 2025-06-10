@@ -59,4 +59,6 @@ void drawPlayer(Paddle p);
 
 int ballInHole();
 
+void move_ball(Paddle player);
+
 #endif
