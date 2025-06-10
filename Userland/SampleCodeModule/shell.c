@@ -20,35 +20,30 @@ int newTerminal = 1;
 
 int using = 1;
 
-void changeUsername(){
-	char c = 0;
-	int len = 0;
-	putChar('\n');
-	leftLine();
-	print("Enter your username:");
-	while((c = getChar()) != '\n' && len < USER_MAX){
-		if(c != 0){
-			if(c == '\b' && len > 0){
-				len--;
-				putChar('\b');
-			}else if(c != '\b'){
-				username[len++] = c;
-				putChar(c);
-			}
-		}
-	}
-	if(len >= USER_MAX){
-		print("The username cannot exceed 32 characters");
+void start(){
+    if(newTerminal){
+		newTerminal = 0;
+		print("Welcome to our OS!\n");	
 		changeUsername();
-		return;
-	}else{
-		username[len] = '\0';
-		USER_SIZE = len;
-		putChar('\n');
-		print("Welcome ");
-		print(username);
-		putChar('\n');
+		getTime();
+		print("       [hour:min:sec]\n");
 	}
+}
+
+void terminal(){
+	leftLine();
+	print("Write '-help' to see the list of commands.\n");
+	leftLine();
+	print("Enter a command: \n");
+	while(using){
+		leftLine();
+		read();
+	}
+}
+
+static void leftLine(){
+	printColor(username, TEAL, BLACK);
+	printColor("~$ > ", VIOLET, BLACK);
 }
 
 void read(){
@@ -87,7 +82,7 @@ void checkCommand(char * cmd){
 				command_registers();
 				break;
 			case 4:
-				getUserName();
+				command_get_username();
 				break;
 			case 5:
 				command_exit();
@@ -111,7 +106,7 @@ void checkCommand(char * cmd){
 				command_invopcode();
 				break;
 			case 12:
-				command_pognis();
+				command_pongis();
 				break;
 			case 13:
 				command_date();
@@ -123,81 +118,6 @@ void checkCommand(char * cmd){
 		}
 	}
 	invalid_command();
-}
-
-void start(){
-    if(newTerminal){
-		newTerminal = 0;
-		print("Welcome to our OS!\n");	
-		changeUsername();
-		getTime();
-		print("       [hour:min:sec]\n");
-	}
-}
-
-
-void command_pognis(){
-	using = 0;
-    command_clear();
-    increase();
-    printColorCentered("Welcome to Pongis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 1);
-    reduce();
-
-	printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
-    printColorCentered("To exit the game, press 'ESC' key.\n", LIGHT_BLUE, BLACK, get_char_width(),get_char_height(), 0);
-    printColorCentered("Enter the amount of players (1 or 2): ",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
-	char players;
-
-	while(((players = getChar()) != '1' && players != '2')) {
-		
-	}
-	start_game_pongis(players);
-
-	clear();
-	using = 1;
-}
-
-void command_reduce(){
-	clear();
-	reduce();
-}
-
-void command_increase(){
-	clear();
-	increase();
-}
-
-void command_clear(){
-	clear();
-}
-
-static void leftLine(){
-	printColor(username, TEAL, BLACK);
-	printColor("~$ > ", VIOLET, BLACK);
-}
-
-void terminal(){
-	leftLine();
-	print("Write '-help' to see the list of commands.\n");
-	leftLine();
-	print("Enter a command: \n");
-	while(using){
-		leftLine();
-		read();
-	}
-}
-
-void command_zerodiv(){
-	zero();
-}
-
-void command_invopcode(){
-	opcode();
-}	
-
-void command_beep(){
-	beep(100, 15);
-	putChar('\n');
 }
 
 void command_help() {
@@ -243,21 +163,105 @@ void command_time(){
 	putChar('\n');
 }
 
-void command_date() {
-	print("\nThe UTC date [month/day/year] is: ");
-	getDate();
+void changeUsername(){
+	char c = 0;
+	int len = 0;
+	putChar('\n');
+	leftLine();
+	print("Enter your username:");
+	while((c = getChar()) != '\n' && len < USER_MAX){
+		if(c != 0){
+			if(c == '\b' && len > 0){
+				len--;
+				putChar('\b');
+			}else if(c != '\b'){
+				username[len++] = c;
+				putChar(c);
+			}
+		}
+	}
+	if(len >= USER_MAX){
+		print("The username cannot exceed 32 characters");
+		changeUsername();
+		return;
+	}else{
+		username[len] = '\0';
+		USER_SIZE = len;
+		putChar('\n');
+		print("Welcome ");
+		print(username);
+		putChar('\n');
+	}
+}
+
+void command_registers(){
+	printRegisters();
 	putChar('\n');
 }
 
-void getUserName(){
+void command_get_username(){
 	putChar('\n');;
 	leftLine();
 	print(username);
 	putChar('\n');
 }
 
-void command_registers(){
-	printRegisters();
+void command_exit() {
+	print("\nSee you next time!\n");
+	using = 0;
+}
+
+void command_increase(){
+	clear();
+	increase();
+}
+
+void command_reduce(){
+	clear();
+	reduce();
+}
+
+void command_clear(){
+	clear();
+}
+
+void command_beep(){
+	beep(100, 15);
+	putChar('\n');
+}
+
+void command_zerodiv(){
+	zero();
+}
+
+void command_invopcode(){
+	opcode();
+}	
+
+void command_pongis(){
+	using = 0;
+    command_clear();
+    increase();
+    printColorCentered("Welcome to Pongis game!\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 1);
+    reduce();
+
+	printColorCentered("Player 1 uses W/A/S/D keys to move, player 2 uses I/J/K/L to move.\n",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
+    printColorCentered("To exit the game, press 'ESC' key.\n", LIGHT_BLUE, BLACK, get_char_width(),get_char_height(), 0);
+    printColorCentered("Enter the amount of players (1 or 2): ",LIGHT_BLUE, BLACK, get_char_width(), get_char_height(), 0);
+	char players;
+
+	while(((players = getChar()) != '1' && players != '2')) {
+		
+	}
+	start_game_pongis(players);
+
+	clear();
+	using = 1;
+}
+
+void command_date() {
+	print("\nThe UTC date [month/day/year] is: ");
+	getDate();
 	putChar('\n');
 }
 
@@ -267,7 +271,3 @@ void invalid_command(){
 	print("Invalid command. Write -help to see the list of commands\n");
 }
 	
-void command_exit() {
-	print("\nSee you next time!\n");
-	using = 0;
-}

@@ -1,5 +1,5 @@
-GLOBAL sys_write
 GLOBAL sys_read
+GLOBAL sys_write
 GLOBAL sys_clear
 GLOBAL sys_get_seconds
 GLOBAL sys_get_minutes

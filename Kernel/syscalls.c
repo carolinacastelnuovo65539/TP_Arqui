@@ -33,10 +33,6 @@ static void sys_clear(){
     return;
 }
 
-static void sys_wait(uint64_t time){
-    wait(time);
-    return;
-}
 
 static void sys_get_seconds(uint64_t * seconds){ 
     *seconds = get_cmos(RTC_SECONDS);
@@ -53,26 +49,10 @@ static void sys_get_hours(uint64_t * hours){
     return;
 }
 
-static void sys_get_day(uint64_t * day){ 
-    *day = get_cmos(RTC_DAY);
+static void sys_wait(uint64_t time){
+    wait(time);
     return;
 }
-
-static void sys_get_month(uint64_t * month){
-    *month = get_cmos(RTC_MONTH);
-    return;
-}
-
-static void sys_get_year(uint64_t * year){
-    *year = get_cmos(RTC_YEAR);
-    return;
-}
-
-static void sys_clean_buffer(){
-    clean_buffer();
-    return;
-}
-
 
 static void sys_registersInfo(uint64_t registros[19], uint64_t * flag){
     *flag = getAltFlag();
@@ -121,24 +101,28 @@ static void sys_sound(uint64_t frecuencia, uint64_t tiempo){
     return;
 }
 
-static void sys_get_width(uint64_t * width){
-    *width = vd_get_width();
+static void sys_get_day(uint64_t * day){ 
+    *day = get_cmos(RTC_DAY);
     return;
 }
 
+static void sys_get_month(uint64_t * month){
+    *month = get_cmos(RTC_MONTH);
+    return;
+}
+
+static void sys_get_year(uint64_t * year){
+    *year = get_cmos(RTC_YEAR);
+    return;
+}
 
 static void sys_get_height(uint64_t * height){
     *height = vd_get_height();
     return;
 }
 
-static void sys_get_char_height(uint64_t * char_height) {
-    *char_height = vd_get_char_height();
-    return;
-}
-
-static void sys_get_char_width(uint64_t * char_width) {
-    *char_width = vd_get_char_width();
+static void sys_get_width(uint64_t * width){
+    *width = vd_get_width();
     return;
 }
 
@@ -152,11 +136,26 @@ static void sys_set_cursorY(uint64_t y){
     return;
 }
 
+static void sys_get_char_height(uint64_t * char_height) {
+    *char_height = vd_get_char_height();
+    return;
+}
+
+static void sys_get_char_width(uint64_t * char_width) {
+    *char_width = vd_get_char_width();
+    return;
+}
+
 static void sys_get_pressed_keys(uint8_t * arreglo) {
     uint8_t * aux = get_pressed_keys();
     for (int i=0; i<MAX_KEYS; i++) {
         arreglo[i] = aux[i];
     }
+    return;
+}
+
+static void sys_clean_buffer(){
+    clean_buffer();
     return;
 }
 

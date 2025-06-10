@@ -5,40 +5,42 @@ void start();
 
 void terminal();
 
-void changeUsername();
+void leftLine();
 
 void read();
 
 void checkCommand(char * cmd);
 
-void printHelp();
-
 void command_help();
+
+void printHelp();
 
 void command_time();
 
+void changeUsername();
+
 void command_registers();
 
-void getUserName();
+void command_get_username();
 
 void command_exit();
 
-void invalid_command();
+void command_increase();
 
 void command_reduce();
 
 void command_clear();
 
-void command_date();
-
-void command_increase();
+void command_beep();
 
 void command_zerodiv();
 
 void command_invopcode();
 
-void command_beep();
+void command_pongis();
 
-void command_pognis();
+void command_date();
+
+void invalid_command();
 
 #endif
