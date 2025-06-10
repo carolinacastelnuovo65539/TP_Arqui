@@ -1,11 +1,16 @@
 #!/bin/bash
 
-CONTAINER_NAME=tpe_contain
+CONTAINER_NAME=tpe_contain2
 
-docker run -d -v ${PWD}:/root --security-opt seccomp:unconfined -it --name $CONTAINER_NAME agodio/itba-so:2.0
+# Verificar si el contenedor ya existe
+if [ "$(docker ps -a -q -f name=$CONTAINER_NAME)" ]; then
+    echo "El contenedor $CONTAINER_NAME ya existe. Reutilizándolo..."
+    docker start $CONTAINER_NAME
+else
+    echo "Creando un nuevo contenedor $CONTAINER_NAME..."
+    docker run -d -v ${PWD}:/root --security-opt seccomp:unconfined -it --name $CONTAINER_NAME agodio/itba-so:2.0
+fi
 
-echo "Iniciando contenedor $CONTAINER_NAME..."
-docker start $CONTAINER_NAME
 
 echo "Limpiando compilaciones anteriores..."
 docker exec -it $CONTAINER_NAME make clean -C /root/Toolchain
