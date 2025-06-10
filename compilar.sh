@@ -2,7 +2,7 @@
 
 CONTAINER_NAME=tpe_contain
 
-
+docker run -d -v ${PWD}:/root --security-opt seccomp:unconfined -it --name $CONTAINER_NAME agodio/itba-so:2.0
 
 echo "Iniciando contenedor $CONTAINER_NAME..."
 docker start $CONTAINER_NAME
