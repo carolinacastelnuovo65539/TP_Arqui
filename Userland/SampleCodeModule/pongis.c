@@ -581,11 +581,11 @@ void resetLevel() {
 void drawScore(Paddle * p){
     if(p == &player1){
         moveCursor(p->score.x, p->score.y);
-        printColor("SCORE 1:", 7, BLACK, LIGHT_RED);
+        printColor("SCORE 1:", BLACK, LIGHT_RED);
         printDec(p->score.scoreNum);
     }else{
         moveCursor(p->score.x, p->score.y);
-        printColor("SCORE 2:", 7, BLACK, LIGHT_BLUE);
+        printColor("SCORE 2:", BLACK, LIGHT_BLUE);
         printDec(p->score.scoreNum);
     }
 

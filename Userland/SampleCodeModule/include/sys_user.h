@@ -3,9 +3,9 @@
 
 extern void sys_read(uint64_t fd, char * buffer);
 
-extern void sys_write(uint64_t fd, char * buffer, int len);
+extern void sys_write(uint64_t fd, char * buffer);
 
-extern void sys_write_color(uint64_t fd, char * buffer, int len, Color fuente, Color fondo);
+extern void sys_write_color(uint64_t fd, char * buffer, Color fuente, Color fondo);
 
 extern void sys_wait(uint64_t time);
 

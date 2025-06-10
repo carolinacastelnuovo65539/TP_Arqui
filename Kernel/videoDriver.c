@@ -67,7 +67,7 @@ static uint32_t* getPixel(uint16_t x, uint16_t y);
 static void scroll();
 
 
-void vd_prints(const char * str, int len, Color fuente, Color fondo) {
+void vd_prints(const char * str, Color fuente, Color fondo) {
 	for (int i=0; str[i] != '\0'; i++) {
 		vd_print(str[i], fuente, fondo);
 	}
@@ -226,7 +226,7 @@ void vd_reduce(){
 	if(escalaPixel > 1){
 		escalaPixel--;
 	}else{
-		vd_prints("The size cannot be reduced any further.\n", 10, WHITE, BLACK);
+		vd_prints("The size cannot be reduced any further.\n", WHITE, BLACK);
 	}
 }
 

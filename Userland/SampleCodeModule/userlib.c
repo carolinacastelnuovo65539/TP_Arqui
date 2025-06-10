@@ -33,11 +33,11 @@ void putChar(char c){
     char buff[2];
     buff[0] = c;
     buff[1] = '\0';
-    print(buff, 1);
+    print(buff);
 }
 
-void print(char * string, int len) { //preguntar si es más lógico que no se le pase la longitud
-    sys_write(STDOUT, string, len);
+void print(char * string) { //preguntar si es más lógico que no se le pase la longitud
+    sys_write(STDOUT, string);
 }
 
 // Imprime centrado tanto en altura como en ancho
@@ -58,13 +58,13 @@ void printColorCentered(char *msg, Color fg, Color bg, uint64_t char_width, uint
 
     set_cursorX(spaces); // posición horizontal
     set_cursorY(height); // posicion vertical
-    printColor(msg, len, fg, bg);
+    printColor(msg, fg, bg);
     height += char_height; // Desplazamiento vertical
 }
 
 
-void printColor(char * string, int len, Color fuente, Color fondo) {
-    sys_write_color(STDOUT, string, len, fuente, fondo);
+void printColor(char * string, Color fuente, Color fondo) {
+    sys_write_color(STDOUT, string, fuente, fondo);
 }
 
 
@@ -134,17 +134,17 @@ void printRegisters(){
     sys_registersInfo(regs, &flag);
     if(flag == 1){
         for(int i = 0; i < 19; i++){
-            print(nombreRegistros[i], 5); //este 5 hay que sacarlo
-            print(": ", 2);
+            print(nombreRegistros[i]); //este 5 hay que sacarlo
+            print(": ");
             to_hex(regs[i], buff + 2);
-            print(buff, 18);
+            print(buff);
 			if (i % 4 == 3)
 				putChar('\n');
 			else
-				print("   ", 3);
+				print("   ");
         }
     }else{
-        print("ERROR: presionar primero la tecla ALT", 46);
+        print("ERROR: presionar primero la tecla ALT");
     }
 }
 
@@ -263,7 +263,7 @@ void printDec(uint64_t value)
         paddedBuffer[0] = '0';
         paddedBuffer[1] = value + '0';
         paddedBuffer[2] = '\0';
-        print(paddedBuffer, 2);
+        print(paddedBuffer);
     } else {
         printBase(value, 10);
     }
@@ -272,7 +272,7 @@ void printDec(uint64_t value)
 void printBase(uint64_t value, uint32_t base)
 {
 	uintToBase(value, buffer, base);
-	print(buffer, 20);
+	print(buffer);
 }
 
 void set_cursorX(uint64_t value) {

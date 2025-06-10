@@ -20,11 +20,11 @@ static void sys_read(uint64_t fd, char * buffer){
     return;
 }
 
-static void sys_write(uint64_t fd, char * buffer, int len){
+static void sys_write(uint64_t fd, char * buffer){
     if (fd != 1) {
         return;
     }
-    vd_prints(buffer, len, WHITE, BLACK);
+    vd_prints(buffer, WHITE, BLACK);
     return;
 }
 
@@ -109,11 +109,11 @@ static void sys_drawCircle(int centerX, int centerY, int radius, Color color){
     return;
 }
 
-static void sys_write_color(uint64_t fd, char * buffer, int len, Color fuente, Color fondo){
+static void sys_write_color(uint64_t fd, char * buffer, Color fuente, Color fondo){
     if (fd != 1) {
         return;
     }
-    vd_prints(buffer, len, fuente, fondo);
+    vd_prints(buffer, fuente, fondo);
     return;
 }
 
@@ -183,7 +183,7 @@ void syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, 
         sys_read(rdi, (char *)rsi);
         break;
     case 1: //write
-        sys_write(rdi, (char *)rsi, rdx);
+        sys_write(rdi, (char *)rsi);
         break;
     case 2: //clear
         sys_clear();
@@ -218,9 +218,9 @@ void syscall_dispatcher(uint64_t rdi, uint64_t rsi, uint64_t rdx, uint64_t r10, 
         return sys_drawCircle(rdi, rsi, rdx, color1);
         break;
     case 12: 
-        separate_rgb(&color1, &r10);
-        separate_rgb(&color2, &r8);
-        sys_write_color(rdi, (char *)rsi, rdx, color1, color2);
+        separate_rgb(&color1, &rdx);
+        separate_rgb(&color2, &r10);
+        sys_write_color(rdi, (char *)rsi, color1, color2);
         break;
     case 13:
         sys_sound(rdi, rsi);

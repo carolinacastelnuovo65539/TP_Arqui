@@ -24,22 +24,22 @@ static void pasoHexa(uint64_t num1, char buffer[18]){
 void print_regs(){
 	char buffer[19];
 	for(int i = 0; i < 19; i++){
-		vd_prints(nombreRegistros[i], 100, WHITE, BLACK); //este 5 hay que sacarlo
-		vd_prints(": ", 2, WHITE, BLACK);
+		vd_prints(nombreRegistros[i], WHITE, BLACK); //este 5 hay que sacarlo
+		vd_prints(": ", WHITE, BLACK);
 		pasoHexa(exc_regs[i], buffer);
-		vd_prints(buffer, 16, WHITE, BLACK);
+		vd_prints(buffer, WHITE, BLACK);
 		vd_print('\n', WHITE, BLACK);
 	}
 }
 
 static void zero_division() {
-	vd_prints("\nZERO DIVISION EXCEPTION\n", 28, WHITE, BLACK);
+	vd_prints("\nZERO DIVISION EXCEPTION\n", WHITE, BLACK);
 	print_regs();
 	vd_print('\n', WHITE, BLACK);	
 }
 
 static void opcode_exception() {
-	vd_prints("\nINVALID OPCODE EXCEPTION\n", 28, WHITE, BLACK);
+	vd_prints("\nINVALID OPCODE EXCEPTION\n", WHITE, BLACK);
 	print_regs();
 	vd_print('\n', WHITE, BLACK);	
 }

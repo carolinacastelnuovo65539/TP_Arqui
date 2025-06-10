@@ -14,7 +14,7 @@ typedef struct{
 extern Color BLACK;
 extern Color WHITE;
 
-void vd_prints(const char * str, int len, Color fuente, Color fondo);
+void vd_prints(const char * str, Color fuente, Color fondo);
 
 void vd_print(const char buffer, Color fuente, Color fondo);
 

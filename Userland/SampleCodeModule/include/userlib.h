@@ -34,9 +34,9 @@ int strcmp(char * str1, char * str2);
 
 int strlen(char * str);
 
-void print(char * c, int len);
+void print(char * c);
 
-void printColor(char * string, int len, Color fuente, Color fondo);
+void printColor(char * string, Color fuente, Color fondo);
 
 char getChar();
 
