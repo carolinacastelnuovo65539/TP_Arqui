@@ -151,7 +151,7 @@ void start_game_pongis(char players) {
                     printColorCentered("Player 2 won the game!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 0);
                 }
                 reduce();
-                beep(1000, 30);
+                beep(1000, 10);
                 sleep(1);
                 break;
             }else {
@@ -164,7 +164,7 @@ void start_game_pongis(char players) {
                 printColorCentered("Level completed! Get ready for the next one!\n", BRIGHT_YELLOW, FIELD_COLOR, get_char_width(), get_char_height(), 1);
                 
                 reduce();
-                beep(1000, 30);
+                beep(1000, 10);
                 sleep(1);
                 
                 // Resetear posiciones para el siguiente nivel
@@ -235,8 +235,6 @@ void updateGame1(uint8_t * pressed_keys) {
             drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
             drawCircle(hole.x, hole.y, hole.radius, hole.color);
         }
-        // Dibujar en la nueva posición
-        drawCircle(player1.x, player1.y, player1.radius, player1.color);
         
         if(checkScoreCollision(player1.x, player1.y, player1.radius, player1.score.x , player1.score.y)){
             drawScore(&player1);
@@ -247,6 +245,9 @@ void updateGame1(uint8_t * pressed_keys) {
             // Si hay dos jugadores, verificar colisión con el score del jugador 2
             drawScore(&player2);
         }
+
+        // Dibujar en la nueva posición
+        drawCircle(player1.x, player1.y, player1.radius, player1.color);
 
         if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius) && num_players == 2) {
             sleep(4);
@@ -298,6 +299,14 @@ void updateGame1(uint8_t * pressed_keys) {
                     drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 }
 
+                if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
+                    drawScore(&player1);
+                }
+
+                if(num_players == 2 && checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
+                    drawScore(&player2);
+                }
+
                 // if(checkCollision(oldBallX, oldBallY, ball.radius, player2.x, player2.y, player2.radius)){
                 //     drawPlayer(player2);
                 // }
@@ -314,7 +323,7 @@ void updateGame1(uint8_t * pressed_keys) {
             }
             
             last_player_hit = 1;
-            beep(800, 20);
+            beep(800, 15);
         }
     }
 }
@@ -348,8 +357,16 @@ void updateGame2(uint8_t * pressed_keys) {
             drawCircle(hole.x, hole.y, hole.radius, hole.color);
         }
 
+        if(checkScoreCollision(player2.x, player2.y, player2.radius, player1.score.x, player1.score.y)){
+            drawScore(&player1);
+        }
+
+        if(checkScoreCollision(player2.x, player2.y, player2.radius, player2.score.x, player2.score.y)){
+            drawScore(&player2);
+        }
+        
         // Dibujar nueva posición
-        drawCircle(player2.x, player2.y, player2.radius, player2.color);
+        drawPlayer(player2);
         
         if(checkCollision(player1.x, player1.y, player1.radius, player2.x, player2.y, player2.radius)){
             drawCircle(player1.x, player1.y, player1.radius, FIELD_COLOR);
@@ -364,17 +381,10 @@ void updateGame2(uint8_t * pressed_keys) {
             } else {
                 player2.y = oldY + 3;
             }
-            drawCircle(player1.x, player1.y, player1.radius, player1.color);
-            drawCircle(player2.x, player2.y, player2.radius, player2.color);
+            drawPlayer(player1);
+            drawPlayer(player2);
         }
 
-        if(checkScoreCollision(player2.x, player2.y, player2.radius, player1.score.x, player1.score.y)){
-            drawScore(&player1);
-        }
-
-        if(checkScoreCollision(player2.x, player2.y, player2.radius, player2.score.x, player2.score.y)){
-            drawScore(&player2);
-        }
 
         // Verificar colisión con la pelota
         if (checkCollision(player2.x, player2.y, player2.radius, ball.x, ball.y, ball.radius)) {
@@ -408,6 +418,14 @@ void updateGame2(uint8_t * pressed_keys) {
                     drawCircle(hole.x, hole.y, hole.outRadius, hole.outColor);
                     drawCircle(hole.x, hole.y, hole.radius, hole.color);
                 }
+
+                if(checkScoreCollision(ball.x, ball.y, ball.radius, player1.score.x, player1.score.y)){
+                    drawScore(&player1);
+                }
+
+                if(checkScoreCollision(ball.x, ball.y, ball.radius, player2.score.x, player2.score.y)){
+                    drawScore(&player2);
+                }
                 
                 checkCollisionBallPlayer(oldBallX, oldBallY, ball.radius, &player1, &ball_dx, &ball_dy);
                 
@@ -422,7 +440,7 @@ void updateGame2(uint8_t * pressed_keys) {
             }
             
             last_player_hit = 2;
-            beep(800, 20);
+            beep(800, 15);
         }
     }
 }
@@ -485,24 +503,25 @@ void checkIfBorderPlayer(Paddle * p){
 }
 
 void checkIfBorderBall(Ball *b, double *dx, double *dy){
+    const double OFFSET = 25; // Offset pequeño para evitar rebotes instantáneos
     // Rebote horizontal
     if(b->x - b->radius <= 0){
-        b->x = b->radius + 25;  // Offset pequeño
+        b->x = b->radius + OFFSET;  // Offset pequeño
         if(*dx < 0) 
             *dx = -*dx;  // Solo invertir si va hacia la izquierda
     }else if(b->x + b->radius >= set_width()){
-        b->x = set_width() - b->radius - 25;  // Offset pequeño
+        b->x = set_width() - b->radius - OFFSET;  // Offset pequeño
         if(*dx > 0) 
             *dx = -*dx;  // Solo invertir si va hacia la derecha
     }
 
     // Rebote vertical
     if(b->y - b->radius <= 0){
-        b->y = b->radius + 25;  // Offset pequeño
+        b->y = b->radius + OFFSET;  // Offset pequeño
         if(*dy < 0) 
             *dy = -*dy;  // Solo invertir si va hacia arriba
     }else if(b->y + b->radius >= set_height()){
-        b->y = set_height() - b->radius - 25;  // Offset pequeño
+        b->y = set_height() - b->radius - OFFSET;  // Offset pequeño
         if(*dy > 0) 
             *dy = -*dy;  // Solo invertir si va hacia abajo
     }

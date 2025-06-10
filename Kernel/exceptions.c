@@ -12,7 +12,6 @@ static char * nombreRegistros[19] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","
 static void pasoHexa(uint64_t num1, char buffer[18]){
 	buffer[0] = '0';
 	buffer[1] = 'x';
-	int i = 15;
 	for (int i = 17; i >= 2; i--) {
 		int num2 = num1 % 16;
 		buffer[i] = (num2 < 10) ? ('0' + num2) : ('A' + num2 - 10);

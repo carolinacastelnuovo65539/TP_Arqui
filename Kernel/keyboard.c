@@ -11,7 +11,7 @@ extern uint8_t inb(uint16_t port);
 extern void get_key();
 extern void save_registers();
 
-extern char key;
+extern uint8_t key;
 extern char flag;
 
 int alt = 0;
